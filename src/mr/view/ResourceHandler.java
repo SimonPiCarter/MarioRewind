@@ -10,7 +10,7 @@ public class ResourceHandler {
 	private static Image defaultImage;
 	
 	public static void init() throws SlickException {
-		defaultImage = new Image("");
+		defaultImage = new Image("resources/default.png");
 	}
 	
 	public static Image getImage(String path) {
