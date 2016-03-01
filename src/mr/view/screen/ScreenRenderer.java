@@ -26,7 +26,8 @@ public class ScreenRenderer {
 				int y = (i-x)/GameConstant.WIDTH;
 				
 				Coordinate coord = new Coordinate((float)x*GameConstant.TILE_SIZE, (float)y*GameConstant.TILE_SIZE);
-				images.add(new RenderingImage(coord, level.getTiles().get(tiles[i])));
+				// -1 to handle 0 as empty tile (therefore index 1 in the level = 0 in the array)
+				images.add(new RenderingImage(coord, level.getTiles().get(tiles[i]-1)));
 			}
 		}
 		
