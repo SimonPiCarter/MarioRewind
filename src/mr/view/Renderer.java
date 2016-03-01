@@ -21,16 +21,25 @@ public class Renderer {
 	}
 	
 	private void draw(Graphics g, RenderingImage image) {
-		g.drawImage(
-				ResourceHandler.getImage(image.getImage()), 
-				image.getPosition().getX(), 
-				image.getPosition().getY(),
-				image.getPosition().getX()+image.getSize().getX(), 
-				image.getPosition().getY()+image.getSize().getY(),
-				image.getStartSrc().getX(),
-				image.getStartSrc().getY(),
-				image.getEndSrc().getX(),
-				image.getEndSrc().getY()
-				);
+		if ( image.getStartSrc() != null && image.getEndSrc() != null ) {
+			g.drawImage(
+					ResourceHandler.getImage(image.getImage()), 
+					image.getPosition().getX(), 
+					image.getPosition().getY(),
+					image.getPosition().getX()+image.getSize().getX(), 
+					image.getPosition().getY()+image.getSize().getY(),
+					image.getStartSrc().getX(),
+					image.getStartSrc().getY(),
+					image.getEndSrc().getX(),
+					image.getEndSrc().getY()
+					);
+		}
+		else {
+			g.drawImage(
+					ResourceHandler.getImage(image.getImage()), 
+					image.getPosition().getX(), 
+					image.getPosition().getY()
+					);
+		}
 	}
 }
