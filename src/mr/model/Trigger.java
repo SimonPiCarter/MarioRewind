@@ -19,5 +19,5 @@ public class Trigger extends Item {
 	public void setEvents(List<Event> events) {
 		this.events = events;
 	}
-	
+
 }

@@ -9,7 +9,7 @@ import mr.model.GameConstant;
 public class RenderingContext {
 	private List<List<RenderingImage>> layers;
 
-	
+
 	public RenderingContext(List<List<RenderingImage>> layers) {
 		super();
 		this.layers = layers;
@@ -22,7 +22,7 @@ public class RenderingContext {
 	public void setLayers(List<List<RenderingImage>> layers) {
 		this.layers = layers;
 	}
-	
+
 	public void addToLayer(GameConstant.Layers layer, Collection<RenderingImage> images) {
 		if ( layers == null ) {
 			layers = new ArrayList<List<RenderingImage>>(layer.ordinal());
@@ -32,7 +32,7 @@ public class RenderingContext {
 		}
 		layers.get(layer.ordinal()).addAll(images);
 	}
-	
+
 	public void clearLayer(GameConstant.Layers layer) {
 		if ( layers.size() > layer.ordinal() && layers.get(layer.ordinal()) != null ) {
 			layers.get(layer.ordinal()).clear();

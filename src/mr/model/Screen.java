@@ -3,7 +3,7 @@ package mr.model;
 public class Screen {
 	private Screen top, bottom, left, right;
 	private int[] tiles;
-	
+
 	public Screen(Screen top, Screen bottom, Screen left, Screen right, int[] tiles) {
 		this.top = top;
 		this.bottom = bottom;
@@ -41,6 +41,6 @@ public class Screen {
 	public void setTiles(int[] tiles) {
 		this.tiles = tiles;
 	}
-	
-	
+
+
 }

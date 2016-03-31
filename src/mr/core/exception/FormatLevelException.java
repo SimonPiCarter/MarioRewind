@@ -7,9 +7,9 @@ public class FormatLevelException extends Exception {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -1103863817000263014L;
 
-	
+
 }

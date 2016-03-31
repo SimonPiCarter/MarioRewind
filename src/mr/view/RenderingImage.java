@@ -8,7 +8,7 @@ public class RenderingImage {
 	private Coordinate startSrc;
 	private Coordinate endSrc;
 	private String image;
-	
+
 	public RenderingImage(Coordinate position, String image) {
 		super();
 		this.position = position;

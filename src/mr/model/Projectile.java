@@ -5,8 +5,8 @@ import mr.model.misc.Coordinate;
 public class Projectile extends Item {
 	private Coordinate direction;
 	private double weight;
-	
-	
+
+
 	public Projectile(Coordinate position, Coordinate size, String type, String id, String state, Coordinate direction,
 			double weight) {
 		super(position, size, type, id, state);
@@ -26,6 +26,6 @@ public class Projectile extends Item {
 	public void setWeight(double weight) {
 		this.weight = weight;
 	}
-	
-		
+
+
 }
