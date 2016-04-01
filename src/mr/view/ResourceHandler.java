@@ -9,12 +9,12 @@ import org.newdawn.slick.SlickException;
 public class ResourceHandler {
 	private static Map<String, Image> resources;
 	private static Image defaultImage;
-	
+
 	public static void init() throws SlickException {
 		defaultImage = new Image("resources/default.png");
 		resources = new HashMap<String, Image>();
 	}
-	
+
 	public static Image getImage(String path) {
 		// Load the file if necessary
 		if ( !resources.containsKey(path) ) {
@@ -25,7 +25,9 @@ public class ResourceHandler {
 				resources.put(path, defaultImage);
 			}
 		}
-		
+
 		return resources.get(path);
 	}
+
+
 }

@@ -27,10 +27,20 @@ public class RenderingContext {
 		if ( layers == null ) {
 			layers = new ArrayList<List<RenderingImage>>(layer.ordinal());
 		}
-		while ( layers.size() <= layer.ordinal() ) {
+		while ( layers.size() < layer.ordinal() ) {
 			layers.add(new ArrayList<RenderingImage>());
 		}
 		layers.get(layer.ordinal()).addAll(images);
+	}
+
+	public void addToLayer(GameConstant.Layers layer, RenderingImage images) {
+		if ( layers == null ) {
+			layers = new ArrayList<List<RenderingImage>>(layer.ordinal());
+		}
+		while ( layers.size() <= layer.ordinal() ) {
+			layers.add(new ArrayList<RenderingImage>());
+		}
+		layers.get(layer.ordinal()).add(images);
 	}
 
 	public void clearLayer(GameConstant.Layers layer) {

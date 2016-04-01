@@ -43,6 +43,12 @@ public class Coordinate {
 		return true;
 	}
 
+	public Coordinate add(Coordinate other) {
+		x += other.x;
+		y += other.y;
+		return this;
+	}
+
 	public float getX() {
 		return x;
 	}
