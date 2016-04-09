@@ -10,6 +10,7 @@ public abstract class AbstractMovable {
 	private Coordinate speed;
 	private float weight;
 	private Coordinate force;
+	private boolean onGround;
 
 	private static float epsilon = 1e-2f;
 
@@ -40,6 +41,14 @@ public abstract class AbstractMovable {
 		this.force = force;
 	}
 
+	public boolean isOnGround() {
+		return onGround;
+	}
+
+	public void setOnGround(boolean onGround) {
+		this.onGround = onGround;
+	}
+
 	/**
 	 * Move accordingly to the screen tiles
 	 * @param screen
@@ -48,10 +57,14 @@ public abstract class AbstractMovable {
 
 		for ( int i = 0 ; i < GameConstant.WIDTH ; ++ i ) {
 			for ( int j = 0 ; j < GameConstant.HEIGHT ; ++ j ) {
-				if ( screen.getTiles()[i+j*GameConstant.WIDTH] != 0 ) {
+				if ( screen.getTiles()[i+j*GameConstant.WIDTH] > 0 ) {
 					adjustPositionToTile(i,j,speed);
 				}
 			}
+		}
+
+		if ( Math.abs(speed.y) > epsilon ) {
+			this.onGround = false;
 		}
 
 		getSprite().getPosition().add(speed);
@@ -69,12 +82,10 @@ public abstract class AbstractMovable {
 			if ( speed.x > 0 ) {
 				if ( pos.x+size.x < leftX && pos.x+size.x+speed.x > leftX ) {
 					speed.x = Math.max(0,leftX-pos.x-size.x-epsilon);
-					System.out.println("1speed.x="+speed.x);
 				}
 			} else if ( speed.x < 0 ) {
 				if ( pos.x > rightX && pos.x+speed.x < rightX ) {
 					speed.x = Math.min(0,rightX-pos.x+epsilon);
-					System.out.println("2speed.x="+speed.x);
 				}
 			}
 		}
@@ -82,12 +93,11 @@ public abstract class AbstractMovable {
 			if ( speed.y > 0 ) {
 				if ( pos.y+size.y < upY && pos.y+size.y+speed.y > upY ) {
 					speed.y = Math.max(0,upY-pos.y-size.y-epsilon);
-					System.out.println("1speed.y="+speed.y);
+					this.onGround = true;
 				}
 			} else if ( speed.y < 0 ) {
 				if ( pos.y > downY && pos.y+speed.y < downY ) {
 					speed.y = Math.min(0,downY-pos.y+epsilon);
-					System.out.println("2speed.y="+speed.y);
 				}
 			}
 		}
@@ -100,10 +110,16 @@ public abstract class AbstractMovable {
 	public void updateSpeed(float time) {
 		// Compute new speed
 		speed.x = speed.x + force.x/weight*time;
+		if ( speed.x > GameConstant.HORIZONTAL_LIMIT ) {
+			speed.x *= 0.9f;
+		}
 		speed.y = speed.y + force.y/weight*time;
+		if ( speed.y > GameConstant.VERTICAL_LIMIT ) {
+			speed.y = GameConstant.VERTICAL_LIMIT;
+		}
 		// Reset force to weight only
 		force.x = 0;
-		force.y = -weight;
+		force.y = weight;
 	}
 
 

@@ -9,6 +9,8 @@ public class GameConstant {
 	public final static Charset ENCODING = StandardCharsets.UTF_8;
 
 	public final static float TILE_SIZE = 32;
+	public static final float HORIZONTAL_LIMIT = 0.5f;
+	public static final float VERTICAL_LIMIT = 1.5f;
 
 	public enum Layers {
 		BACKGROUND,

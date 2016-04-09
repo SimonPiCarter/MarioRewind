@@ -61,23 +61,21 @@ public class WindowGame extends BasicGame {
 	@Override
 	public void update(GameContainer container, int delta) throws SlickException {
 		sprite.move(lvl.getStartingScreen());
+		sprite.updateSpeed(delta/1000.f);
+		//System.out.println(sprite.isOnGround());
 	}
 
 	public static void main(String[] args) throws SlickException {
 		new AppGameContainer(new WindowGame(), 640, 640, false).start();
 	}
 
-	private float speed = 0.1f;
+	private float speed = 0.2f;
 	private float speedX = 0;
-	private float speedY = 0;
 
 	@Override
 	public void keyPressed(int key, char c) {
-		if ( c == 'z' ) {
-			speedY -= speed;
-		}
-		if ( c == 's' ) {
-			speedY += speed;
+		if ( c == 'z' && sprite.isOnGround() ) {
+			sprite.getForce().setY(-450);
 		}
 		if ( c == 'q' ) {
 			speedX -= speed;
@@ -86,18 +84,10 @@ public class WindowGame extends BasicGame {
 			speedX += speed;
 		}
 		sprite.getSpeed().setX(speedX);
-		sprite.getSpeed().setY(speedY);
-		System.out.println("pressed:"+sprite.getSpeed());
 	}
 
 	@Override
 	public void keyReleased(int key, char c) {
-		if ( c == 'z' ) {
-			speedY += speed;
-		}
-		if ( c == 's' ) {
-			speedY -= speed;
-		}
 		if ( c == 'q' ) {
 			speedX += speed;
 		}
@@ -105,8 +95,6 @@ public class WindowGame extends BasicGame {
 			speedX -= speed;
 		}
 		sprite.getSpeed().setX(speedX);
-		sprite.getSpeed().setY(speedY);
-		System.out.println("released:"+sprite.getSpeed());
 	}
 }
 
