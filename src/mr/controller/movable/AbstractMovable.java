@@ -9,11 +9,7 @@ public abstract class AbstractMovable {
 	private float weight;
 	private Coordinate force;
 
-	private final Sprite item;
-
-	public AbstractMovable(Sprite item) {
-		this.item = item;
-	}
+	public abstract Sprite getSprite();
 
 	public Coordinate getSpeed() {
 		return speed;
@@ -39,7 +35,7 @@ public abstract class AbstractMovable {
 	 * @param screen
 	 */
 	public void move(Screen screen) {
-		item.getPosition().add(speed);
+		getSprite().getPosition().add(speed);
 	}
 
 	/**

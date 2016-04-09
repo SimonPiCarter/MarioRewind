@@ -7,11 +7,12 @@ public class HeroMovable extends AbstractMovable {
 	private final Hero hero;
 
 	public HeroMovable(Hero hero) {
-		super(hero);
+		super();
 		this.hero = hero;
 	}
 
-	public Hero getHero() {
+	@Override
+	public Hero getSprite() {
 		return hero;
 	}
 }
