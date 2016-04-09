@@ -7,10 +7,16 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 import mr.controller.LevelLoader;
+import mr.controller.movable.SpriteMovable;
 import mr.core.exception.InputFileNotFoundException;
+import mr.model.GameConstant;
+import mr.model.GameConstant.Layers;
 import mr.model.Level;
+import mr.model.Sprite;
+import mr.model.misc.Coordinate;
 import mr.view.Renderer;
 import mr.view.RenderingContext;
+import mr.view.RenderingImage;
 import mr.view.ResourceHandler;
 import mr.view.screen.ScreenRenderer;
 
@@ -18,6 +24,9 @@ public class WindowGame extends BasicGame {
 	private Renderer renderer;
 
 	private RenderingContext context;
+
+	private SpriteMovable sprite;
+	private Level lvl;
 
 	public WindowGame() {
 		super("Core :: WindowGame");
@@ -30,9 +39,11 @@ public class WindowGame extends BasicGame {
 
 		this.renderer = new Renderer();
 		this.context = new RenderingContext(null);
+		this.sprite = new SpriteMovable(new Sprite(new Coordinate(0, 0), new Coordinate(GameConstant.TILE_SIZE, GameConstant.TILE_SIZE), "test.png"));
+		this.context.addToLayer(Layers.FOREGROUND, new RenderingImage(sprite.getSprite().getPosition(),"test.png"));
 		String level = "level.lvl.txt";
 		try {
-			Level lvl = LevelLoader.loadLevel(level);
+			lvl = LevelLoader.loadLevel(level);
 
 			ScreenRenderer.addScreenToContext(context, lvl.getStartingScreen(), lvl);
 		} catch (InputFileNotFoundException e) {
@@ -49,11 +60,53 @@ public class WindowGame extends BasicGame {
 
 	@Override
 	public void update(GameContainer container, int delta) throws SlickException {
-
+		sprite.move(lvl.getStartingScreen());
 	}
 
 	public static void main(String[] args) throws SlickException {
 		new AppGameContainer(new WindowGame(), 640, 640, false).start();
+	}
+
+	private float speed = 0.1f;
+	private float speedX = 0;
+	private float speedY = 0;
+
+	@Override
+	public void keyPressed(int key, char c) {
+		if ( c == 'z' ) {
+			speedY -= speed;
+		}
+		if ( c == 's' ) {
+			speedY += speed;
+		}
+		if ( c == 'q' ) {
+			speedX -= speed;
+		}
+		if ( c == 'd' ) {
+			speedX += speed;
+		}
+		sprite.getSpeed().setX(speedX);
+		sprite.getSpeed().setY(speedY);
+		System.out.println("pressed:"+sprite.getSpeed());
+	}
+
+	@Override
+	public void keyReleased(int key, char c) {
+		if ( c == 'z' ) {
+			speedY += speed;
+		}
+		if ( c == 's' ) {
+			speedY -= speed;
+		}
+		if ( c == 'q' ) {
+			speedX += speed;
+		}
+		if ( c == 'd' ) {
+			speedX -= speed;
+		}
+		sprite.getSpeed().setX(speedX);
+		sprite.getSpeed().setY(speedY);
+		System.out.println("released:"+sprite.getSpeed());
 	}
 }
 
