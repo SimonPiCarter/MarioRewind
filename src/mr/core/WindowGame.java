@@ -4,19 +4,19 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 import mr.controller.LevelLoader;
-import mr.controller.movable.SpriteMovable;
+import mr.controller.movable.ItemMovable;
 import mr.core.exception.InputFileNotFoundException;
 import mr.model.GameConstant;
 import mr.model.GameConstant.Layers;
+import mr.model.Item;
 import mr.model.Level;
-import mr.model.Sprite;
 import mr.model.misc.Coordinate;
 import mr.view.Renderer;
 import mr.view.RenderingContext;
-import mr.view.RenderingImage;
 import mr.view.ResourceHandler;
 import mr.view.screen.ScreenRenderer;
 
@@ -25,7 +25,7 @@ public class WindowGame extends BasicGame {
 
 	private RenderingContext context;
 
-	private SpriteMovable sprite;
+	private ItemMovable item;
 	private Level lvl;
 
 	public WindowGame() {
@@ -40,9 +40,14 @@ public class WindowGame extends BasicGame {
 		this.context = new RenderingContext();
 		this.renderer = new Renderer();
 		this.renderer.updateContext(context);
-		this.sprite = new SpriteMovable(new Sprite(new Coordinate(0, 0), new Coordinate(GameConstant.TILE_SIZE, GameConstant.TILE_SIZE), "test.png"));
-		this.context.addToLayer(Layers.FOREGROUND, new RenderingImage(sprite.getSprite().getPosition(),sprite.getSprite().getSize(),"test.png"));
-		String level = "level.lvl.txt";
+		this.item = new ItemMovable(new Item(
+				new Coordinate(0, 0),
+				new Coordinate(GameConstant.TILE_SIZE, GameConstant.TILE_SIZE),
+				"resources/sprite.spt.txt",
+				"id",
+				0));
+		this.context.addToLayer(Layers.FOREGROUND, item.getMovable());
+		String level = "resources/level.lvl.txt";
 		try {
 			lvl = LevelLoader.loadLevel(level);
 
@@ -60,8 +65,9 @@ public class WindowGame extends BasicGame {
 
 	@Override
 	public void update(GameContainer container, int delta) throws SlickException {
-		sprite.move(lvl.getStartingScreen());
-		sprite.updateSpeed(delta/1000.f);
+		item.move(lvl.getStartingScreen());
+		item.updateSpeed(delta/1000.f);
+		context.update(delta);
 		//System.out.println(sprite.isOnGround());
 	}
 
@@ -74,8 +80,8 @@ public class WindowGame extends BasicGame {
 
 	@Override
 	public void keyPressed(int key, char c) {
-		if ( c == 'z' && sprite.isOnGround() ) {
-			sprite.getForce().setY(-450);
+		if ( c == 'z' && item.isOnGround() ) {
+			item.getForce().setY(-450);
 		}
 		if ( c == 'q' ) {
 			speedX -= speed;
@@ -83,7 +89,10 @@ public class WindowGame extends BasicGame {
 		if ( c == 'd' ) {
 			speedX += speed;
 		}
-		sprite.getSpeed().setX(speedX);
+		if ( key == Input.KEY_S ) {
+			item.getMovable().setState((item.getMovable().getState()+1)%2);
+		}
+		item.getSpeed().setX(speedX);
 	}
 
 	@Override
@@ -94,7 +103,7 @@ public class WindowGame extends BasicGame {
 		if ( c == 'd' ) {
 			speedX -= speed;
 		}
-		sprite.getSpeed().setX(speedX);
+		item.getSpeed().setX(speedX);
 	}
 }
 

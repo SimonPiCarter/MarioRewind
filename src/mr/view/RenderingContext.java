@@ -41,8 +41,8 @@ public class RenderingContext {
 			if ( Math.abs(item.getState()*image.getSizeSrc().getY()-image.getStartSrc().getY()) > 1e-3f ) {
 				image.setFrame(0);
 				image.setTime(0);
-				update(item,image,item.getState(),delta);
 			}
+			update(item,image,item.getState(),delta);
 		}
 	}
 
@@ -79,20 +79,25 @@ public class RenderingContext {
 		}
 	}
 
-	public void addToLayer(GameConstant.Layers layer, Item... images) {
-		setUpLayerMap(layersItems,layer);
-		for ( Item image : images ) {
-			if ( image != null ) {
-				layersItems.get(layer.ordinal()).put(image,ResourceHandler.getRenderingImage(image));
-			}
-		}
+	public void addToLayer(GameConstant.Layers layer, Item... items) {
+		addToLayer(layersItems,layer,items);
 	}
 
-	public void addToLayer(GameConstant.Layers layer, Sprite... images) {
-		setUpLayerMap(layersSprites,layer);
-		for ( Sprite image : images ) {
-			if ( image != null ) {
-				layersSprites.get(layer.ordinal()).put(image,ResourceHandler.getRenderingImage(image));
+	public void addToLayer(GameConstant.Layers layer, Sprite... sprites) {
+		addToLayer(layersSprites,layer,sprites);
+	}
+
+	private <T extends Sprite> void addToLayer(List<Map<T,RenderingImage>> map, GameConstant.Layers layer, T... list) {
+		setUpLayerMap(map,layer);
+		for ( T object : list ) {
+			if ( object != null ) {
+				RenderingImage image = ResourceHandler.getRenderingImage(object);
+				// link image to item
+				image.setPosition(object.getPosition());
+				image.setSize(object.getSize());
+				map.get(layer.ordinal()).put(object,image);
+				setUpLayer(layersImages,layer);
+				layersImages.get(layer.ordinal()).add(image);
 			}
 		}
 	}
@@ -100,6 +105,12 @@ public class RenderingContext {
 	public void clearLayer(GameConstant.Layers layer) {
 		if ( layersImages.size() > layer.ordinal() && layersImages.get(layer.ordinal()) != null ) {
 			layersImages.get(layer.ordinal()).clear();
+		}
+		if ( layersItems.size() > layer.ordinal() && layersItems.get(layer.ordinal()) != null ) {
+			layersItems.get(layer.ordinal()).clear();
+		}
+		if ( layersSprites.size() > layer.ordinal() && layersSprites.get(layer.ordinal()) != null ) {
+			layersSprites.get(layer.ordinal()).clear();
 		}
 	}
 

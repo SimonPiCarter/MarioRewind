@@ -12,7 +12,7 @@ public class SpriteMovable extends AbstractMovable {
 	}
 
 	@Override
-	public Sprite getSprite() {
+	public Sprite getMovable() {
 		return sprite;
 	}
 }

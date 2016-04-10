@@ -6,6 +6,8 @@ import java.util.Map;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+import mr.controller.RenderingImageLoader;
+import mr.model.GameConstant;
 import mr.model.Sprite;
 
 public class ResourceHandler {
@@ -13,11 +15,10 @@ public class ResourceHandler {
 	private static Map<String, RenderingImage> resourcesRenderingImages;
 	private static Image defaultImage;
 
-	private static String defaultPathToImage = "resources/default.png";
-
 	public static void init() throws SlickException {
-		defaultImage = new Image(defaultPathToImage);
+		defaultImage = new Image(GameConstant.defaultPathToImage);
 		resourcesImages = new HashMap<String, Image>();
+		resourcesRenderingImages = new HashMap<String, RenderingImage>();
 	}
 
 	public static Image getImage(String path) {
@@ -38,14 +39,14 @@ public class ResourceHandler {
 		// Load the file if necessary
 		if ( !resourcesRenderingImages.containsKey(sprite.getType()) ) {
 			try {
-				resourcesRenderingImages.put(sprite.getType(), new RenderingImage(sprite.getPosition(),sprite.getSize(),defaultPathToImage));
+				resourcesRenderingImages.put(sprite.getType(), RenderingImageLoader.LoadRenderingImage(sprite.getType()));
 			} catch (Exception e) {
 				System.err.println("Cannot load file "+sprite.getType()+" use default image instead");
-				resourcesRenderingImages.put(sprite.getType(), new RenderingImage(sprite.getPosition(),sprite.getSize(),defaultPathToImage));
+				resourcesRenderingImages.put(sprite.getType(), new RenderingImage(sprite.getPosition(),sprite.getSize(),GameConstant.defaultPathToImage));
 			}
 		}
 
-		return resourcesRenderingImages.get(sprite.getType());
+		return new RenderingImage(resourcesRenderingImages.get(sprite.getType()));
 	}
 
 

@@ -12,6 +12,10 @@ public class Coordinate {
 		this.y = y;
 	}
 
+	public Coordinate(Coordinate other) {
+		this(other.x,other.y);
+	}
+
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
 		return new Coordinate(x,y);

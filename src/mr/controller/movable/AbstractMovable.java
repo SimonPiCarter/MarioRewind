@@ -20,7 +20,7 @@ public abstract class AbstractMovable {
 		force = new Coordinate(0, 0);
 	}
 
-	public abstract Sprite getSprite();
+	public abstract Sprite getMovable();
 
 	public Coordinate getSpeed() {
 		return speed;
@@ -67,12 +67,12 @@ public abstract class AbstractMovable {
 			this.onGround = false;
 		}
 
-		getSprite().getPosition().add(speed);
+		getMovable().getPosition().add(speed);
 	}
 
 	private void adjustPositionToTile(int x, int y, Coordinate speed) {
-		Coordinate pos = getSprite().getPosition();
-		Coordinate size = getSprite().getSize();
+		Coordinate pos = getMovable().getPosition();
+		Coordinate size = getMovable().getSize();
 		float leftX = x*GameConstant.TILE_SIZE;
 		float rightX = (x+1)*GameConstant.TILE_SIZE;
 		float upY = y*GameConstant.TILE_SIZE;

@@ -21,7 +21,27 @@ public class RenderingImage {
 		this.position = position;
 		this.size = size;
 		this.image = image;
+		startSrc = new Coordinate();
+		endSrc = new Coordinate(size);
+		sizeSrc = new Coordinate();
 	}
+
+
+	public RenderingImage(RenderingImage other) {
+		this.position = other.position;
+		this.size = other.size;
+		this.startSrc = other.startSrc;
+		this.endSrc = other.endSrc;
+		this.sizeSrc = other.sizeSrc;
+		this.frametime = other.frametime;
+		this.time = other.time;
+		this.frame = other.frame;
+		this.nbStates = other.nbStates;
+		this.nbFrames = other.nbFrames;
+		this.image = other.image;
+	}
+
+
 	public Coordinate getPosition() {
 		return position;
 	}

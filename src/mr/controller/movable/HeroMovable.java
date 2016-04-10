@@ -12,7 +12,7 @@ public class HeroMovable extends AbstractMovable {
 	}
 
 	@Override
-	public Hero getSprite() {
+	public Hero getMovable() {
 		return hero;
 	}
 }
