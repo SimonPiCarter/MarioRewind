@@ -7,7 +7,7 @@ public class Projectile extends Item {
 	private double weight;
 
 
-	public Projectile(Coordinate position, Coordinate size, String type, String id, String state, Coordinate direction,
+	public Projectile(Coordinate position, Coordinate size, String type, String id, int state, Coordinate direction,
 			double weight) {
 		super(position, size, type, id, state);
 		this.setDirection(direction);

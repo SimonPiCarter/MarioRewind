@@ -4,9 +4,9 @@ import mr.model.misc.Coordinate;
 
 public class Item extends Sprite {
 	private String id;
-	private String state;
+	private int state;
 
-	public Item(Coordinate position, Coordinate size, String type, String id, String state) {
+	public Item(Coordinate position, Coordinate size, String type, String id, int state) {
 		super(position, size, type);
 		this.id = id;
 		this.state = state;
@@ -19,10 +19,10 @@ public class Item extends Sprite {
 		this.id = id;
 	}
 
-	public String getState() {
+	public int getState() {
 		return state;
 	}
-	public void setState(String state) {
+	public void setState(int state) {
 		this.state = state;
 	}
 }

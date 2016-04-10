@@ -7,7 +7,7 @@ import mr.model.misc.Coordinate;
 public class Trigger extends Item {
 	private List<Event> events;
 
-	public Trigger(Coordinate position, Coordinate size, String type, String id, String state, List<Event> events) {
+	public Trigger(Coordinate position, Coordinate size, String type, String id, int state, List<Event> events) {
 		super(position, size, type, id, state);
 		this.setEvents(events);
 	}

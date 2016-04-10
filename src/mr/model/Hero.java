@@ -6,7 +6,7 @@ public class Hero extends Item {
 	private int life;
 	private double backtrack;
 
-	public Hero(Coordinate position, Coordinate size, String type, String id, String state, int life,
+	public Hero(Coordinate position, Coordinate size, String type, String id, int state, int life,
 			double backtrack) {
 		super(position, size, type, id, state);
 		this.life = life;
