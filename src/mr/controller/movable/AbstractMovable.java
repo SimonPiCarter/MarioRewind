@@ -11,8 +11,12 @@ public abstract class AbstractMovable {
 	private float weight;
 	private Coordinate force;
 	private boolean onGround;
+	private boolean touchedLeftScreen;
+	private boolean touchedRightScreen;
+	private boolean touchedUpScreen;
+	private boolean touchedBottomScreen;
 
-	private static float epsilon = 1e-2f;
+	private static float epsilon = 1e-1f;
 
 	public AbstractMovable() {
 		speed = new Coordinate(0, 0);
@@ -55,11 +59,39 @@ public abstract class AbstractMovable {
 	 */
 	public void move(Screen screen) {
 
+		Coordinate pos = getMovable().getPosition();
+		Coordinate size = getMovable().getSize();
+
 		for ( int i = 0 ; i < GameConstant.WIDTH ; ++ i ) {
 			for ( int j = 0 ; j < GameConstant.HEIGHT ; ++ j ) {
 				if ( screen.getTiles()[i+j*GameConstant.WIDTH] > 0 ) {
 					adjustPositionToTile(i,j,speed);
 				}
+			}
+		}
+
+		// Check on side of the board
+		if ( speed.x > 0 ) {
+			if ( pos.x+size.x+speed.x > GameConstant.WIDTH*GameConstant.TILE_SIZE ) {
+				speed.x = Math.max(0,GameConstant.WIDTH*GameConstant.TILE_SIZE-pos.x-size.x-epsilon);
+				touchedRightScreen = true;
+			}
+		} else if ( speed.x < 0 ) {
+			if ( pos.x+speed.x < 0 ) {
+				speed.x = Math.min(0,-pos.x+epsilon);
+				touchedLeftScreen = true;
+			}
+		}
+		// Check
+		if ( speed.y > 0 ) {
+			if ( pos.y+size.y+speed.y > GameConstant.HEIGHT*GameConstant.TILE_SIZE ) {
+				speed.y = Math.max(0,GameConstant.HEIGHT*GameConstant.TILE_SIZE-pos.x-size.x-epsilon);
+				touchedBottomScreen = true;
+			}
+		} else if ( speed.y < 0 ) {
+			if ( pos.y+speed.y < 0 ) {
+				speed.y = Math.min(0,-pos.y+epsilon);
+				touchedUpScreen = true;
 			}
 		}
 
@@ -82,6 +114,7 @@ public abstract class AbstractMovable {
 			if ( speed.x > 0 ) {
 				if ( pos.x+size.x < leftX && pos.x+size.x+speed.x > leftX ) {
 					speed.x = Math.max(0,leftX-pos.x-size.x-epsilon);
+
 				}
 			} else if ( speed.x < 0 ) {
 				if ( pos.x > rightX && pos.x+speed.x < rightX ) {
@@ -120,6 +153,31 @@ public abstract class AbstractMovable {
 		// Reset force to weight only
 		force.x = 0;
 		force.y = weight;
+	}
+
+	public boolean isTouchedLeftScreen() {
+		return touchedLeftScreen;
+	}
+	public void setTouchedLeftScreen(boolean touchedLeftScreen) {
+		this.touchedLeftScreen = touchedLeftScreen;
+	}
+	public boolean isTouchedRightScreen() {
+		return touchedRightScreen;
+	}
+	public void setTouchedRightScreen(boolean touchedRightScreen) {
+		this.touchedRightScreen = touchedRightScreen;
+	}
+	public boolean isTouchedUpScreen() {
+		return touchedUpScreen;
+	}
+	public void setTouchedUpScreen(boolean touchedUpScreen) {
+		this.touchedUpScreen = touchedUpScreen;
+	}
+	public boolean isTouchedBottomScreen() {
+		return touchedBottomScreen;
+	}
+	public void setTouchedBottomScreen(boolean touchedBottomScreen) {
+		this.touchedBottomScreen = touchedBottomScreen;
 	}
 
 
