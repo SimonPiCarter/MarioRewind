@@ -68,7 +68,6 @@ public class WindowGame extends BasicGame {
 		item.move(lvl.getStartingScreen());
 		item.updateSpeed(delta/1000.f);
 		context.update(delta);
-		//System.out.println(sprite.isOnGround());
 	}
 
 	public static void main(String[] args) throws SlickException {
@@ -80,13 +79,13 @@ public class WindowGame extends BasicGame {
 
 	@Override
 	public void keyPressed(int key, char c) {
-		if ( c == 'z' && item.isOnGround() ) {
+		if ( ( c == 'z' || key == Input.KEY_UP ) && item.isOnGround() ) {
 			item.getForce().setY(-450);
 		}
-		if ( c == 'q' ) {
+		if ( c == 'q' || key == Input.KEY_LEFT ) {
 			speedX -= speed;
 		}
-		if ( c == 'd' ) {
+		if ( c == 'd' || key == Input.KEY_RIGHT ) {
 			speedX += speed;
 		}
 		if ( key == Input.KEY_SPACE ) {
@@ -97,10 +96,10 @@ public class WindowGame extends BasicGame {
 
 	@Override
 	public void keyReleased(int key, char c) {
-		if ( c == 'q' ) {
+		if ( c == 'q' || key == Input.KEY_LEFT ) {
 			speedX += speed;
 		}
-		if ( c == 'd' ) {
+		if ( c == 'd' || key == Input.KEY_RIGHT ) {
 			speedX -= speed;
 		}
 		item.getSpeed().setX(speedX);
