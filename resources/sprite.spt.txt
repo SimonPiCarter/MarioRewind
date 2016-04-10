@@ -1,3 +1,4 @@
-resources/spite.png
-250 32 32 1
+resources/sprite.png
+250 32 32 2
 4
+2
