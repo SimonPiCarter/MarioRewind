@@ -89,7 +89,7 @@ public class WindowGame extends BasicGame {
 		if ( c == 'd' ) {
 			speedX += speed;
 		}
-		if ( key == Input.KEY_S ) {
+		if ( key == Input.KEY_SPACE ) {
 			item.getMovable().setState((item.getMovable().getState()+1)%2);
 		}
 		item.getSpeed().setX(speedX);

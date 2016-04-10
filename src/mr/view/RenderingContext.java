@@ -87,6 +87,7 @@ public class RenderingContext {
 		addToLayer(layersSprites,layer,sprites);
 	}
 
+	@SuppressWarnings("unchecked")
 	private <T extends Sprite> void addToLayer(List<Map<T,RenderingImage>> map, GameConstant.Layers layer, T... list) {
 		setUpLayerMap(map,layer);
 		for ( T object : list ) {
