@@ -8,14 +8,16 @@ import org.newdawn.slick.SlickException;
 public class Renderer {
 	private RenderingContext context;
 
-	public void update(RenderingContext context) {
+	public void updateContext(RenderingContext context) {
 		this.context = context;
 	}
 
 	public void render(Graphics g) throws SlickException {
-		for ( List<RenderingImage> layer : context.getLayers() ) {
-			for ( RenderingImage image : layer ) {
-				draw(g,image);
+		if ( context != null ) {
+			for ( List<RenderingImage> layer : context.getLayersImages() ) {
+				for ( RenderingImage image : layer ) {
+					draw(g,image);
+				}
 			}
 		}
 	}

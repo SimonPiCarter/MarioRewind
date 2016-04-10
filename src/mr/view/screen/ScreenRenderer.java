@@ -1,7 +1,5 @@
 package mr.view.screen;
 
-import java.util.ArrayList;
-
 import mr.model.GameConstant;
 import mr.model.Level;
 import mr.model.Screen;
@@ -19,7 +17,7 @@ public class ScreenRenderer {
 	 */
 	public static void addScreenToContext(RenderingContext context, Screen screen, Level level) {
 		int[] tiles = screen.getTiles();
-		ArrayList<RenderingImage> images = new ArrayList<RenderingImage>(tiles.length);
+		RenderingImage[] images = new RenderingImage[tiles.length];
 		for ( int i = 0 ; i < tiles.length ; ++ i ) {
 			if ( tiles[i] > 0 ) {
 				int x = i%GameConstant.WIDTH;
@@ -27,7 +25,7 @@ public class ScreenRenderer {
 
 				Coordinate coord = new Coordinate(x*GameConstant.TILE_SIZE, y*GameConstant.TILE_SIZE);
 				// -1 to handle 0 as empty tile (therefore index 1 in the level = 0 in the array)
-				images.add(new RenderingImage(coord, level.getTiles().get(tiles[i]-1)));
+				images[i] = new RenderingImage(coord, level.getTiles().get(tiles[i]-1));
 			}
 		}
 

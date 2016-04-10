@@ -37,8 +37,9 @@ public class WindowGame extends BasicGame {
 		// Load default image
 		ResourceHandler.init();
 
+		this.context = new RenderingContext();
 		this.renderer = new Renderer();
-		this.context = new RenderingContext(null);
+		this.renderer.updateContext(context);
 		this.sprite = new SpriteMovable(new Sprite(new Coordinate(0, 0), new Coordinate(GameConstant.TILE_SIZE, GameConstant.TILE_SIZE), "test.png"));
 		this.context.addToLayer(Layers.FOREGROUND, new RenderingImage(sprite.getSprite().getPosition(),"test.png"));
 		String level = "level.lvl.txt";
@@ -54,7 +55,6 @@ public class WindowGame extends BasicGame {
 
 	@Override
 	public void render(GameContainer container, Graphics g) throws SlickException {
-		this.renderer.update(context);
 		this.renderer.render(g);
 	}
 

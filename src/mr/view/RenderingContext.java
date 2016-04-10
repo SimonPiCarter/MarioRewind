@@ -1,51 +1,39 @@
 package mr.view;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import mr.model.GameConstant;
 
 public class RenderingContext {
-	private List<List<RenderingImage>> layers;
+	private List<List<RenderingImage>> layersImages;
 
-
-	public RenderingContext(List<List<RenderingImage>> layers) {
-		super();
-		this.layers = layers;
+	public RenderingContext() {
+		layersImages = new ArrayList<List<RenderingImage>>();
 	}
 
-	public List<List<RenderingImage>> getLayers() {
-		return layers;
+	public List<List<RenderingImage>> getLayersImages() {
+		return layersImages;
 	}
 
-	public void setLayers(List<List<RenderingImage>> layers) {
-		this.layers = layers;
-	}
-
-	public void addToLayer(GameConstant.Layers layer, Collection<RenderingImage> images) {
-		if ( layers == null ) {
-			layers = new ArrayList<List<RenderingImage>>(layer.ordinal());
+	public void addToLayer(GameConstant.Layers layer, RenderingImage... images) {
+		setUpLayer(layersImages,layer);
+		for ( RenderingImage image : images ) {
+			if ( image != null ) {
+				layersImages.get(layer.ordinal()).add(image);
+			}
 		}
-		while ( layers.size() <= layer.ordinal() ) {
-			layers.add(new ArrayList<RenderingImage>());
-		}
-		layers.get(layer.ordinal()).addAll(images);
-	}
-
-	public void addToLayer(GameConstant.Layers layer, RenderingImage images) {
-		if ( layers == null ) {
-			layers = new ArrayList<List<RenderingImage>>(layer.ordinal());
-		}
-		while ( layers.size() <= layer.ordinal() ) {
-			layers.add(new ArrayList<RenderingImage>());
-		}
-		layers.get(layer.ordinal()).add(images);
 	}
 
 	public void clearLayer(GameConstant.Layers layer) {
-		if ( layers.size() > layer.ordinal() && layers.get(layer.ordinal()) != null ) {
-			layers.get(layer.ordinal()).clear();
+		if ( layersImages.size() > layer.ordinal() && layersImages.get(layer.ordinal()) != null ) {
+			layersImages.get(layer.ordinal()).clear();
+		}
+	}
+
+	private <T> void setUpLayer(List<List<T>> layers, GameConstant.Layers layer) {
+		while ( layers.size() <= layer.ordinal() ) {
+			layers.add(new ArrayList<T>());
 		}
 	}
 }
