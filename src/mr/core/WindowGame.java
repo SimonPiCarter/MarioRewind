@@ -41,7 +41,7 @@ public class WindowGame extends BasicGame {
 		this.renderer = new Renderer();
 		this.renderer.updateContext(context);
 		this.sprite = new SpriteMovable(new Sprite(new Coordinate(0, 0), new Coordinate(GameConstant.TILE_SIZE, GameConstant.TILE_SIZE), "test.png"));
-		this.context.addToLayer(Layers.FOREGROUND, new RenderingImage(sprite.getSprite().getPosition(),"test.png"));
+		this.context.addToLayer(Layers.FOREGROUND, new RenderingImage(sprite.getSprite().getPosition(),sprite.getSprite().getSize(),"test.png"));
 		String level = "level.lvl.txt";
 		try {
 			lvl = LevelLoader.loadLevel(level);

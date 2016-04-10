@@ -7,11 +7,19 @@ public class RenderingImage {
 	private Coordinate size;
 	private Coordinate startSrc;
 	private Coordinate endSrc;
+	private Coordinate sizeSrc;
+	private int frametime;
+	private int time;
+	private int frame;
+	private int nbStates;
+	private int[] nbFrames;
+
 	private String image;
 
-	public RenderingImage(Coordinate position, String image) {
+	public RenderingImage(Coordinate position, Coordinate size, String image) {
 		super();
 		this.position = position;
+		this.size = size;
 		this.image = image;
 	}
 	public Coordinate getPosition() {
@@ -43,5 +51,41 @@ public class RenderingImage {
 	}
 	public void setEndSrc(Coordinate endSrc) {
 		this.endSrc = endSrc;
+	}
+	public Coordinate getSizeSrc() {
+		return sizeSrc;
+	}
+	public void setSizeSrc(Coordinate sizeSrc) {
+		this.sizeSrc = sizeSrc;
+	}
+	public int getFrametime() {
+		return frametime;
+	}
+	public void setFrametime(int frametime) {
+		this.frametime = frametime;
+	}
+	public int getFrame() {
+		return frame;
+	}
+	public void setFrame(int frame) {
+		this.frame = frame;
+	}
+	public int getNbStates() {
+		return nbStates;
+	}
+	public void setNbStates(int nbStates) {
+		this.nbStates = nbStates;
+	}
+	public int[] getNbFrames() {
+		return nbFrames;
+	}
+	public void setNbFrames(int[] nbFrames) {
+		this.nbFrames = nbFrames;
+	}
+	public int getTime() {
+		return time;
+	}
+	public void setTime(int time) {
+		this.time = time;
 	}
 }
