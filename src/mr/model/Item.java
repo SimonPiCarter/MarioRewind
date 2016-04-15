@@ -4,6 +4,7 @@ import mr.model.misc.Coordinate;
 
 public class Item extends Sprite {
 	private String id;
+	private HitBox hitBox;
 	private int state;
 
 	public Item(Coordinate position, Coordinate size, String type, String id, int state) {
@@ -24,5 +25,13 @@ public class Item extends Sprite {
 	}
 	public void setState(int state) {
 		this.state = state;
+	}
+
+	public HitBox getHitBox() {
+		return hitBox;
+	}
+
+	public void setHitBox(HitBox hitBox) {
+		this.hitBox = hitBox;
 	}
 }

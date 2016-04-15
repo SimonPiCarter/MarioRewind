@@ -16,8 +16,6 @@ public abstract class AbstractMovable {
 	private boolean touchedUpScreen;
 	private boolean touchedBottomScreen;
 
-	private static float epsilon = 1e-1f;
-
 	public AbstractMovable() {
 		speed = new Coordinate(0, 0);
 		weight = 1;
@@ -73,29 +71,29 @@ public abstract class AbstractMovable {
 		// Check on side of the board
 		if ( speed.x > 0 ) {
 			if ( pos.x+size.x+speed.x > GameConstant.WIDTH*GameConstant.TILE_SIZE ) {
-				speed.x = Math.max(0,GameConstant.WIDTH*GameConstant.TILE_SIZE-pos.x-size.x-epsilon);
+				speed.x = Math.max(0,GameConstant.WIDTH*GameConstant.TILE_SIZE-pos.x-size.x-GameConstant.epsilon);
 				touchedRightScreen = true;
 			}
 		} else if ( speed.x < 0 ) {
 			if ( pos.x+speed.x < 0 ) {
-				speed.x = Math.min(0,-pos.x+epsilon);
+				speed.x = Math.min(0,-pos.x+GameConstant.epsilon);
 				touchedLeftScreen = true;
 			}
 		}
 		// Check
 		if ( speed.y > 0 ) {
 			if ( pos.y+size.y+speed.y > GameConstant.HEIGHT*GameConstant.TILE_SIZE ) {
-				speed.y = Math.max(0,GameConstant.HEIGHT*GameConstant.TILE_SIZE-pos.x-size.x-epsilon);
+				speed.y = Math.max(0,GameConstant.HEIGHT*GameConstant.TILE_SIZE-pos.x-size.x-GameConstant.epsilon);
 				touchedBottomScreen = true;
 			}
 		} else if ( speed.y < 0 ) {
 			if ( pos.y+speed.y < 0 ) {
-				speed.y = Math.min(0,-pos.y+epsilon);
+				speed.y = Math.min(0,-pos.y+GameConstant.epsilon);
 				touchedUpScreen = true;
 			}
 		}
 
-		if ( Math.abs(speed.y) > epsilon ) {
+		if ( Math.abs(speed.y) > GameConstant.epsilon ) {
 			this.onGround = false;
 		}
 
@@ -113,24 +111,24 @@ public abstract class AbstractMovable {
 		if ( new Interval(pos.y,pos.y+size.y).intersect(new Interval(upY,downY)) ) {
 			if ( speed.x > 0 ) {
 				if ( pos.x+size.x < leftX && pos.x+size.x+speed.x > leftX ) {
-					speed.x = Math.max(0,leftX-pos.x-size.x-epsilon);
+					speed.x = Math.max(0,leftX-pos.x-size.x-GameConstant.epsilon);
 
 				}
 			} else if ( speed.x < 0 ) {
 				if ( pos.x > rightX && pos.x+speed.x < rightX ) {
-					speed.x = Math.min(0,rightX-pos.x+epsilon);
+					speed.x = Math.min(0,rightX-pos.x+GameConstant.epsilon);
 				}
 			}
 		}
 		if ( new Interval(pos.x,pos.x+size.x).intersect(new Interval(leftX,rightX)) ) {
 			if ( speed.y > 0 ) {
 				if ( pos.y+size.y < upY && pos.y+size.y+speed.y > upY ) {
-					speed.y = Math.max(0,upY-pos.y-size.y-epsilon);
+					speed.y = Math.max(0,upY-pos.y-size.y-GameConstant.epsilon);
 					this.onGround = true;
 				}
 			} else if ( speed.y < 0 ) {
 				if ( pos.y > downY && pos.y+speed.y < downY ) {
-					speed.y = Math.min(0,downY-pos.y+epsilon);
+					speed.y = Math.min(0,downY-pos.y+GameConstant.epsilon);
 				}
 			}
 		}

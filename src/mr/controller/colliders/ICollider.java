@@ -4,5 +4,5 @@ import mr.controller.movable.HeroMovable;
 import mr.model.misc.Coordinate;
 
 public interface ICollider {
-	void collide(HeroMovable hero, Coordinate heroSpeed, Coordinate ownSpeed);
+	void collide(HeroMovable heroMovable, Coordinate heroSpeed, Coordinate ownSpeed);
 }

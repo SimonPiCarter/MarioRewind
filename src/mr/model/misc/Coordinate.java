@@ -57,6 +57,10 @@ public class Coordinate {
 		return this;
 	}
 
+	public static Coordinate add(Coordinate A, Coordinate B) {
+		return new Coordinate(A.x+B.x,A.y+B.y);
+	}
+
 	public float getX() {
 		return x;
 	}

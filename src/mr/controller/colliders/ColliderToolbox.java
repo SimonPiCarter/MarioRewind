@@ -1,7 +1,10 @@
 package mr.controller.colliders;
 
+import mr.model.GameConstant;
 import mr.model.HitBox;
+import mr.model.Item;
 import mr.model.misc.Coordinate;
+import mr.model.misc.Interval;
 
 public class ColliderToolbox {
 
@@ -16,6 +19,60 @@ public class ColliderToolbox {
 				posB.y+hitBoxB.offset.y,
 				posB.y+hitBoxB.offset.y+hitBoxB.size.y
 				);
+	}
+
+	public enum Collision {
+		NO_COLLISION,
+		FIRST_ITEM_KILLED,
+		SECOND_ITEM_KILLED
+	}
+
+	public static Collision detectKillCollision(Item itemA, Item itemB, Coordinate heroSpeed, Coordinate itemSpeed) {
+		Coordinate pos = Coordinate.add(itemA.getPosition(),itemA.getHitBox().offset);
+		Coordinate size = itemA.getHitBox().size;
+		float leftX = itemB.getPosition().x+itemB.getHitBox().offset.x;
+		float rightX = itemB.getPosition().x+itemB.getHitBox().offset.x+itemB.getHitBox().size.x;
+		float upY = itemB.getPosition().y+itemB.getHitBox().offset.y;
+		float downY = itemB.getPosition().y+itemB.getHitBox().offset.y+itemB.getHitBox().size.y;
+
+		boolean killed = false;
+		boolean collision = false;
+
+		if ( new Interval(pos.y,pos.y+size.y).intersect(new Interval(upY,downY)) ) {
+			if ( heroSpeed.x > 0 ) {
+				if ( pos.x+size.x < leftX && pos.x+size.x+heroSpeed.x > leftX ) {
+					heroSpeed.x = Math.max(0,leftX-pos.x-size.x-GameConstant.epsilon);
+					collision = true;
+				}
+			} else if ( heroSpeed.x < 0 ) {
+				if ( pos.x > rightX && pos.x+heroSpeed.x < rightX ) {
+					heroSpeed.x = Math.min(0,rightX-pos.x+GameConstant.epsilon);
+					collision = true;
+				}
+			}
+		}
+		if ( new Interval(pos.x,pos.x+size.x).intersect(new Interval(leftX,rightX)) ) {
+			if ( heroSpeed.y > 0 ) {
+				if ( pos.y+size.y < upY && pos.y+size.y+heroSpeed.y > upY ) {
+					heroSpeed.y = Math.max(0,upY-pos.y-size.y-GameConstant.epsilon);
+					killed = true;
+					collision = true;
+				}
+			} else if ( heroSpeed.y < 0 ) {
+				if ( pos.y > downY && pos.y+heroSpeed.y < downY ) {
+					heroSpeed.y = Math.min(0,downY-pos.y+GameConstant.epsilon);
+					collision = true;
+				}
+			}
+		}
+		if ( collision ) {
+			if ( killed ) {
+				return Collision.SECOND_ITEM_KILLED;
+			} else {
+				return Collision.FIRST_ITEM_KILLED;
+			}
+		}
+		return Collision.NO_COLLISION;
 	}
 
 	public static boolean isInside(float leftX,float rightX,float upY,float downY, Coordinate pos, Coordinate size) {

@@ -9,11 +9,14 @@ import org.newdawn.slick.SlickException;
 
 import mr.controller.LevelLoader;
 import mr.controller.Rewinder;
+import mr.controller.colliders.EnemyCollider;
 import mr.controller.movable.HeroMovable;
 import mr.core.exception.InputFileNotFoundException;
 import mr.model.GameConstant;
 import mr.model.GameConstant.Layers;
 import mr.model.Hero;
+import mr.model.HitBox;
+import mr.model.Item;
 import mr.model.Level;
 import mr.model.misc.Coordinate;
 import mr.view.Renderer;
@@ -29,6 +32,7 @@ public class WindowGame extends BasicGame {
 	private Renderer renderer;
 
 	private HeroMovable item;
+	private EnemyCollider monster;
 	private Level lvl;
 
 
@@ -58,7 +62,16 @@ public class WindowGame extends BasicGame {
 				"resources/sprite.spt.txt",
 				"id",
 				0,0,0));
+		this.item.getMovable().setHitBox(new HitBox(new Coordinate(),this.item.getMovable().getSize()));
+		this.monster = new EnemyCollider(new Item(
+				new Coordinate(200, 400),
+				new Coordinate(GameConstant.TILE_SIZE, GameConstant.TILE_SIZE),
+				"resources/sprite.spt.txt",
+				"id",
+				0));
+		this.monster.getItem().setHitBox(new HitBox(new Coordinate(),new Coordinate(GameConstant.TILE_SIZE, GameConstant.TILE_SIZE)));
 		this.context.addToLayer(Layers.FOREGROUND, item.getMovable());
+		this.context.addToLayer(Layers.FOREGROUND, this.monster.getItem());
 		String level = "resources/level.lvl.txt";
 		try {
 			lvl = LevelLoader.loadLevel(level);
@@ -87,6 +100,7 @@ public class WindowGame extends BasicGame {
 			item.getMovable().setState(0);
 			rewinder.record(delta, item);
 		}
+		this.monster.collide(item, item.getSpeed(), new Coordinate());
 	}
 
 	public static void main(String[] args) throws SlickException {

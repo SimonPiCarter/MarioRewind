@@ -14,6 +14,8 @@ public class GameConstant {
 	public static final float HORIZONTAL_LIMIT = 0.5f;
 	public static final float VERTICAL_LIMIT = 1.5f;
 
+	public static final float epsilon = 1e-1f;
+
 	public enum Layers {
 		BACKGROUND,
 		TILES,
