@@ -1,4 +1,4 @@
-package mr.controller.colliders;
+package mr.model;
 
 import mr.model.misc.Coordinate;
 

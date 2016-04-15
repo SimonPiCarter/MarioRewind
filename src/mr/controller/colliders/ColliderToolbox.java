@@ -1,5 +1,6 @@
 package mr.controller.colliders;
 
+import mr.model.HitBox;
 import mr.model.misc.Coordinate;
 
 public class ColliderToolbox {
