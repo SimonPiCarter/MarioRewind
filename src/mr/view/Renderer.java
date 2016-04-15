@@ -2,11 +2,17 @@ package mr.view;
 
 import java.util.List;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
+import mr.controller.Rewinder;
+import mr.model.misc.Coordinate;
+
 public class Renderer {
 	private RenderingContext context;
+	private Rewinder rewinder;
+
 
 	public void updateContext(RenderingContext context) {
 		this.context = context;
@@ -17,6 +23,18 @@ public class Renderer {
 			for ( List<RenderingImage> layer : context.getLayersImages() ) {
 				for ( RenderingImage image : layer ) {
 					draw(g,image);
+				}
+			}
+		}
+		if ( rewinder != null ) {
+			g.setColor(Color.cyan);
+			Coordinate lastPos = null;
+			if ( rewinder.getPoints() != null ) {
+				for ( Coordinate nextPos : rewinder.getPoints() ) {
+					if ( lastPos != null ) {
+						g.drawLine(lastPos.x, lastPos.y, nextPos.x, nextPos.y);
+					}
+					lastPos = nextPos;
 				}
 			}
 		}
@@ -43,5 +61,9 @@ public class Renderer {
 					image.getPosition().getY()
 					);
 		}
+	}
+
+	public void setRewinder(Rewinder rewinder) {
+		this.rewinder = rewinder;
 	}
 }

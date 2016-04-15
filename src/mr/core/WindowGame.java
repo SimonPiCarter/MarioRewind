@@ -8,11 +8,12 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 import mr.controller.LevelLoader;
-import mr.controller.movable.ItemMovable;
+import mr.controller.Rewinder;
+import mr.controller.movable.HeroMovable;
 import mr.core.exception.InputFileNotFoundException;
 import mr.model.GameConstant;
 import mr.model.GameConstant.Layers;
-import mr.model.Item;
+import mr.model.Hero;
 import mr.model.Level;
 import mr.model.misc.Coordinate;
 import mr.view.Renderer;
@@ -21,12 +22,19 @@ import mr.view.ResourceHandler;
 import mr.view.screen.ScreenRenderer;
 
 public class WindowGame extends BasicGame {
-	private Renderer renderer;
 
 	private RenderingContext context;
+	private Rewinder rewinder;
 
-	private ItemMovable item;
+	private Renderer renderer;
+
+	private HeroMovable item;
 	private Level lvl;
+
+
+	private float speed = 0.2f;
+	private float speedX = 0;
+	private boolean rewind;
 
 	public WindowGame() {
 		super("Core :: WindowGame");
@@ -37,15 +45,19 @@ public class WindowGame extends BasicGame {
 		// Load default image
 		ResourceHandler.init();
 
-		this.context = new RenderingContext();
 		this.renderer = new Renderer();
+
+		this.context = new RenderingContext();
+		this.rewinder = new Rewinder();
 		this.renderer.updateContext(context);
-		this.item = new ItemMovable(new Item(
+		this.renderer.setRewinder(rewinder);
+
+		this.item = new HeroMovable(new Hero(
 				new Coordinate(0, 0),
 				new Coordinate(GameConstant.TILE_SIZE, GameConstant.TILE_SIZE),
 				"resources/sprite.spt.txt",
 				"id",
-				0));
+				0,0,0));
 		this.context.addToLayer(Layers.FOREGROUND, item.getMovable());
 		String level = "resources/level.lvl.txt";
 		try {
@@ -68,14 +80,16 @@ public class WindowGame extends BasicGame {
 		item.move(lvl.getStartingScreen());
 		item.updateSpeed(delta/1000.f);
 		context.update(delta);
+		if ( rewind ) {
+			rewinder.rewind(delta, item);
+		} else {
+			rewinder.record(delta, item);
+		}
 	}
 
 	public static void main(String[] args) throws SlickException {
 		new AppGameContainer(new WindowGame(), 640, 640, false).start();
 	}
-
-	private float speed = 0.2f;
-	private float speedX = 0;
 
 	@Override
 	public void keyPressed(int key, char c) {
@@ -84,25 +98,33 @@ public class WindowGame extends BasicGame {
 		}
 		if ( c == 'q' || key == Input.KEY_LEFT ) {
 			speedX -= speed;
+			item.getSpeed().setX(speedX);
 		}
 		if ( c == 'd' || key == Input.KEY_RIGHT ) {
 			speedX += speed;
+			item.getSpeed().setX(speedX);
+		}
+		if ( c == 'r' || key == Input.KEY_SPACE ) {
+			rewind = true;
 		}
 		if ( key == Input.KEY_SPACE ) {
 			item.getMovable().setState((item.getMovable().getState()+1)%2);
 		}
-		item.getSpeed().setX(speedX);
 	}
 
 	@Override
 	public void keyReleased(int key, char c) {
 		if ( c == 'q' || key == Input.KEY_LEFT ) {
 			speedX += speed;
+			item.getSpeed().setX(speedX);
 		}
 		if ( c == 'd' || key == Input.KEY_RIGHT ) {
 			speedX -= speed;
+			item.getSpeed().setX(speedX);
 		}
-		item.getSpeed().setX(speedX);
+		if ( c == 'r' || key == Input.KEY_SPACE ) {
+			rewind = false;
+		}
 	}
 }
 
