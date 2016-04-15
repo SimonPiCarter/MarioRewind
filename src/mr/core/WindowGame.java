@@ -81,8 +81,10 @@ public class WindowGame extends BasicGame {
 		item.updateSpeed(delta/1000.f);
 		context.update(delta);
 		if ( rewind ) {
+			item.getMovable().setState(1);
 			rewinder.rewind(delta, item);
 		} else {
+			item.getMovable().setState(0);
 			rewinder.record(delta, item);
 		}
 	}
@@ -106,9 +108,6 @@ public class WindowGame extends BasicGame {
 		}
 		if ( c == 'r' || key == Input.KEY_SPACE ) {
 			rewind = true;
-		}
-		if ( key == Input.KEY_SPACE ) {
-			item.getMovable().setState((item.getMovable().getState()+1)%2);
 		}
 	}
 
