@@ -35,10 +35,12 @@ public class WindowGame extends BasicGame {
 	private EnemyCollider monster;
 	private Level lvl;
 
-
-	private float speed = 1.0f;
-	private float speedX = 0;
+	private float baseForce = 15;
+	private float forceX = 0;
 	private boolean rewind;
+
+	private int timeStep = 5;
+	private int elapsedTime = 0;
 
 	public WindowGame() {
 		super("Core :: WindowGame");
@@ -88,14 +90,13 @@ public class WindowGame extends BasicGame {
 		this.renderer.render(g);
 	}
 
-	private int timeStep = 5;
-	private int elapsedTime = 0;
-
 	@Override
 	public void update(GameContainer container, int delta) throws SlickException {
 		elapsedTime += delta;
 		while ( elapsedTime > timeStep ) {
 			elapsedTime -= timeStep;
+
+			item.getForce().x = forceX;
 
 			this.monster.collide(item, item.getSpeed(), new Coordinate());
 			item.move(lvl.getStartingScreen());
@@ -123,12 +124,10 @@ public class WindowGame extends BasicGame {
 			item.getForce().setY(-250);
 		}
 		if ( c == 'q' || key == Input.KEY_LEFT ) {
-			speedX -= speed;
-			item.getSpeed().setX(speedX);
+			forceX = -baseForce;
 		}
 		if ( c == 'd' || key == Input.KEY_RIGHT ) {
-			speedX += speed;
-			item.getSpeed().setX(speedX);
+			forceX = baseForce;
 		}
 		if ( c == 'r' || key == Input.KEY_SPACE ) {
 			rewind = true;
@@ -138,12 +137,14 @@ public class WindowGame extends BasicGame {
 	@Override
 	public void keyReleased(int key, char c) {
 		if ( c == 'q' || key == Input.KEY_LEFT ) {
-			speedX += speed;
-			item.getSpeed().setX(speedX);
+			if ( forceX < 0 ) {
+				forceX = 0;
+			}
 		}
 		if ( c == 'd' || key == Input.KEY_RIGHT ) {
-			speedX -= speed;
-			item.getSpeed().setX(speedX);
+			if ( forceX > 0 ) {
+				forceX = 0;
+			}
 		}
 		if ( c == 'r' || key == Input.KEY_SPACE ) {
 			rewind = false;

@@ -139,10 +139,26 @@ public abstract class AbstractMovable {
 	 * @param time time elapsed since last frame
 	 */
 	public void updateSpeed() {
+		if ( !onGround ) {
+			force.x /= 5;
+		}
 		// Compute new speed
 		speed.x = speed.x + force.x/weight*0.0075f;
-		if ( speed.x > GameConstant.HORIZONTAL_LIMIT ) {
+		float slow = 0;
+		// Compute floor resistance
+		if ( onGround && speed.x > 0  ) {
+			slow = speed.x/10;
+			speed.x = Math.max(0, speed.x-slow);
+		}
+		if ( onGround && speed.x < 0  ) {
+			slow = speed.x/10;
+			speed.x = Math.min(0, speed.x-slow);
+		}
+		if ( speed.x > 0 &&speed.x > GameConstant.HORIZONTAL_LIMIT ) {
 			speed.x = Math.max(GameConstant.HORIZONTAL_LIMIT , speed.x*0.9f);
+		}
+		else if ( speed.x < 0 && speed.x < -GameConstant.HORIZONTAL_LIMIT ) {
+			speed.x = Math.min(-GameConstant.HORIZONTAL_LIMIT , speed.x*0.9f);
 		}
 		speed.y = speed.y + force.y/weight*0.0075f;
 		if ( speed.y > GameConstant.VERTICAL_LIMIT ) {
