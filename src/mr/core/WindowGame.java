@@ -88,19 +88,29 @@ public class WindowGame extends BasicGame {
 		this.renderer.render(g);
 	}
 
+	private int timeStep = 5;
+	private int elapsedTime = 0;
+
 	@Override
 	public void update(GameContainer container, int delta) throws SlickException {
-		item.move(lvl.getStartingScreen());
-		item.updateSpeed(delta/1000.f);
-		context.update(delta);
-		if ( rewind ) {
-			item.getMovable().setState(1);
-			rewinder.rewind(delta, item);
-		} else {
-			item.getMovable().setState(0);
-			rewinder.record(delta, item);
+		elapsedTime += delta;
+		while ( elapsedTime > timeStep ) {
+			elapsedTime -= timeStep;
+
+			item.updateSpeed();
+
+			this.monster.collide(item, item.getSpeed(), new Coordinate());
+			item.move(lvl.getStartingScreen());
+			context.update(timeStep);
+
+			if ( rewind ) {
+				item.getMovable().setState(1);
+				rewinder.rewind(timeStep, item);
+			} else {
+				item.getMovable().setState(0);
+				rewinder.record(timeStep, item);
+			}
 		}
-		this.monster.collide(item, item.getSpeed(), new Coordinate());
 	}
 
 	public static void main(String[] args) throws SlickException {

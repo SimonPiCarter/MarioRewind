@@ -138,13 +138,13 @@ public abstract class AbstractMovable {
 	 * Compute acceleration and new speed
 	 * @param time time elapsed since last frame
 	 */
-	public void updateSpeed(float time) {
+	public void updateSpeed() {
 		// Compute new speed
-		speed.x = speed.x + force.x/weight*time;
+		speed.x = speed.x + force.x/weight*0.001f;
 		if ( speed.x > GameConstant.HORIZONTAL_LIMIT ) {
 			speed.x *= 0.9f;
 		}
-		speed.y = speed.y + force.y/weight*time;
+		speed.y = speed.y + force.y/weight*0.001f;
 		if ( speed.y > GameConstant.VERTICAL_LIMIT ) {
 			speed.y = GameConstant.VERTICAL_LIMIT;
 		}
