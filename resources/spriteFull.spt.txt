@@ -1,0 +1,13 @@
+resources/spriteFull.png
+250 32 32 10
+4
+4
+4
+4
+4
+4
+4
+4
+4
+4
+4
