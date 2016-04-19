@@ -26,6 +26,10 @@ public class Item extends Sprite {
 		return state.getState();
 	}
 
+	public void updateState(IState.StateEvent event) {
+		state = state.handleEvent(event);
+	}
+
 	public HitBox getHitBox() {
 		return hitBox;
 	}

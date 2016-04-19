@@ -1,7 +1,7 @@
 package mr.model.state;
 
 public interface IState {
-	enum Event {
+	enum StateEvent {
 		None,
 		Stop,
 		MoveRight,
@@ -11,7 +11,7 @@ public interface IState {
 		Die
 	};
 
-	IState handleEvent(Event event);
+	IState handleEvent(StateEvent event);
 
 	int getState();
 }

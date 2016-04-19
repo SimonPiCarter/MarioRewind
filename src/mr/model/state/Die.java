@@ -9,7 +9,7 @@ public class Die implements IState {
 	}
 
 	@Override
-	public IState handleEvent(Event event) {
+	public IState handleEvent(StateEvent event) {
 		switch (event) {
 		case Die:
 		case Fall:

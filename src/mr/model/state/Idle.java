@@ -9,7 +9,7 @@ public class Idle implements IState {
 	}
 
 	@Override
-	public IState handleEvent(Event event) {
+	public IState handleEvent(StateEvent event) {
 		switch (event) {
 		case Die:
 			return new Die(right);
