@@ -36,7 +36,7 @@ public class WindowGame extends BasicGame {
 	private Level lvl;
 
 
-	private float speed = 0.2f;
+	private float speed = 1.0f;
 	private float speedX = 0;
 	private boolean rewind;
 
@@ -97,10 +97,10 @@ public class WindowGame extends BasicGame {
 		while ( elapsedTime > timeStep ) {
 			elapsedTime -= timeStep;
 
-			item.updateSpeed();
-
 			this.monster.collide(item, item.getSpeed(), new Coordinate());
 			item.move(lvl.getStartingScreen());
+			item.updateSpeed();
+
 			context.update(timeStep);
 
 			if ( rewind ) {
@@ -120,7 +120,7 @@ public class WindowGame extends BasicGame {
 	@Override
 	public void keyPressed(int key, char c) {
 		if ( ( c == 'z' || key == Input.KEY_UP ) && item.isOnGround() ) {
-			item.getForce().setY(-450);
+			item.getForce().setY(-250);
 		}
 		if ( c == 'q' || key == Input.KEY_LEFT ) {
 			speedX -= speed;

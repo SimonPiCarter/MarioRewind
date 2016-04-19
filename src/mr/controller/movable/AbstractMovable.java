@@ -140,17 +140,17 @@ public abstract class AbstractMovable {
 	 */
 	public void updateSpeed() {
 		// Compute new speed
-		speed.x = speed.x + force.x/weight*0.001f;
+		speed.x = speed.x + force.x/weight*0.0075f;
 		if ( speed.x > GameConstant.HORIZONTAL_LIMIT ) {
 			speed.x *= 0.9f;
 		}
-		speed.y = speed.y + force.y/weight*0.001f;
+		speed.y = speed.y + force.y/weight*0.0075f;
 		if ( speed.y > GameConstant.VERTICAL_LIMIT ) {
 			speed.y = GameConstant.VERTICAL_LIMIT;
 		}
 		// Reset force to weight only
 		force.x = 0;
-		force.y = weight;
+		force.y = weight*2;
 	}
 
 	public boolean isTouchedLeftScreen() {
