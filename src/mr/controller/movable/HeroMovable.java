@@ -2,17 +2,14 @@ package mr.controller.movable;
 
 import mr.model.Hero;
 
-public class HeroMovable extends AbstractMovable {
-
-	private final Hero hero;
+public class HeroMovable extends ItemMovable {
 
 	public HeroMovable(Hero hero) {
-		super();
-		this.hero = hero;
+		super(hero);
 	}
 
 	@Override
 	public Hero getMovable() {
-		return hero;
+		return (Hero)super.getMovable();
 	}
 }

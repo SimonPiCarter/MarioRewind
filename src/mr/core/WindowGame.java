@@ -62,7 +62,7 @@ public class WindowGame extends BasicGame {
 		this.item = new HeroMovable(new Hero(
 				new Coordinate(0, 0),
 				new Coordinate(GameConstant.TILE_SIZE, GameConstant.TILE_SIZE),
-				"resources/sprite.spt.txt",
+				"resources/spriteFull.spt.txt",
 				"id",
 				new Idle(true),
 				0,
@@ -104,7 +104,7 @@ public class WindowGame extends BasicGame {
 			this.monster.collide(item, item.getSpeed(), new Coordinate());
 			item.move(lvl.getStartingScreen());
 			item.updateSpeed();
-
+			item.updateState();
 			context.update(timeStep);
 
 			if ( rewind ) {
