@@ -21,13 +21,13 @@ public class Fall implements IState {
 			if ( !right ) {
 				return this;
 			} else {
-				return new Fall(true);
+				return new Fall(false);
 			}
 		case MoveRight:
 			if ( right ) {
 				return this;
 			} else {
-				return new Fall(false);
+				return new Fall(true);
 			}
 		case Stop:
 			return new Idle(right);

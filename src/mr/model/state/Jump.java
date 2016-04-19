@@ -21,13 +21,13 @@ public class Jump implements IState {
 			if ( !right ) {
 				return this;
 			} else {
-				return new Jump(true);
+				return new Jump(false);
 			}
 		case MoveRight:
 			if ( right ) {
 				return this;
 			} else {
-				return new Jump(false);
+				return new Jump(true);
 			}
 		case Stop:
 			return new Idle(right);

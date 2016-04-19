@@ -6,7 +6,6 @@ import mr.model.state.IState;
 public class Item extends Sprite {
 	private String id;
 	private HitBox hitBox;
-	//private int state;
 	private IState state;
 
 	public Item(Coordinate position, Coordinate size, String type, String id, IState state) {

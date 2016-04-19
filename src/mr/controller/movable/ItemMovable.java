@@ -21,14 +21,14 @@ public class ItemMovable extends AbstractMovable {
 	public void updateState() {
 		if ( getSpeed().x > GameConstant.epsilon ) {
 			item.updateState(StateEvent.MoveRight);
-		} else if ( getSpeed().x < GameConstant.epsilon ) {
+		} else if ( getSpeed().x < -GameConstant.epsilon ) {
 			item.updateState(StateEvent.MoveLeft);
 		} else {
 			item.updateState(StateEvent.Stop);
 		}
 		if ( getSpeed().y > GameConstant.epsilon ) {
 			item.updateState(StateEvent.Fall);
-		} else if ( getSpeed().y < GameConstant.epsilon ) {
+		} else if ( getSpeed().y < -GameConstant.epsilon ) {
 			item.updateState(StateEvent.Jump);
 		}
 	}
