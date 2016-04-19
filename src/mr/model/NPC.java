@@ -1,11 +1,12 @@
 package mr.model;
 
 import mr.model.misc.Coordinate;
+import mr.model.state.IState;
 
 public class NPC extends Item {
 	private int life;
 
-	public NPC(Coordinate position, Coordinate size, String type, String id, int state, int life) {
+	public NPC(Coordinate position, Coordinate size, String type, String id, IState state, int life) {
 		super(position, size, type, id, state);
 		this.life = life;
 	}

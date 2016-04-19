@@ -1,13 +1,14 @@
 package mr.model;
 
 import mr.model.misc.Coordinate;
+import mr.model.state.IState;
 
 public class Projectile extends Item {
 	private Coordinate direction;
 	private double weight;
 
 
-	public Projectile(Coordinate position, Coordinate size, String type, String id, int state, Coordinate direction,
+	public Projectile(Coordinate position, Coordinate size, String type, String id, IState state, Coordinate direction,
 			double weight) {
 		super(position, size, type, id, state);
 		this.setDirection(direction);

@@ -19,6 +19,7 @@ import mr.model.HitBox;
 import mr.model.Item;
 import mr.model.Level;
 import mr.model.misc.Coordinate;
+import mr.model.state.Idle;
 import mr.view.Renderer;
 import mr.view.RenderingContext;
 import mr.view.ResourceHandler;
@@ -63,14 +64,16 @@ public class WindowGame extends BasicGame {
 				new Coordinate(GameConstant.TILE_SIZE, GameConstant.TILE_SIZE),
 				"resources/sprite.spt.txt",
 				"id",
-				0,0,0));
+				new Idle(true),
+				0,
+				0));
 		this.item.getMovable().setHitBox(new HitBox(new Coordinate(),this.item.getMovable().getSize()));
 		this.monster = new EnemyCollider(new Item(
 				new Coordinate(200, 400),
 				new Coordinate(GameConstant.TILE_SIZE, GameConstant.TILE_SIZE),
 				"resources/sprite.spt.txt",
 				"id",
-				0));
+				new Idle(true)));
 		this.monster.getItem().setHitBox(new HitBox(new Coordinate(),new Coordinate(GameConstant.TILE_SIZE, GameConstant.TILE_SIZE)));
 		this.context.addToLayer(Layers.FOREGROUND, item.getMovable());
 		this.context.addToLayer(Layers.FOREGROUND, this.monster.getItem());
@@ -105,10 +108,8 @@ public class WindowGame extends BasicGame {
 			context.update(timeStep);
 
 			if ( rewind ) {
-				item.getMovable().setState(1);
 				rewinder.rewind(timeStep, item);
 			} else {
-				item.getMovable().setState(0);
 				rewinder.record(timeStep, item);
 			}
 		}
