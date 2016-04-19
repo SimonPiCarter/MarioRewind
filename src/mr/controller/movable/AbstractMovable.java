@@ -142,7 +142,7 @@ public abstract class AbstractMovable {
 		// Compute new speed
 		speed.x = speed.x + force.x/weight*0.0075f;
 		if ( speed.x > GameConstant.HORIZONTAL_LIMIT ) {
-			speed.x *= 0.9f;
+			speed.x = Math.max(GameConstant.HORIZONTAL_LIMIT , speed.x*0.9f);
 		}
 		speed.y = speed.y + force.y/weight*0.0075f;
 		if ( speed.y > GameConstant.VERTICAL_LIMIT ) {
