@@ -20,12 +20,10 @@ public class EnemyCollider implements ICollider {
 		Hero hero = heroMovable.getMovable();
 		Collision col = ColliderToolbox.detectKillCollision(hero, item, heroSpeed, ownSpeed);
 		if ( col == Collision.SECOND_ITEM_KILLED ) {
-			System.out.println("item killed");
 			heroMovable.setOnGround(true);
 			item.updateState(StateEvent.Die);
 			item.setDying(true);
 		} else if ( col == Collision.FIRST_ITEM_KILLED ){
-			System.out.println("hero killed");
 			heroMovable.getMovable().updateState(StateEvent.Die);
 			heroMovable.getMovable().setDying(true);
 		}
