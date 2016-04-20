@@ -1,14 +1,17 @@
 package mr.core;
 
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.TrueTypeFont;
 
 import mr.controller.LevelLoader;
 import mr.controller.Rewinder;
@@ -56,6 +59,13 @@ public class WindowGame extends BasicGame {
 	private int deadThreshold = 1000;
 	private int elapsedDyingTime = 0;
 
+	private int recoverThreshold = 1500;
+	private int elapsedHeroDyingTime = 0;
+	private int life = 3;
+
+	private Font font;
+	private TrueTypeFont ttf;
+
 	public WindowGame() {
 		super("Core :: WindowGame");
 	}
@@ -94,6 +104,9 @@ public class WindowGame extends BasicGame {
 		list.add(new Waypoint(null, null, null, new Coordinate(450, 0)));
 		this.ai.setActions(list);
 
+		font = new Font("Verdana", Font.BOLD, 20);
+		ttf = new TrueTypeFont(font, true);
+
 		this.monster.getItem().setHitBox(new HitBox(new Coordinate(),new Coordinate(GameConstant.TILE_SIZE, GameConstant.TILE_SIZE)));
 		this.context.addToLayer(Layers.FOREGROUND, item.getMovable());
 		this.context.addToLayer(Layers.FOREGROUND, this.monster.getItem());
@@ -110,6 +123,7 @@ public class WindowGame extends BasicGame {
 
 	@Override
 	public void render(GameContainer container, Graphics g) throws SlickException {
+		ttf.drawString(GameConstant.WIDTH*GameConstant.TILE_SIZE-100, 15, "Life : "+life, Color.white);
 		this.renderer.render(g);
 	}
 
@@ -139,6 +153,20 @@ public class WindowGame extends BasicGame {
 			if ( monster.getItem().isDead() ) {
 				this.context.removeFromLayer(Layers.FOREGROUND, this.monster.getItem());
 			}
+
+
+			if ( item.getMovable().isDying() ) {
+				if ( elapsedHeroDyingTime == 0 ) {
+					--life;
+				}
+				elapsedHeroDyingTime += timeStep;
+				if ( elapsedHeroDyingTime > recoverThreshold ) {
+					elapsedHeroDyingTime = 0;
+					item.getMovable().setDying(false);
+
+				}
+			}
+
 			item.move(lvl.getStartingScreen());
 			ai.getMovable().move(lvl.getStartingScreen());
 
