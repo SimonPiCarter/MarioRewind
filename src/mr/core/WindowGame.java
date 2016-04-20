@@ -39,6 +39,7 @@ public class WindowGame extends BasicGame {
 	private float baseForce = 15;
 	private float forceX = 0;
 	private boolean rewind;
+	private boolean rewindAllowed;
 
 	private int timeStep = 5;
 	private int elapsedTime = 0;
@@ -109,8 +110,12 @@ public class WindowGame extends BasicGame {
 
 			if ( rewind ) {
 				rewinder.rewind(timeStep, item);
+				rewindAllowed = false;
 			} else {
 				rewinder.record(timeStep, item);
+			}
+			if ( item.isOnGround() ) {
+				rewindAllowed = true;
 			}
 		}
 	}
@@ -131,7 +136,7 @@ public class WindowGame extends BasicGame {
 			forceX = baseForce;
 		}
 		if ( c == 'r' || key == Input.KEY_SPACE ) {
-			rewind = true;
+			rewind = rewindAllowed;
 		}
 	}
 
@@ -149,6 +154,9 @@ public class WindowGame extends BasicGame {
 		}
 		if ( c == 'r' || key == Input.KEY_SPACE ) {
 			rewind = false;
+		}
+		if ( c == 'x' ) {
+			item.getMovable().setDead(false);
 		}
 	}
 }
