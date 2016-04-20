@@ -7,6 +7,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 import mr.controller.Rewinder;
+import mr.model.GameConstant.Layers;
 import mr.model.misc.Coordinate;
 
 public class Renderer {
@@ -20,6 +21,23 @@ public class Renderer {
 
 	public void render(Graphics g) throws SlickException {
 		if ( context != null ) {
+			for ( int i = 0 ; i < Layers.values().length ; ++ i ) {
+				if ( i < context.getLayersImages().size() ) {
+					for ( RenderingImage image : context.getLayersImages().get(i) ) {
+						draw(g,image);
+					}
+				}
+				if ( i < context.getLayersItems().size() ) {
+					for ( RenderingImage image : context.getLayersItems().get(i).values() ) {
+						draw(g,image);
+					}
+				}
+				if ( i < context.getLayersSprites().size() ) {
+					for ( RenderingImage image : context.getLayersSprites().get(i).values() ) {
+						draw(g,image);
+					}
+				}
+			}
 			for ( List<RenderingImage> layer : context.getLayersImages() ) {
 				for ( RenderingImage image : layer ) {
 					draw(g,image);

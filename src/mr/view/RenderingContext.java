@@ -70,6 +70,14 @@ public class RenderingContext {
 		return layersImages;
 	}
 
+	public List<Map<Item, RenderingImage>> getLayersItems() {
+		return layersItems;
+	}
+
+	public List<Map<Sprite, RenderingImage>> getLayersSprites() {
+		return layersSprites;
+	}
+
 	public void addToLayer(GameConstant.Layers layer, RenderingImage... images) {
 		setUpLayer(layersImages,layer);
 		for ( RenderingImage image : images ) {
@@ -87,6 +95,14 @@ public class RenderingContext {
 		addToLayer(layersSprites,layer,sprites);
 	}
 
+	public void removeFromLayer(GameConstant.Layers layer, Item... items) {
+		removeFromLayer(layersItems,layer,items);
+	}
+
+	public void removeFromLayer(GameConstant.Layers layer, Sprite... sprites) {
+		removeFromLayer(layersSprites,layer,sprites);
+	}
+
 	@SuppressWarnings("unchecked")
 	private <T extends Sprite> void addToLayer(List<Map<T,RenderingImage>> map, GameConstant.Layers layer, T... list) {
 		setUpLayerMap(map,layer);
@@ -97,8 +113,15 @@ public class RenderingContext {
 				image.setPosition(object.getPosition());
 				image.setSize(object.getSize());
 				map.get(layer.ordinal()).put(object,image);
-				setUpLayer(layersImages,layer);
-				layersImages.get(layer.ordinal()).add(image);
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T extends Sprite> void removeFromLayer(List<Map<T,RenderingImage>> map, GameConstant.Layers layer, T... list) {
+		if ( map.size() > layer.ordinal() ) {
+			for ( T key : list ) {
+				map.get(layer.ordinal()).remove(key);
 			}
 		}
 	}
