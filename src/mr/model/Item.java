@@ -9,6 +9,7 @@ public class Item extends Sprite {
 	private HitBox hitBox;
 	private IState state;
 	private boolean isDead;
+	private boolean isDying;
 
 	public Item(Coordinate position, Coordinate size, String type, String id, IState state) {
 		super(position, size, type);
@@ -44,11 +45,18 @@ public class Item extends Sprite {
 	}
 
 	public void setDead(boolean isDead) {
-		if ( !isDead ) {
-			updateState(StateEvent.EndDie);
-		}
 		this.isDead = isDead;
 	}
 
+	public boolean isDying() {
+		return isDying;
+	}
+
+	public void setDying(boolean isDying) {
+		if ( !isDying ) {
+			updateState(StateEvent.EndDie);
+		}
+		this.isDying = isDying;
+	}
 
 }

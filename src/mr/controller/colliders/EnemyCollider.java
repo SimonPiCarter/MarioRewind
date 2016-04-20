@@ -23,11 +23,11 @@ public class EnemyCollider implements ICollider {
 			System.out.println("item killed");
 			heroMovable.setOnGround(true);
 			item.updateState(StateEvent.Die);
-			item.setDead(true);
+			item.setDying(true);
 		} else if ( col == Collision.FIRST_ITEM_KILLED ){
 			System.out.println("hero killed");
 			heroMovable.getMovable().updateState(StateEvent.Die);
-			heroMovable.getMovable().setDead(true);
+			heroMovable.getMovable().setDying(true);
 		}
 	}
 

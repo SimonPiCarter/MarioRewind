@@ -53,6 +53,9 @@ public class WindowGame extends BasicGame {
 	private int timeStep = 5;
 	private int elapsedTime = 0;
 
+	private int deadThreshold = 1000;
+	private int elapsedDyingTime = 0;
+
 	public WindowGame() {
 		super("Core :: WindowGame");
 	}
@@ -118,13 +121,26 @@ public class WindowGame extends BasicGame {
 
 			item.getForce().x = forceX;
 
-			monster.collide(item, item.getSpeed(), new Coordinate());
-			item.move(lvl.getStartingScreen());
 			item.updateSpeed();
 			item.updateState();
 			ai.update(delta);
-			ai.getMovable().move(lvl.getStartingScreen());
 			ai.getMovable().updateState();
+
+			if ( !monster.getItem().isDead() && !monster.getItem().isDying() ) {
+				monster.collide(item, item.getSpeed(), ai.getMovable().getSpeed());
+			}
+			if ( monster.getItem().isDying() ) {
+				elapsedDyingTime += timeStep;
+				if ( elapsedDyingTime > deadThreshold ) {
+					monster.getItem().setDead(true);
+					monster.getItem().setDying(false);
+				}
+			}
+			if ( monster.getItem().isDead() ) {
+				this.context.removeFromLayer(Layers.FOREGROUND, this.monster.getItem());
+			}
+			item.move(lvl.getStartingScreen());
+			ai.getMovable().move(lvl.getStartingScreen());
 
 			context.update(timeStep);
 
@@ -176,7 +192,7 @@ public class WindowGame extends BasicGame {
 			rewind = false;
 		}
 		if ( c == 'x' ) {
-			item.getMovable().setDead(false);
+			item.getMovable().setDying(false);
 		}
 	}
 }
