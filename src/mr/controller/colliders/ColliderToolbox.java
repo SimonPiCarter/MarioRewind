@@ -39,27 +39,25 @@ public class ColliderToolbox {
 		boolean collision = false;
 
 		if ( new Interval(pos.y,pos.y+size.y).intersect(new Interval(upY,downY)) ) {
-			if ( heroSpeed.x > 0 ) {
-				if ( pos.x+size.x < leftX && pos.x+size.x+heroSpeed.x > leftX ) {
-					heroSpeed.x = Math.max(0,leftX-pos.x-size.x-GameConstant.epsilon);
+			if ( heroSpeed.x-itemSpeed.x > 0 ) {
+				if ( pos.x+size.x < leftX && pos.x+size.x+heroSpeed.x > leftX+itemSpeed.x ) {
 					collision = true;
 				}
-			} else if ( heroSpeed.x < 0 ) {
-				if ( pos.x > rightX && pos.x+heroSpeed.x < rightX ) {
-					heroSpeed.x = Math.min(0,rightX-pos.x+GameConstant.epsilon);
+			} else if ( heroSpeed.x-itemSpeed.x < 0 ) {
+				if ( pos.x > rightX && pos.x+heroSpeed.x < rightX+itemSpeed.x ) {
 					collision = true;
 				}
 			}
 		}
 		if ( new Interval(pos.x,pos.x+size.x).intersect(new Interval(leftX,rightX)) ) {
-			if ( heroSpeed.y > 0 ) {
-				if ( pos.y+size.y < upY && pos.y+size.y+heroSpeed.y > upY ) {
+			if ( heroSpeed.y-itemSpeed.y > 0 ) {
+				if ( pos.y+size.y < upY && pos.y+size.y+heroSpeed.y > upY+itemSpeed.y ) {
 					heroSpeed.y = Math.max(0,upY-pos.y-size.y-GameConstant.epsilon);
 					killed = true;
 					collision = true;
 				}
-			} else if ( heroSpeed.y < 0 ) {
-				if ( pos.y > downY && pos.y+heroSpeed.y < downY ) {
+			} else if ( heroSpeed.y-itemSpeed.y < 0 ) {
+				if ( pos.y > downY && pos.y+heroSpeed.y < downY+itemSpeed.y ) {
 					heroSpeed.y = Math.min(0,downY-pos.y+GameConstant.epsilon);
 					collision = true;
 				}
