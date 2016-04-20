@@ -1,5 +1,8 @@
 package mr.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
@@ -9,8 +12,12 @@ import org.newdawn.slick.SlickException;
 
 import mr.controller.LevelLoader;
 import mr.controller.Rewinder;
+import mr.controller.ai.AI;
+import mr.controller.ai.action.IAction;
+import mr.controller.ai.action.Waypoint;
 import mr.controller.colliders.EnemyCollider;
 import mr.controller.movable.HeroMovable;
+import mr.controller.movable.ItemMovable;
 import mr.core.exception.InputFileNotFoundException;
 import mr.model.GameConstant;
 import mr.model.GameConstant.Layers;
@@ -19,6 +26,7 @@ import mr.model.HitBox;
 import mr.model.Item;
 import mr.model.Level;
 import mr.model.misc.Coordinate;
+import mr.model.model.AIModel;
 import mr.model.state.Idle;
 import mr.view.Renderer;
 import mr.view.RenderingContext;
@@ -34,6 +42,7 @@ public class WindowGame extends BasicGame {
 
 	private HeroMovable item;
 	private EnemyCollider monster;
+	private AI ai;
 	private Level lvl;
 
 	private float baseForce = 15;
@@ -70,11 +79,18 @@ public class WindowGame extends BasicGame {
 				0));
 		this.item.getMovable().setHitBox(new HitBox(new Coordinate(),this.item.getMovable().getSize()));
 		this.monster = new EnemyCollider(new Item(
-				new Coordinate(200, 400),
+				new Coordinate(200, 416),
 				new Coordinate(GameConstant.TILE_SIZE, GameConstant.TILE_SIZE),
-				"resources/sprite.spt.txt",
+				"resources/spriteFull.spt.txt",
 				"id",
 				new Idle(true)));
+		this.ai = new AI(new ItemMovable(this.monster.getItem()), new AIModel());
+
+		List<IAction> list = new ArrayList<IAction>();
+		list.add(new Waypoint(null, null, null, new Coordinate(100, 0)));
+		list.add(new Waypoint(null, null, null, new Coordinate(450, 0)));
+		this.ai.setActions(list);
+
 		this.monster.getItem().setHitBox(new HitBox(new Coordinate(),new Coordinate(GameConstant.TILE_SIZE, GameConstant.TILE_SIZE)));
 		this.context.addToLayer(Layers.FOREGROUND, item.getMovable());
 		this.context.addToLayer(Layers.FOREGROUND, this.monster.getItem());
@@ -102,10 +118,14 @@ public class WindowGame extends BasicGame {
 
 			item.getForce().x = forceX;
 
-			this.monster.collide(item, item.getSpeed(), new Coordinate());
+			monster.collide(item, item.getSpeed(), new Coordinate());
 			item.move(lvl.getStartingScreen());
 			item.updateSpeed();
 			item.updateState();
+			ai.update(delta);
+			ai.getMovable().move(lvl.getStartingScreen());
+			ai.getMovable().updateState();
+
 			context.update(timeStep);
 
 			if ( rewind ) {
