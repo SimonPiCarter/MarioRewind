@@ -11,6 +11,8 @@ public class Die implements IState {
 	@Override
 	public IState handleEvent(StateEvent event) {
 		switch (event) {
+		case EndDie:
+			return new Idle(right);
 		case Die:
 		case Fall:
 		case Jump:

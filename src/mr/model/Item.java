@@ -2,11 +2,13 @@ package mr.model;
 
 import mr.model.misc.Coordinate;
 import mr.model.state.IState;
+import mr.model.state.IState.StateEvent;
 
 public class Item extends Sprite {
 	private String id;
 	private HitBox hitBox;
 	private IState state;
+	private boolean isDead;
 
 	public Item(Coordinate position, Coordinate size, String type, String id, IState state) {
 		super(position, size, type);
@@ -36,4 +38,17 @@ public class Item extends Sprite {
 	public void setHitBox(HitBox hitBox) {
 		this.hitBox = hitBox;
 	}
+
+	public boolean isDead() {
+		return isDead;
+	}
+
+	public void setDead(boolean isDead) {
+		if ( !isDead ) {
+			updateState(StateEvent.EndDie);
+		}
+		this.isDead = isDead;
+	}
+
+
 }

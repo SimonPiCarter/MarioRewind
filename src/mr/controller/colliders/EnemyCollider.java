@@ -5,6 +5,7 @@ import mr.controller.movable.HeroMovable;
 import mr.model.Hero;
 import mr.model.Item;
 import mr.model.misc.Coordinate;
+import mr.model.state.IState.StateEvent;
 
 public class EnemyCollider implements ICollider {
 
@@ -21,8 +22,12 @@ public class EnemyCollider implements ICollider {
 		if ( col == Collision.SECOND_ITEM_KILLED ) {
 			System.out.println("item killed");
 			heroMovable.setOnGround(true);
+			item.updateState(StateEvent.Die);
+			item.setDead(true);
 		} else if ( col == Collision.FIRST_ITEM_KILLED ){
 			System.out.println("hero killed");
+			heroMovable.getMovable().updateState(StateEvent.Die);
+			heroMovable.getMovable().setDead(true);
 		}
 	}
 

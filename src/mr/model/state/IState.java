@@ -8,7 +8,8 @@ public interface IState {
 		MoveLeft,
 		Jump,
 		Fall,
-		Die
+		Die,
+		EndDie
 	};
 
 	IState handleEvent(StateEvent event);
