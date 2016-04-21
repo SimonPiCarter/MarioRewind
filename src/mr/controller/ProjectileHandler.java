@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import mr.model.GameConstant;
+import mr.model.Hero;
 import mr.model.Projectile;
 import mr.model.misc.Coordinate;
 import mr.model.model.ProjectileModel;
@@ -54,11 +55,11 @@ public class ProjectileHandler {
 		context.addToLayer(GameConstant.Layers.FOREGROUND, proj);
 	}
 
-	public void update() {
+	public void update(Hero hero) {
 		Iterator<Projectile> it = projectiles.iterator();
 		while ( it.hasNext() ) {
 			Projectile proj = it.next();
-			if ( !proj.update() ) {
+			if ( !proj.update(hero) ) {
 				context.removeFromLayer(GameConstant.Layers.FOREGROUND, proj);
 				it.remove();
 			}

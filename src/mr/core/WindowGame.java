@@ -176,7 +176,7 @@ public class WindowGame extends BasicGame {
 			item.move(lvl.getStartingScreen());
 			ai.getMovable().move(lvl.getStartingScreen());
 
-			ProjectileHandler.get().update();
+			ProjectileHandler.get().update(item.getMovable());
 
 			context.update(timeStep);
 
