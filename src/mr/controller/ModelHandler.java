@@ -91,6 +91,12 @@ public class ModelHandler {
 	private void parseModel(Model model, Scanner scanner) {
 		model.setId(scanner.next());
 		model.setSprite(scanner.next());
+		model.getSize().x = scanner.nextFloat();
+		model.getSize().y = scanner.nextFloat();
+		model.getHitBoxOffset().x = scanner.nextFloat();
+		model.getHitBoxOffset().y = scanner.nextFloat();
+		model.getHitBoxSize().x = scanner.nextFloat();
+		model.getHitBoxSize().y = scanner.nextFloat();
 	}
 
 	private void parseProjectileModel(ProjectileModel model, Scanner scanner) {
