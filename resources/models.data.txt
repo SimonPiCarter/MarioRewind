@@ -1,3 +1,4 @@
-0 1 1
-projmodel1 projmodel2.png 32 32 10 10 5 5 2 1
-monster resources/spriteFill.spt.txt 32 32 0 0 32 32 0,5 1 projmodel1
+1 1 1
+default resources/spriteFull.spt.txt 32 32 0 0 32 32
+projmodel1 resources/projmodel1.spt.txt 32 32 10 10 5 5 2 1
+monster resources/spriteFull.spt.txt 32 32 0 0 32 32 0,5 1 projmodel1

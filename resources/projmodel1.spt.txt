@@ -1,0 +1,3 @@
+resources/projmodel1.png
+750 32 32 10
+2
