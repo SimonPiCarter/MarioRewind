@@ -73,6 +73,10 @@ public class ColliderToolbox {
 		return Collision.NO_COLLISION;
 	}
 
+	public static boolean isInside(Coordinate posA, Coordinate sizeA, Coordinate posB, Coordinate sizeB) {
+		return isInside(posA.x, posA.x+sizeA.x,posA.y,posA.y+sizeA.y, posB, sizeB);
+	}
+
 	public static boolean isInside(float leftX,float rightX,float upY,float downY, Coordinate pos, Coordinate size) {
 		return isInside(leftX, rightX, upY, downY, pos.x, pos.x+size.x,pos.y,pos.y+size.y);
 	}
