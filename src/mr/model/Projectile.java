@@ -1,18 +1,30 @@
 package mr.model;
 
+import mr.controller.ModelHandler;
+import mr.controller.colliders.ColliderToolbox;
 import mr.model.misc.Coordinate;
+import mr.model.model.ProjectileModel;
 import mr.model.state.IState;
 
 public class Projectile extends Item {
 	private Coordinate direction;
-	private double weight;
+	private ProjectileModel model;
 
-
-	public Projectile(Coordinate position, Coordinate size, String type, String id, IState state, Coordinate direction,
-			double weight) {
+	public Projectile(Coordinate position, Coordinate size, String type, String id, IState state, Coordinate direction) {
 		super(position, size, type, id, state);
 		this.setDirection(direction);
-		this.setWeight(weight);
+		this.model = ModelHandler.get().getProjectileModel(type);
+	}
+
+	public boolean update() {
+		float speedSquared = direction.x*direction.x + direction.y*direction.y;
+		getPosition().x += direction.x*model.getSpeed()/Math.sqrt(speedSquared);
+		getPosition().y += direction.y*model.getSpeed()/Math.sqrt(speedSquared);
+
+		if ( !ColliderToolbox.isInside(getPosition(),getSize(),new Coordinate(),new Coordinate(GameConstant.WINDOW_WIDTH, GameConstant.WINDOW_HEIGHT)) ) {
+			return false;
+		}
+		return true;
 	}
 
 	public Coordinate getDirection() {
@@ -20,12 +32,6 @@ public class Projectile extends Item {
 	}
 	public void setDirection(Coordinate direction) {
 		this.direction = direction;
-	}
-	public double getWeight() {
-		return weight;
-	}
-	public void setWeight(double weight) {
-		this.weight = weight;
 	}
 
 

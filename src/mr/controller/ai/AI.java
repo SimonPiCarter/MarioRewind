@@ -3,6 +3,7 @@ package mr.controller.ai;
 import java.util.List;
 import java.util.ListIterator;
 
+import mr.controller.ProjectileHandler;
 import mr.controller.ai.action.IAction;
 import mr.controller.movable.ItemMovable;
 import mr.model.misc.Coordinate;
@@ -47,7 +48,10 @@ public class AI {
 	}
 
 	public void shoot(Coordinate direction) {
-
+		Coordinate startPoint = new Coordinate(
+				movable.getMovable().getPosition().x+movable.getMovable().getSize().x/2,
+				movable.getMovable().getPosition().y+movable.getMovable().getSize().y/2);
+		ProjectileHandler.get().addProjectile(model.getProjectileModel(),startPoint, direction);
 	}
 
 	public void jump() {
