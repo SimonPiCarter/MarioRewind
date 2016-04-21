@@ -40,9 +40,9 @@ public class AI {
 
 	public void move(boolean right) {
 		if ( right ) {
-			movable.getSpeed().x = model.speed;
+			movable.getSpeed().x = model.getSpeed();
 		} else {
-			movable.getSpeed().x = -model.speed;
+			movable.getSpeed().x = -model.getSpeed();
 		}
 	}
 
