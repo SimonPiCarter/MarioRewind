@@ -6,7 +6,7 @@ import mr.model.state.IState;
 
 public class Shoot implements IAction {
 
-	private static int time = 750;
+	private final int time;
 	private int elapsedTime;
 
 	private IState stateRight;
@@ -15,10 +15,8 @@ public class Shoot implements IAction {
 	private Coordinate direction;
 	private boolean over;
 
-
-
-
-	public Shoot(IState stateRight, IState stateLeft, IState stateIdle, Coordinate direction) {
+	public Shoot(IState stateRight, IState stateLeft, IState stateIdle, Coordinate direction, int time) {
+		this.time = time;
 		this.stateRight = stateRight;
 		this.stateLeft = stateLeft;
 		this.stateIdle = stateIdle;

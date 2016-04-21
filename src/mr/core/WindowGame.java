@@ -106,9 +106,9 @@ public class WindowGame extends BasicGame {
 
 		List<IAction> list = new ArrayList<IAction>();
 		list.add(new Waypoint(null, null, null, new Coordinate(100, 0)));
-		list.add(new Shoot(null, null, null, new Coordinate(0, -1)));
+		list.add(new Shoot(null, null, null, new Coordinate(0, -1),750));
 		list.add(new Waypoint(null, null, null, new Coordinate(450, 0)));
-		list.add(new Shoot(null, null, null, new Coordinate(0, -1)));
+		list.add(new Shoot(null, null, null, new Coordinate(0, -1),750));
 		this.ai.setActions(list);
 
 		font = new Font("Verdana", Font.BOLD, 20);
