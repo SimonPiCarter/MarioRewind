@@ -16,6 +16,9 @@ public class GameConstant {
 
 	public static final float epsilon = 1e-1f;
 
+	public static final int WINDOW_WIDTH = (int) (WIDTH*TILE_SIZE);
+	public static final int WINDOW_HEIGHT = (int) (HEIGHT*TILE_SIZE);
+
 	public enum Layers {
 		BACKGROUND,
 		TILES,
