@@ -14,22 +14,24 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;
 
 import mr.controller.LevelLoader;
+import mr.controller.ModelHandler;
+import mr.controller.ProjectileHandler;
 import mr.controller.Rewinder;
 import mr.controller.ai.AI;
 import mr.controller.ai.action.IAction;
+import mr.controller.ai.action.Shoot;
 import mr.controller.ai.action.Waypoint;
 import mr.controller.colliders.EnemyCollider;
 import mr.controller.movable.HeroMovable;
 import mr.controller.movable.ItemMovable;
+import mr.core.exception.FormatModelException;
 import mr.core.exception.InputFileNotFoundException;
 import mr.model.GameConstant;
 import mr.model.GameConstant.Layers;
 import mr.model.Hero;
-import mr.model.HitBox;
 import mr.model.Item;
 import mr.model.Level;
 import mr.model.misc.Coordinate;
-import mr.model.model.AIModel;
 import mr.model.state.Idle;
 import mr.view.Renderer;
 import mr.view.RenderingContext;
@@ -76,33 +78,37 @@ public class WindowGame extends BasicGame {
 		ResourceHandler.init();
 
 		this.renderer = new Renderer();
+		try {
+			ModelHandler.get().load("resources/models.data.txt");
+		} catch (InputFileNotFoundException | FormatModelException e1) {
+			e1.printStackTrace();
+		}
 
 		this.context = new RenderingContext();
 		this.rewinder = new Rewinder();
 		this.renderer.updateContext(context);
 		this.renderer.setRewinder(rewinder);
+		ProjectileHandler.get().setContext(context);
 
 		this.item = new HeroMovable(new Hero(
 				new Coordinate(0, 0),
-				new Coordinate(GameConstant.TILE_SIZE, GameConstant.TILE_SIZE),
-				"resources/spriteFull.spt.txt",
+				ModelHandler.get().getModel("default"),
 				"id",
 				new Idle(true),
 				0,
 				0));
-		this.item.getMovable().setHitBox(new HitBox(new Coordinate(),this.item.getMovable().getSize()));
 		this.monster = new EnemyCollider(new Item(
 				new Coordinate(200, 416),
-				new Coordinate(GameConstant.TILE_SIZE, GameConstant.TILE_SIZE),
-				"resources/spriteFull.spt.txt",
+				ModelHandler.get().getModel("default"),
 				"id",
 				new Idle(true)));
-		this.monster.getItem().setHitBox(new HitBox(new Coordinate(),new Coordinate(GameConstant.TILE_SIZE, GameConstant.TILE_SIZE)));
-		this.ai = new AI(new ItemMovable(this.monster.getItem()), new AIModel());
+		this.ai = new AI(new ItemMovable(this.monster.getItem()), ModelHandler.get().getAIModel("monster"));
 
 		List<IAction> list = new ArrayList<IAction>();
 		list.add(new Waypoint(null, null, null, new Coordinate(100, 0)));
+		list.add(new Shoot(null, null, null, new Coordinate(0, -1)));
 		list.add(new Waypoint(null, null, null, new Coordinate(450, 0)));
+		list.add(new Shoot(null, null, null, new Coordinate(0, -1)));
 		this.ai.setActions(list);
 
 		font = new Font("Verdana", Font.BOLD, 20);
@@ -169,6 +175,8 @@ public class WindowGame extends BasicGame {
 
 			item.move(lvl.getStartingScreen());
 			ai.getMovable().move(lvl.getStartingScreen());
+
+			ProjectileHandler.get().update();
 
 			context.update(timeStep);
 

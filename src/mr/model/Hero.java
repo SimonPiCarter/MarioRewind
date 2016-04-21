@@ -1,15 +1,16 @@
 package mr.model;
 
 import mr.model.misc.Coordinate;
+import mr.model.model.Model;
 import mr.model.state.IState;
 
 public class Hero extends Item {
 	private int life;
 	private double backtrack;
 
-	public Hero(Coordinate position, Coordinate size, String type, String id, IState state, int life,
+	public Hero(Coordinate position, Model model, String id, IState state, int life,
 			double backtrack) {
-		super(position, size, type, id, state);
+		super(position, model, id, state);
 		this.life = life;
 		this.backtrack = backtrack;
 	}

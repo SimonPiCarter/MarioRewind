@@ -1,13 +1,14 @@
 package mr.model;
 
 import mr.model.misc.Coordinate;
+import mr.model.model.Model;
 import mr.model.state.IState;
 
 public class NPC extends Item {
 	private int life;
 
-	public NPC(Coordinate position, Coordinate size, String type, String id, IState state, int life) {
-		super(position, size, type, id, state);
+	public NPC(Coordinate position, Model model, String id, IState state, int life) {
+		super(position, model, id, state);
 		this.life = life;
 	}
 

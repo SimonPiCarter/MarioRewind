@@ -1,6 +1,7 @@
 package mr.model;
 
 import mr.model.misc.Coordinate;
+import mr.model.model.Model;
 import mr.model.state.IState;
 import mr.model.state.IState.StateEvent;
 
@@ -11,10 +12,11 @@ public class Item extends Sprite {
 	private boolean isDead;
 	private boolean isDying;
 
-	public Item(Coordinate position, Coordinate size, String type, String id, IState state) {
-		super(position, size, type);
+	public Item(Coordinate position, Model model, String id, IState state) {
+		super(position, model.getSize(), model.getSprite());
 		this.id = id;
 		this.state = state;
+		this.hitBox = new HitBox(model.getHitBoxOffset(), model.getHitBoxSize());
 	}
 
 	public String getId() {

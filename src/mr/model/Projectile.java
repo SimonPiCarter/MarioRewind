@@ -1,6 +1,5 @@
 package mr.model;
 
-import mr.controller.ModelHandler;
 import mr.controller.colliders.ColliderToolbox;
 import mr.model.misc.Coordinate;
 import mr.model.model.ProjectileModel;
@@ -10,10 +9,11 @@ public class Projectile extends Item {
 	private Coordinate direction;
 	private ProjectileModel model;
 
-	public Projectile(Coordinate position, Coordinate size, String type, String id, IState state, Coordinate direction) {
-		super(position, size, type, id, state);
+	public Projectile(Coordinate position, ProjectileModel model, String id, IState state, Coordinate direction) {
+		super(position, model, id, state);
 		this.setDirection(direction);
-		this.model = ModelHandler.get().getProjectileModel(type);
+		this.model = model;
+		setType(model.getSprite());
 	}
 
 	public boolean update() {
