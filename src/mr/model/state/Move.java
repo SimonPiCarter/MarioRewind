@@ -21,13 +21,13 @@ public class Move implements IState {
 			if ( !right ) {
 				return this;
 			} else {
-				return new Move(true);
+				return new Move(false);
 			}
 		case MoveRight:
 			if ( right ) {
 				return this;
 			} else {
-				return new Move(false);
+				return new Move(true);
 			}
 		case Stop:
 			return new Idle(right);
