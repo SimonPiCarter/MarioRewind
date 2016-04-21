@@ -13,7 +13,6 @@ public class Projectile extends Item {
 		super(position, model, id, state);
 		this.setDirection(direction);
 		this.model = model;
-		setType(model.getSprite());
 	}
 
 	public boolean update() {
@@ -21,7 +20,7 @@ public class Projectile extends Item {
 		getPosition().x += direction.x*model.getSpeed()/Math.sqrt(speedSquared);
 		getPosition().y += direction.y*model.getSpeed()/Math.sqrt(speedSquared);
 
-		if ( !ColliderToolbox.isInside(getPosition(),getSize(),new Coordinate(),new Coordinate(GameConstant.WINDOW_WIDTH, GameConstant.WINDOW_HEIGHT)) ) {
+		if ( !ColliderToolbox.isInside(new Coordinate(),new Coordinate(GameConstant.WINDOW_WIDTH, GameConstant.WINDOW_HEIGHT),getPosition(),getSize()) ) {
 			return false;
 		}
 		return true;

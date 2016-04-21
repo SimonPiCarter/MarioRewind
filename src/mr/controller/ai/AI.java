@@ -39,6 +39,10 @@ public class AI {
 		}
 	}
 
+	public void stop() {
+		movable.getSpeed().x = 0;
+	}
+
 	public void move(boolean right) {
 		if ( right ) {
 			movable.getSpeed().x = model.getSpeed();
@@ -48,9 +52,7 @@ public class AI {
 	}
 
 	public void shoot(Coordinate direction) {
-		Coordinate startPoint = new Coordinate(
-				movable.getMovable().getPosition().x+movable.getMovable().getSize().x/2,
-				movable.getMovable().getPosition().y+movable.getMovable().getSize().y/2);
+		Coordinate startPoint = new Coordinate(movable.getMovable().getPosition());
 		ProjectileHandler.get().addProjectile(model.getProjectileModel(),startPoint, direction);
 	}
 
