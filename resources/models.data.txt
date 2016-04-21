@@ -1,0 +1,7 @@
+3 2 1
+model1 model1.png
+model2 model2.png
+model3 model3.png
+projmodel1 projmodel1.png 12,1 1
+projmodel2 projmodel2.png 12,2 2
+AImodel1 AImodel1.png 12,2 3 projmodel1
