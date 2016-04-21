@@ -143,10 +143,10 @@ public class WindowGame extends BasicGame {
 
 			item.updateSpeed();
 			item.updateState();
-			ai.update(timeStep);
-			ai.getMovable().updateState();
 
 			if ( !monster.getItem().isDead() && !monster.getItem().isDying() ) {
+				ai.update(timeStep);
+				ai.getMovable().updateState();
 				monster.collide(item, item.getSpeed(), ai.getMovable().getSpeed());
 			}
 			if ( monster.getItem().isDying() ) {
