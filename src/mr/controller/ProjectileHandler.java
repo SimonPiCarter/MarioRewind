@@ -45,7 +45,7 @@ public class ProjectileHandler {
 			}
 		}
 		IState state = new ProjectileState(type);
-		Projectile proj = new Projectile(startPoint, model.getSize(), projectileModel, projectileModel, state, direction);
+		Projectile proj = new Projectile(startPoint, model, projectileModel, state, direction);
 		addProjectile(proj);
 	}
 
