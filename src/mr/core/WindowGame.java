@@ -97,6 +97,7 @@ public class WindowGame extends BasicGame {
 				"resources/spriteFull.spt.txt",
 				"id",
 				new Idle(true)));
+		this.monster.getItem().setHitBox(new HitBox(new Coordinate(),new Coordinate(GameConstant.TILE_SIZE, GameConstant.TILE_SIZE)));
 		this.ai = new AI(new ItemMovable(this.monster.getItem()), new AIModel());
 
 		List<IAction> list = new ArrayList<IAction>();
@@ -107,7 +108,6 @@ public class WindowGame extends BasicGame {
 		font = new Font("Verdana", Font.BOLD, 20);
 		ttf = new TrueTypeFont(font, true);
 
-		this.monster.getItem().setHitBox(new HitBox(new Coordinate(),new Coordinate(GameConstant.TILE_SIZE, GameConstant.TILE_SIZE)));
 		this.context.addToLayer(Layers.FOREGROUND, item.getMovable());
 		this.context.addToLayer(Layers.FOREGROUND, this.monster.getItem());
 		String level = "resources/level.lvl.txt";
