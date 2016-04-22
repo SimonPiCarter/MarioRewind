@@ -2,7 +2,7 @@ package mr.model.state.trap;
 
 import mr.controller.entity.Hero;
 import mr.model.Item;
-import mr.model.state.AbstractState;
+import mr.model.misc.Coordinate;
 
 public class TrapDown extends TrapState {
 
@@ -14,7 +14,7 @@ public class TrapDown extends TrapState {
 	}
 
 	@Override
-	public AbstractState handleEvent(StateEvent event) {
+	public TrapState handleEvent(StateEvent event) {
 		if ( getSequence().isOver() ) {
 			return other;
 		} else {
@@ -23,7 +23,7 @@ public class TrapDown extends TrapState {
 	}
 
 	@Override
-	public void collide(Hero hero, Item item) {
+	public void collide(Hero hero, Item item, Coordinate itemSpeed) {
 		// Do Nothing
 	}
 }
