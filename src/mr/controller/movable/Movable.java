@@ -159,6 +159,9 @@ public class Movable extends Item {
 		} else if ( getSpeed().y < -GameConstant.epsilon ) {
 			updateState(StateEvent.Jump);
 		}
+		if ( isDying() ) {
+			updateState(StateEvent.Die);
+		}
 	}
 
 	public Coordinate getSpeed() {

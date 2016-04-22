@@ -23,7 +23,6 @@ public class Enemy extends Movable implements ICollider {
 			updateState(StateEvent.Die);
 			setDying(true);
 		} else if ( col == Collision.FIRST_ITEM_KILLED ){
-			hero.updateState(StateEvent.Die);
 			if ( !hero.isDying() ) {
 				hero.damage(1);
 			}

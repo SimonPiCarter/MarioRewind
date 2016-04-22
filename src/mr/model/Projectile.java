@@ -5,7 +5,6 @@ import mr.controller.entity.Hero;
 import mr.model.misc.Coordinate;
 import mr.model.model.ProjectileModel;
 import mr.model.state.AbstractState;
-import mr.model.state.AbstractState.StateEvent;
 
 public class Projectile extends Item {
 	private Coordinate direction;
@@ -27,7 +26,6 @@ public class Projectile extends Item {
 			if ( !hero.isDying() ) {
 				hero.damage(1);
 			}
-			hero.updateState(StateEvent.Die);
 		}
 
 		if ( !ColliderToolbox.isInside(new Coordinate(),new Coordinate(GameConstant.WINDOW_WIDTH, GameConstant.WINDOW_HEIGHT),getPosition(),getSize()) ) {
