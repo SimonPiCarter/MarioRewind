@@ -1,5 +1,6 @@
 package mr.controller.colliders;
 
+import mr.controller.movable.Movable;
 import mr.model.GameConstant;
 import mr.model.HitBox;
 import mr.model.Item;
@@ -90,5 +91,36 @@ public class ColliderToolbox {
 
 	public static boolean isInside(float leftX,float rightX,float upY,float downY,float x, float y) {
 		return (leftX < x && rightX > x && upY < y && downY > y);
+	}
+
+	public static void adjustPositionToTile(Movable movable, float leftX, float rightX, float upY, float downY) {
+		Coordinate pos = Coordinate.add(movable.getPosition(), movable.getHitBox().offset);
+		Coordinate size = movable.getHitBox().size;
+		Coordinate speed = movable.getSpeed();
+
+		if ( new Interval(pos.y,pos.y+size.y).intersect(new Interval(upY,downY)) ) {
+			if ( speed.x > 0 ) {
+				if ( pos.x+size.x < leftX && pos.x+size.x+speed.x > leftX ) {
+					speed.x = Math.max(0,leftX-pos.x-size.x-GameConstant.epsilon);
+
+				}
+			} else if ( speed.x < 0 ) {
+				if ( pos.x > rightX && pos.x+speed.x < rightX ) {
+					speed.x = Math.min(0,rightX-pos.x+GameConstant.epsilon);
+				}
+			}
+		}
+		if ( new Interval(pos.x,pos.x+size.x).intersect(new Interval(leftX,rightX)) ) {
+			if ( speed.y > 0 ) {
+				if ( pos.y+size.y < upY && pos.y+size.y+speed.y > upY ) {
+					speed.y = Math.max(0,upY-pos.y-size.y-GameConstant.epsilon);
+					movable.setOnGround(true);
+				}
+			} else if ( speed.y < 0 ) {
+				if ( pos.y > downY && pos.y+speed.y < downY ) {
+					speed.y = Math.min(0,downY-pos.y+GameConstant.epsilon);
+				}
+			}
+		}
 	}
 }

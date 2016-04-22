@@ -1,10 +1,10 @@
 package mr.controller.movable;
 
+import mr.controller.colliders.ColliderToolbox;
 import mr.model.GameConstant;
 import mr.model.Item;
 import mr.model.Screen;
 import mr.model.misc.Coordinate;
-import mr.model.misc.Interval;
 import mr.model.model.Model;
 import mr.model.state.AbstractState;
 import mr.model.state.AbstractState.StateEvent;
@@ -77,37 +77,12 @@ public class Movable extends Item {
 	}
 
 	private void adjustPositionToTile(int x, int y, Coordinate speed) {
-		Coordinate pos = getPosition();
-		Coordinate size = getSize();
 		float leftX = x*GameConstant.TILE_SIZE;
 		float rightX = (x+1)*GameConstant.TILE_SIZE;
 		float upY = y*GameConstant.TILE_SIZE;
 		float downY = (y+1)*GameConstant.TILE_SIZE;
 
-		if ( new Interval(pos.y,pos.y+size.y).intersect(new Interval(upY,downY)) ) {
-			if ( speed.x > 0 ) {
-				if ( pos.x+size.x < leftX && pos.x+size.x+speed.x > leftX ) {
-					speed.x = Math.max(0,leftX-pos.x-size.x-GameConstant.epsilon);
-
-				}
-			} else if ( speed.x < 0 ) {
-				if ( pos.x > rightX && pos.x+speed.x < rightX ) {
-					speed.x = Math.min(0,rightX-pos.x+GameConstant.epsilon);
-				}
-			}
-		}
-		if ( new Interval(pos.x,pos.x+size.x).intersect(new Interval(leftX,rightX)) ) {
-			if ( speed.y > 0 ) {
-				if ( pos.y+size.y < upY && pos.y+size.y+speed.y > upY ) {
-					speed.y = Math.max(0,upY-pos.y-size.y-GameConstant.epsilon);
-					this.onGround = true;
-				}
-			} else if ( speed.y < 0 ) {
-				if ( pos.y > downY && pos.y+speed.y < downY ) {
-					speed.y = Math.min(0,downY-pos.y+GameConstant.epsilon);
-				}
-			}
-		}
+		ColliderToolbox.adjustPositionToTile(this, leftX, rightX, upY, downY);
 	}
 
 	/**
