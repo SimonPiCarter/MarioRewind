@@ -38,6 +38,9 @@ public class Sequence {
 		it = states.listIterator();
 		if ( it.hasNext() ) {
 			current = it.next();
+			over = false;
+		} else {
+			over = true;
 		}
 	}
 

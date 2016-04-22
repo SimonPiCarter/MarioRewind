@@ -17,6 +17,7 @@ public class TrapUp extends TrapState {
 	@Override
 	public TrapState handleEvent(StateEvent event) {
 		if ( getSequence().isOver() ) {
+			other.getSequence().initSequence();
 			return other;
 		} else {
 			return this;

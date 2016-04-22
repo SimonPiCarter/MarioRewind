@@ -159,6 +159,7 @@ public class WindowGame extends BasicGame {
 			if ( monster.isDead() ) {
 				this.context.removeFromLayer(Layers.FOREGROUND, monster);
 			}
+			trap.updateState();
 			trap.collide(hero);
 
 
