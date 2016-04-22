@@ -2,18 +2,18 @@ package mr.controller.entity;
 
 import mr.controller.movable.Movable;
 import mr.model.misc.Coordinate;
-import mr.model.model.Model;
+import mr.model.model.HeroModel;
 import mr.model.state.AbstractState;
 
 public class Hero extends Movable {
 	private int life;
-	private double backtrack;
+	private float backtrack;
 
-	public Hero(Coordinate position, Model model, String id, AbstractState state, int life,
+	public Hero(Coordinate position, HeroModel model, String id, AbstractState state, int life,
 			double backtrack) {
 		super(position, model, id, state);
-		this.life = life;
-		this.backtrack = backtrack;
+		this.life = model.getLife();
+		this.backtrack = model.getBacktrack();
 	}
 
 	public int getLife() {
@@ -22,10 +22,10 @@ public class Hero extends Movable {
 	public void setLife(int life) {
 		this.life = life;
 	}
-	public double getBacktrack() {
+	public float getBacktrack() {
 		return backtrack;
 	}
-	public void setBacktrack(double backtrack) {
+	public void setBacktrack(float backtrack) {
 		this.backtrack = backtrack;
 	}
 

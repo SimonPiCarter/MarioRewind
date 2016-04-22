@@ -58,7 +58,6 @@ public class WindowGame extends BasicGame {
 
 	private int recoverThreshold = 1500;
 	private int elapsedHeroDyingTime = 0;
-	private int life = 3;
 
 	private Font font;
 	private TrueTypeFont ttf;
@@ -87,7 +86,7 @@ public class WindowGame extends BasicGame {
 
 		this.hero = new Hero(
 				new Coordinate(0, 0),
-				ModelHandler.get().getModel("default"),
+				ModelHandler.get().getHeroModel("hero"),
 				"id",
 				new Idle(true),
 				0,
@@ -123,7 +122,7 @@ public class WindowGame extends BasicGame {
 
 	@Override
 	public void render(GameContainer container, Graphics g) throws SlickException {
-		ttf.drawString(GameConstant.WIDTH*GameConstant.TILE_SIZE-100, 15, "Life : "+life, Color.white);
+		ttf.drawString(GameConstant.WIDTH*GameConstant.TILE_SIZE-100, 15, "Life : "+hero.getLife(), Color.white);
 		this.renderer.render(g);
 	}
 

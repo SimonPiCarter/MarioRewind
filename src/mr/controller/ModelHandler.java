@@ -12,6 +12,7 @@ import mr.core.exception.FormatModelException;
 import mr.core.exception.InputFileNotFoundException;
 import mr.model.GameConstant;
 import mr.model.model.AIModel;
+import mr.model.model.HeroModel;
 import mr.model.model.Model;
 import mr.model.model.ProjectileModel;
 
@@ -20,6 +21,7 @@ public class ModelHandler {
 	private Map<String, Model> models;
 	private Map<String, ProjectileModel> projectileModels;
 	private Map<String, AIModel> aiModels;
+	private Map<String, HeroModel> heroModels;
 
 	public Model getModel(String name) {
 		if ( !models.containsKey(name) ) {
@@ -42,6 +44,13 @@ public class ModelHandler {
 		return aiModels.get(name);
 	}
 
+	public HeroModel getHeroModel(String name) {
+		if ( !heroModels.containsKey(name) ) {
+			return heroModels.get("default");
+		}
+		return heroModels.get(name);
+	}
+
 	public void load(String path) throws InputFileNotFoundException, FormatModelException {
 		Path pathFile = Paths.get(path);
 		Scanner scanner = null;
@@ -53,9 +62,7 @@ public class ModelHandler {
 			}
 			String line = scanner.nextLine();
 			String[] numbersOfModel = line.split(" ");
-			//int[] numbersOfModelInt = new int[numbersOfModel.length];
 			for ( int i = 0 ; i < numbersOfModel.length ; ++ i ) {
-				//numbersOfModelInt[i] = Integer.parseInt(numbersOfModel[i]);
 				for ( int j = 0 ; j < Integer.parseInt(numbersOfModel[i]) ; ++ j ) {
 					if ( i == 0 ) {
 						Model model = new Model();
@@ -69,6 +76,10 @@ public class ModelHandler {
 						AIModel model = new AIModel();
 						parseAIModel(model,scanner);
 						aiModels.put(model.getId(),model);
+					} else if ( i == 3 ) {
+						HeroModel model = new HeroModel();
+						parseHeroModel(model,scanner);
+						heroModels.put(model.getId(),model);
 					}
 				}
 			}
@@ -112,12 +123,21 @@ public class ModelHandler {
 		model.setProjectileModel(scanner.next());
 	}
 
+	private void parseHeroModel(HeroModel model, Scanner scanner) {
+		parseModel(model,scanner);
+		model.setSpeed(scanner.nextFloat());
+		model.setLife(scanner.nextInt());
+		model.setBacktrack(scanner.nextFloat());
+		model.setProjectileModel(scanner.next());
+	}
+
 	private static ModelHandler instance;
 
 	private ModelHandler() {
 		models = new HashMap<String, Model>();
 		projectileModels = new HashMap<String, ProjectileModel>();
 		aiModels = new HashMap<String, AIModel>();
+		heroModels = new HashMap<String, HeroModel>();
 	}
 
 	public static ModelHandler get() {

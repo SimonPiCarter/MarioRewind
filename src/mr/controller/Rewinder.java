@@ -8,10 +8,10 @@ import mr.controller.entity.Hero;
 import mr.model.misc.Coordinate;
 
 public class Rewinder {
-	private static final double globalLimit = 750;
-	private static final double minTime = 4;
+	private static final float globalLimit = 750;
+	private static final float minTime = 4;
 	private static final int timeStep = 5;
-	private double globalTime;
+	private float globalTime;
 	private int elapsedTime;
 
 	private Deque<Double> deltas;
