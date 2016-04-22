@@ -2,20 +2,20 @@ package mr.controller.ai.action;
 
 import mr.controller.ai.AI;
 import mr.model.misc.Coordinate;
-import mr.model.state.IState;
+import mr.model.state.AbstractState;
 
 public class Shoot implements IAction {
 
 	private final int time;
 	private int elapsedTime;
 
-	private IState stateRight;
-	private IState stateLeft;
-	private IState stateIdle;
+	private AbstractState stateRight;
+	private AbstractState stateLeft;
+	private AbstractState stateIdle;
 	private Coordinate direction;
 	private boolean over;
 
-	public Shoot(IState stateRight, IState stateLeft, IState stateIdle, Coordinate direction, int time) {
+	public Shoot(AbstractState stateRight, AbstractState stateLeft, AbstractState stateIdle, Coordinate direction, int time) {
 		this.time = time;
 		this.stateRight = stateRight;
 		this.stateLeft = stateLeft;
@@ -24,7 +24,7 @@ public class Shoot implements IAction {
 	}
 
 	@Override
-	public IState update(AI ai, int delta) {
+	public AbstractState update(AI ai, int delta) {
 		if ( elapsedTime == 0 ) {
 			ai.shoot(direction);
 		}

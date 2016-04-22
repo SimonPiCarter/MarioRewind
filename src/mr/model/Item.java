@@ -2,17 +2,17 @@ package mr.model;
 
 import mr.model.misc.Coordinate;
 import mr.model.model.Model;
-import mr.model.state.IState;
-import mr.model.state.IState.StateEvent;
+import mr.model.state.AbstractState;
+import mr.model.state.AbstractState.StateEvent;
 
 public class Item extends Sprite {
 	private String id;
 	private HitBox hitBox;
-	private IState state;
+	private AbstractState state;
 	private boolean isDead;
 	private boolean isDying;
 
-	public Item(Coordinate position, Model model, String id, IState state) {
+	public Item(Coordinate position, Model model, String id, AbstractState state) {
 		super(position, model.getSize(), model.getSprite());
 		this.id = id;
 		this.state = state;
@@ -26,11 +26,11 @@ public class Item extends Sprite {
 		this.id = id;
 	}
 
-	public int getState() {
-		return state.getState();
+	public Sequence getSequence() {
+		return state.getSequence();
 	}
 
-	public void updateState(IState.StateEvent event) {
+	public void updateState(StateEvent event) {
 		state = state.handleEvent(event);
 	}
 

@@ -1,15 +1,16 @@
 package mr.model.state;
 
-public class Move implements IState {
+public class Move extends AbstractState {
 
 	public final boolean right;
 
 	public Move(boolean right) {
+		super(2+(right?0:1));
 		this.right = right;
 	}
 
 	@Override
-	public IState handleEvent(StateEvent event) {
+	public AbstractState handleEvent(StateEvent event) {
 		switch (event) {
 		case Die:
 			return new Die(right);
@@ -35,12 +36,6 @@ public class Move implements IState {
 		default:
 			return this;
 		}
-	}
-
-	@Override
-	public int getState() {
-		int off = right?0:1;
-		return 2+off;
 	}
 
 }

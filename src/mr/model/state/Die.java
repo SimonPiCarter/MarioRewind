@@ -1,15 +1,16 @@
 package mr.model.state;
 
-public class Die implements IState {
+public class Die extends AbstractState {
 
 	public final boolean right;
 
 	public Die(boolean right) {
+		super(8+(right?0:1),false);
 		this.right = right;
 	}
 
 	@Override
-	public IState handleEvent(StateEvent event) {
+	public AbstractState handleEvent(StateEvent event) {
 		switch (event) {
 		case EndDie:
 			return new Idle(right);
@@ -23,11 +24,5 @@ public class Die implements IState {
 		default:
 			return this;
 		}
-	}
-
-	@Override
-	public int getState() {
-		int off = right?0:1;
-		return 8+off;
 	}
 }

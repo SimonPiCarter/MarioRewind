@@ -3,13 +3,13 @@ package mr.controller.entity;
 import mr.controller.movable.Movable;
 import mr.model.misc.Coordinate;
 import mr.model.model.Model;
-import mr.model.state.IState;
+import mr.model.state.AbstractState;
 
 public class Hero extends Movable {
 	private int life;
 	private double backtrack;
 
-	public Hero(Coordinate position, Model model, String id, IState state, int life,
+	public Hero(Coordinate position, Model model, String id, AbstractState state, int life,
 			double backtrack) {
 		super(position, model, id, state);
 		this.life = life;

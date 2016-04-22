@@ -9,7 +9,7 @@ import mr.controller.entity.Enemy;
 import mr.model.misc.Coordinate;
 import mr.model.model.AIModel;
 import mr.model.model.Model;
-import mr.model.state.IState;
+import mr.model.state.AbstractState;
 
 public class AI extends Enemy {
 
@@ -19,7 +19,7 @@ public class AI extends Enemy {
 	private ListIterator<IAction> it;
 	private IAction current;
 
-	public AI(Coordinate position, Model model, String id, IState state, AIModel aiModel) {
+	public AI(Coordinate position, Model model, String id, AbstractState state, AIModel aiModel) {
 		super(position, model, id, state);
 		this.model = aiModel;
 		this.current = null;

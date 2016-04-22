@@ -1,15 +1,16 @@
 package mr.model.state;
 
-public class Jump implements IState {
+public class Jump extends AbstractState {
 
 	public final boolean right;
 
 	public Jump(boolean right) {
+		super(4+(right?0:1));
 		this.right = right;
 	}
 
 	@Override
-	public IState handleEvent(StateEvent event) {
+	public AbstractState handleEvent(StateEvent event) {
 		switch (event) {
 		case Die:
 			return new Die(right);
@@ -35,12 +36,6 @@ public class Jump implements IState {
 		default:
 			return this;
 		}
-	}
-
-	@Override
-	public int getState() {
-		int off = right?0:1;
-		return 4+off;
 	}
 
 }

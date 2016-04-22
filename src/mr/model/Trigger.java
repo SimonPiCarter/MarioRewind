@@ -4,12 +4,12 @@ import java.util.List;
 
 import mr.model.misc.Coordinate;
 import mr.model.model.Model;
-import mr.model.state.IState;
+import mr.model.state.AbstractState;
 
 public class Trigger extends Item {
 	private List<Event> events;
 
-	public Trigger(Coordinate position, Model model, String id, IState state, List<Event> events) {
+	public Trigger(Coordinate position, Model model, String id, AbstractState state, List<Event> events) {
 		super(position, model, id, state);
 		this.setEvents(events);
 	}

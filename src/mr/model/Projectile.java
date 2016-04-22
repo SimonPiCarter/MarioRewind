@@ -4,14 +4,14 @@ import mr.controller.colliders.ColliderToolbox;
 import mr.controller.entity.Hero;
 import mr.model.misc.Coordinate;
 import mr.model.model.ProjectileModel;
-import mr.model.state.IState;
-import mr.model.state.IState.StateEvent;
+import mr.model.state.AbstractState;
+import mr.model.state.AbstractState.StateEvent;
 
 public class Projectile extends Item {
 	private Coordinate direction;
 	private ProjectileModel model;
 
-	public Projectile(Coordinate position, ProjectileModel model, String id, IState state, Coordinate direction) {
+	public Projectile(Coordinate position, ProjectileModel model, String id, AbstractState state, Coordinate direction) {
 		super(position, model, id, state);
 		this.setDirection(direction);
 		this.model = model;

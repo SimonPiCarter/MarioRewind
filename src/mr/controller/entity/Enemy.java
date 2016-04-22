@@ -6,12 +6,12 @@ import mr.controller.colliders.ColliderToolbox.Collision;
 import mr.controller.movable.Movable;
 import mr.model.misc.Coordinate;
 import mr.model.model.Model;
-import mr.model.state.IState;
-import mr.model.state.IState.StateEvent;
+import mr.model.state.AbstractState;
+import mr.model.state.AbstractState.StateEvent;
 
 public class Enemy extends Movable implements ICollider {
 
-	public Enemy(Coordinate position, Model model, String id, IState state) {
+	public Enemy(Coordinate position, Model model, String id, AbstractState state) {
 		super(position, model, id, state);
 	}
 

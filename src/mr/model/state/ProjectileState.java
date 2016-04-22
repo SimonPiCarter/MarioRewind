@@ -1,6 +1,6 @@
 package mr.model.state;
 
-public class ProjectileState implements IState {
+public class ProjectileState extends AbstractState {
 
 	public enum Type {
 		Up,
@@ -17,21 +17,17 @@ public class ProjectileState implements IState {
 	private boolean dying;
 
 	public ProjectileState(Type type) {
+		super(type.ordinal());
 		this.type = type;
 		this.dying = false;
 	}
 
 	@Override
-	public IState handleEvent(StateEvent event) {
+	public AbstractState handleEvent(StateEvent event) {
 		if ( event == StateEvent.Die ) {
 			dying = true;
 		}
 		return this;
-	}
-
-	@Override
-	public int getState() {
-		return type.ordinal()+ (dying?Type.values().length:0);
 	}
 
 }

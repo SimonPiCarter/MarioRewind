@@ -9,7 +9,7 @@ import mr.model.GameConstant;
 import mr.model.Projectile;
 import mr.model.misc.Coordinate;
 import mr.model.model.ProjectileModel;
-import mr.model.state.IState;
+import mr.model.state.AbstractState;
 import mr.model.state.ProjectileState;
 import mr.model.state.ProjectileState.Type;
 import mr.view.RenderingContext;
@@ -45,7 +45,7 @@ public class ProjectileHandler {
 				type = Type.Up;
 			}
 		}
-		IState state = new ProjectileState(type);
+		AbstractState state = new ProjectileState(type);
 		Projectile proj = new Projectile(startPoint, model, projectileModel, state, direction);
 		addProjectile(proj);
 	}

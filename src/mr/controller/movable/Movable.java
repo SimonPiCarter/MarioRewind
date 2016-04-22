@@ -6,8 +6,8 @@ import mr.model.Screen;
 import mr.model.misc.Coordinate;
 import mr.model.misc.Interval;
 import mr.model.model.Model;
-import mr.model.state.IState;
-import mr.model.state.IState.StateEvent;
+import mr.model.state.AbstractState;
+import mr.model.state.AbstractState.StateEvent;
 
 public class Movable extends Item {
 
@@ -20,7 +20,7 @@ public class Movable extends Item {
 	private boolean touchedUpScreen;
 	private boolean touchedBottomScreen;
 
-	public Movable(Coordinate position, Model model, String id, IState state) {
+	public Movable(Coordinate position, Model model, String id, AbstractState state) {
 		super(position, model, id, state);
 		speed = new Coordinate(0, 0);
 		weight = 1;
