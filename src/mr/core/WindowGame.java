@@ -21,15 +21,11 @@ import mr.controller.ai.AI;
 import mr.controller.ai.action.IAction;
 import mr.controller.ai.action.Shoot;
 import mr.controller.ai.action.Waypoint;
-import mr.controller.colliders.EnemyCollider;
-import mr.controller.movable.HeroMovable;
-import mr.controller.movable.ItemMovable;
+import mr.controller.entity.Hero;
 import mr.core.exception.FormatModelException;
 import mr.core.exception.InputFileNotFoundException;
 import mr.model.GameConstant;
 import mr.model.GameConstant.Layers;
-import mr.model.Hero;
-import mr.model.Item;
 import mr.model.Level;
 import mr.model.misc.Coordinate;
 import mr.model.state.Idle;
@@ -45,9 +41,8 @@ public class WindowGame extends BasicGame {
 
 	private Renderer renderer;
 
-	private HeroMovable item;
-	private EnemyCollider monster;
-	private AI ai;
+	private Hero hero;
+	private AI monster;
 	private Level lvl;
 
 	private float baseForce = 15;
@@ -90,32 +85,31 @@ public class WindowGame extends BasicGame {
 		this.renderer.setRewinder(rewinder);
 		ProjectileHandler.get().setContext(context);
 
-		this.item = new HeroMovable(new Hero(
+		this.hero = new Hero(
 				new Coordinate(0, 0),
 				ModelHandler.get().getModel("default"),
 				"id",
 				new Idle(true),
 				0,
-				0));
-		this.monster = new EnemyCollider(new Item(
-				new Coordinate(200, 416),
+				0);
+		this.monster = new AI(new Coordinate(200, 416),
 				ModelHandler.get().getModel("default"),
 				"id",
-				new Idle(true)));
-		this.ai = new AI(new ItemMovable(this.monster.getItem()), ModelHandler.get().getAIModel("monster"));
+				new Idle(true),
+				ModelHandler.get().getAIModel("monster"));
 
 		List<IAction> list = new ArrayList<IAction>();
 		list.add(new Waypoint(null, null, null, new Coordinate(100, 0)));
 		list.add(new Shoot(null, null, null, new Coordinate(0, -1),750));
 		list.add(new Waypoint(null, null, null, new Coordinate(450, 0)));
 		list.add(new Shoot(null, null, null, new Coordinate(0, -1),750));
-		this.ai.setActions(list);
+		this.monster.setActions(list);
 
 		font = new Font("Verdana", Font.BOLD, 20);
 		ttf = new TrueTypeFont(font, true);
 
-		this.context.addToLayer(Layers.FOREGROUND, item.getMovable());
-		this.context.addToLayer(Layers.FOREGROUND, this.monster.getItem());
+		this.context.addToLayer(Layers.FOREGROUND, hero);
+		this.context.addToLayer(Layers.FOREGROUND, monster);
 		String level = "resources/level.lvl.txt";
 		try {
 			lvl = LevelLoader.loadLevel(level);
@@ -139,54 +133,54 @@ public class WindowGame extends BasicGame {
 		while ( elapsedTime > timeStep ) {
 			elapsedTime -= timeStep;
 
-			item.getForce().x = forceX;
+			hero.getForce().x = forceX;
 
-			item.updateSpeed();
-			item.updateState();
+			hero.updateSpeed();
+			hero.updateState();
 
-			if ( !monster.getItem().isDead() && !monster.getItem().isDying() ) {
-				ai.update(timeStep);
-				ai.getMovable().updateState();
-				monster.collide(item, item.getSpeed(), ai.getMovable().getSpeed());
+			if ( !monster.isDead() && !monster.isDying() ) {
+				monster.update(timeStep);
+				monster.updateState();
+				monster.collide(hero, hero.getSpeed(), monster.getSpeed());
 			}
-			if ( monster.getItem().isDying() ) {
+			if ( monster.isDying() ) {
 				elapsedDyingTime += timeStep;
 				if ( elapsedDyingTime > deadThreshold ) {
-					monster.getItem().setDead(true);
-					monster.getItem().setDying(false);
+					monster.setDead(true);
+					monster.setDying(false);
 				}
 			}
-			if ( monster.getItem().isDead() ) {
-				this.context.removeFromLayer(Layers.FOREGROUND, this.monster.getItem());
+			if ( monster.isDead() ) {
+				this.context.removeFromLayer(Layers.FOREGROUND, monster);
 			}
 
 
-			if ( item.getMovable().isDying() ) {
+			if ( hero.isDying() ) {
 				if ( elapsedHeroDyingTime == 0 ) {
 					--life;
 				}
 				elapsedHeroDyingTime += timeStep;
 				if ( elapsedHeroDyingTime > recoverThreshold ) {
 					elapsedHeroDyingTime = 0;
-					item.getMovable().setDying(false);
+					hero.setDying(false);
 
 				}
 			}
 
-			item.move(lvl.getStartingScreen());
-			ai.getMovable().move(lvl.getStartingScreen());
+			hero.move(lvl.getStartingScreen());
+			monster.move(lvl.getStartingScreen());
 
-			ProjectileHandler.get().update(item.getMovable());
+			ProjectileHandler.get().update(hero);
 
 			context.update(timeStep);
 
 			if ( rewind ) {
-				rewinder.rewind(timeStep, item);
+				rewinder.rewind(timeStep, hero);
 				rewindAllowed = false;
 			} else {
-				rewinder.record(timeStep, item);
+				rewinder.record(timeStep, hero);
 			}
-			if ( item.isOnGround() ) {
+			if ( hero.isOnGround() ) {
 				rewindAllowed = true;
 			}
 		}
@@ -198,8 +192,8 @@ public class WindowGame extends BasicGame {
 
 	@Override
 	public void keyPressed(int key, char c) {
-		if ( ( c == 'z' || key == Input.KEY_UP ) && item.isOnGround() ) {
-			item.getForce().setY(-250);
+		if ( ( c == 'z' || key == Input.KEY_UP ) && hero.isOnGround() ) {
+			hero.getForce().setY(-250);
 		}
 		if ( c == 'q' || key == Input.KEY_LEFT ) {
 			forceX = -baseForce;
@@ -228,7 +222,7 @@ public class WindowGame extends BasicGame {
 			rewind = false;
 		}
 		if ( c == 'x' ) {
-			item.getMovable().setDying(false);
+			hero.setDying(false);
 		}
 	}
 }

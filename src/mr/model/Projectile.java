@@ -1,6 +1,7 @@
 package mr.model;
 
 import mr.controller.colliders.ColliderToolbox;
+import mr.controller.entity.Hero;
 import mr.model.misc.Coordinate;
 import mr.model.model.ProjectileModel;
 import mr.model.state.IState;

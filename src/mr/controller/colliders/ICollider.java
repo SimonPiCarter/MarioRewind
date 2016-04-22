@@ -1,8 +1,8 @@
 package mr.controller.colliders;
 
-import mr.controller.movable.HeroMovable;
+import mr.controller.entity.Hero;
 import mr.model.misc.Coordinate;
 
 public interface ICollider {
-	void collide(HeroMovable heroMovable, Coordinate heroSpeed, Coordinate ownSpeed);
+	void collide(Hero hero, Coordinate heroSpeed, Coordinate ownSpeed);
 }

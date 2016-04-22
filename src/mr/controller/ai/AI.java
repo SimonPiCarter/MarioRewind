@@ -5,22 +5,23 @@ import java.util.ListIterator;
 
 import mr.controller.ProjectileHandler;
 import mr.controller.ai.action.IAction;
-import mr.controller.movable.ItemMovable;
+import mr.controller.colliders.EnemyCollider;
 import mr.model.misc.Coordinate;
 import mr.model.model.AIModel;
+import mr.model.model.Model;
+import mr.model.state.IState;
 
-public class AI {
+public class AI extends EnemyCollider {
 
-	private final ItemMovable movable;
 	private final AIModel model;
 
 	private List<IAction> actions;
 	private ListIterator<IAction> it;
 	private IAction current;
 
-	public AI(ItemMovable movable, AIModel model) {
-		this.movable = movable;
-		this.model = model;
+	public AI(Coordinate position, Model model, String id, IState state, AIModel aiModel) {
+		super(position, model, id, state);
+		this.model = aiModel;
 		this.current = null;
 	}
 
@@ -40,28 +41,24 @@ public class AI {
 	}
 
 	public void stop() {
-		movable.getSpeed().x = 0;
+		getSpeed().x = 0;
 	}
 
 	public void move(boolean right) {
 		if ( right ) {
-			movable.getSpeed().x = model.getSpeed();
+			getSpeed().x = model.getSpeed();
 		} else {
-			movable.getSpeed().x = -model.getSpeed();
+			getSpeed().x = -model.getSpeed();
 		}
 	}
 
 	public void shoot(Coordinate direction) {
-		Coordinate startPoint = new Coordinate(movable.getMovable().getPosition());
+		Coordinate startPoint = new Coordinate(getPosition());
 		ProjectileHandler.get().addProjectile(model.getProjectileModel(),startPoint, direction);
 	}
 
 	public void jump() {
-		movable.getForce().y -= 200;
-	}
-
-	public ItemMovable getMovable() {
-		return movable;
+		getForce().y -= 200;
 	}
 
 	public void setActions(List<IAction> actions) {

@@ -1,10 +1,11 @@
-package mr.model;
+package mr.controller.entity;
 
+import mr.controller.movable.Movable;
 import mr.model.misc.Coordinate;
 import mr.model.model.Model;
 import mr.model.state.IState;
 
-public class Hero extends Item {
+public class Hero extends Movable {
 	private int life;
 	private double backtrack;
 

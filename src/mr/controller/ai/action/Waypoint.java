@@ -25,10 +25,10 @@ public class Waypoint implements IAction {
 
 	@Override
 	public IState update(AI ai, int delta) {
-		if ( ai.getMovable().getMovable().getPosition().x-waypoint.x > distance ) {
+		if ( ai.getPosition().x-waypoint.x > distance ) {
 			ai.move(false);
 			return stateRight;
-		} else if ( ai.getMovable().getMovable().getPosition().x-waypoint.x < -distance ) {
+		} else if ( ai.getPosition().x-waypoint.x < -distance ) {
 			ai.move(true);
 			return stateLeft;
 		} else {

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import mr.controller.entity.Hero;
 import mr.model.GameConstant;
-import mr.model.Hero;
 import mr.model.Projectile;
 import mr.model.misc.Coordinate;
 import mr.model.model.ProjectileModel;
