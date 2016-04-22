@@ -136,7 +136,6 @@ public class WindowGame extends BasicGame {
 			hero.getForce().x = forceX;
 
 			hero.updateSpeed();
-			hero.updateState();
 
 			if ( !monster.isDead() && !monster.isDying() ) {
 				monster.update(timeStep);

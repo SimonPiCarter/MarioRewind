@@ -143,6 +143,7 @@ public class Movable extends Item {
 		// Reset force to weight only
 		force.x = 0;
 		force.y = weight*2;
+		updateState();
 	}
 
 	public void updateState() {
