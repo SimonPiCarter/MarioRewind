@@ -9,16 +9,11 @@ import mr.model.misc.Interval;
 public class ColliderToolbox {
 
 	public static boolean collide(Coordinate posA, HitBox hitBoxA, Coordinate posB, HitBox hitBoxB) {
-		return isInside(
-				posA.x+hitBoxA.offset.x,
-				posA.x+hitBoxA.offset.x+hitBoxA.size.x,
-				posA.y+hitBoxA.offset.y,
-				posA.y+hitBoxA.offset.y+hitBoxA.size.y,
-				posB.x+hitBoxB.offset.x,
-				posB.x+hitBoxB.offset.x+hitBoxB.size.x,
-				posB.y+hitBoxB.offset.y,
-				posB.y+hitBoxB.offset.y+hitBoxB.size.y
-				);
+		Interval intXA = new Interval(posA.x+hitBoxA.offset.x, posA.x+hitBoxA.offset.x+hitBoxA.size.x);
+		Interval intYA = new Interval(posA.y+hitBoxA.offset.y, posA.y+hitBoxA.offset.y+hitBoxA.size.y);
+		Interval intXB = new Interval(posB.x+hitBoxB.offset.x, posB.x+hitBoxB.offset.x+hitBoxB.size.x);
+		Interval intYB = new Interval(posB.y+hitBoxB.offset.y, posB.y+hitBoxB.offset.y+hitBoxB.size.y);
+		return intXA.intersect(intXB) && intYA.intersect(intYB);
 	}
 
 	public enum Collision {
