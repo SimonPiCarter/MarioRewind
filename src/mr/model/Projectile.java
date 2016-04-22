@@ -24,7 +24,9 @@ public class Projectile extends Item {
 
 		if ( ColliderToolbox.isInside(hero.getPosition(), hero.getSize(), getPosition(), getSize())
 				|| ColliderToolbox.isInside(getPosition(), getSize(), hero.getPosition(), hero.getSize()) ) {
-			hero.damage(1);
+			if ( !hero.isDying() ) {
+				hero.damage(1);
+			}
 			hero.updateState(StateEvent.Die);
 		}
 
