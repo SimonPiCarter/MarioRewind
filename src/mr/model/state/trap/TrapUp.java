@@ -28,7 +28,9 @@ public class TrapUp extends TrapState {
 		if ( ColliderToolbox.collide(
 				Coordinate.add(hero.getPosition(),hero.getSpeed()), hero.getHitBox(),
 				Coordinate.add(item.getPosition(),itemSpeed), item.getHitBox()) ) {
-			hero.damage(1);
+			if ( !hero.isDying() ) {
+				hero.damage(1);
+			}
 		}
 	}
 }
