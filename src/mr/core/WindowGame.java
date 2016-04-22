@@ -21,13 +21,17 @@ import mr.controller.ai.AI;
 import mr.controller.ai.action.IAction;
 import mr.controller.ai.action.Shoot;
 import mr.controller.ai.action.Waypoint;
+import mr.controller.entity.Door;
 import mr.controller.entity.Hero;
+import mr.controller.entity.Key;
 import mr.controller.entity.Trap;
 import mr.core.exception.FormatModelException;
 import mr.core.exception.InputFileNotFoundException;
+import mr.model.Event;
 import mr.model.GameConstant;
 import mr.model.GameConstant.Layers;
 import mr.model.Level;
+import mr.model.Trigger;
 import mr.model.misc.Coordinate;
 import mr.model.state.Idle;
 import mr.model.state.trap.TrapUp;
@@ -47,6 +51,9 @@ public class WindowGame extends BasicGame {
 	private AI monster;
 	private Trap trap;
 	private Trap trap2;
+	private Key key;
+	private Door door;
+
 	private Level lvl;
 
 	private float baseForce = 15;
@@ -109,6 +116,22 @@ public class WindowGame extends BasicGame {
 				"id",
 				new TrapUp());
 
+		// Door & Key
+		Trigger keyTrigger = new Trigger(new ArrayList<Event>());
+		Event doorEvent = new Event("id");
+		this.key = new Key(new Coordinate(450,200),
+				ModelHandler.get().getModel("redKey"),
+				"id",
+				new Idle(true),
+				keyTrigger);
+		keyTrigger.getEvents().add(doorEvent);
+		this.door = new Door(
+				new Coordinate(19*GameConstant.TILE_SIZE,12*GameConstant.TILE_SIZE),
+				ModelHandler.get().getModel("redDoor"),
+				"id",
+				new Idle(true),
+				doorEvent);
+
 		List<IAction> list = new ArrayList<IAction>();
 		list.add(new Waypoint(null, null, null, new Coordinate(100, 0)));
 		list.add(new Shoot(null, null, null, new Coordinate(0, -1),750));
@@ -123,6 +146,8 @@ public class WindowGame extends BasicGame {
 		this.context.addToLayer(Layers.FOREGROUND, monster);
 		this.context.addToLayer(Layers.FOREGROUND, trap);
 		this.context.addToLayer(Layers.FOREGROUND, trap2);
+		this.context.addToLayer(Layers.FOREGROUND, key);
+		this.context.addToLayer(Layers.FOREGROUND, door);
 		String level = "resources/level.lvl.txt";
 		try {
 			lvl = LevelLoader.loadLevel(level);
@@ -136,8 +161,8 @@ public class WindowGame extends BasicGame {
 
 	@Override
 	public void render(GameContainer container, Graphics g) throws SlickException {
-		ttf.drawString(GameConstant.WIDTH*GameConstant.TILE_SIZE-100, 15, "Life : "+hero.getLife(), Color.white);
 		this.renderer.render(g);
+		ttf.drawString(GameConstant.WIDTH*GameConstant.TILE_SIZE-100, 15, "Life : "+hero.getLife(), Color.white);
 	}
 
 	@Override
@@ -165,10 +190,19 @@ public class WindowGame extends BasicGame {
 			if ( monster.isDead() ) {
 				this.context.removeFromLayer(Layers.FOREGROUND, monster);
 			}
+			if ( key.isUsed() ) {
+				this.context.removeFromLayer(Layers.FOREGROUND, key);
+			}
+			if ( door.isOpen() ) {
+				this.context.removeFromLayer(Layers.FOREGROUND, door);
+			} else {
+				door.collide(hero, hero.getSpeed(), door.getSpeed());
+			}
 			trap.updateState();
 			trap.collide(hero);
 			trap2.updateState();
 			trap2.collide(hero);
+			key.collide(hero, hero.getSpeed(), key.getSpeed());
 
 
 			if ( hero.isDying() ) {
@@ -179,6 +213,7 @@ public class WindowGame extends BasicGame {
 
 				}
 			}
+
 
 			hero.move(lvl.getStartingScreen());
 			monster.move(lvl.getStartingScreen());
