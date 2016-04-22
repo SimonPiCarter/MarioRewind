@@ -46,6 +46,7 @@ public class WindowGame extends BasicGame {
 	private Hero hero;
 	private AI monster;
 	private Trap trap;
+	private Trap trap2;
 	private Level lvl;
 
 	private float baseForce = 15;
@@ -100,7 +101,11 @@ public class WindowGame extends BasicGame {
 				new Idle(true),
 				ModelHandler.get().getAIModel("monster"));
 		this.trap = new Trap(new Coordinate(300, 416),
-				ModelHandler.get().getModel("trap"),
+				ModelHandler.get().getModel("trap32"),
+				"id",
+				new TrapUp());
+		this.trap2 = new Trap(new Coordinate(500, 416),
+				ModelHandler.get().getModel("trap64"),
 				"id",
 				new TrapUp());
 
@@ -117,6 +122,7 @@ public class WindowGame extends BasicGame {
 		this.context.addToLayer(Layers.FOREGROUND, hero);
 		this.context.addToLayer(Layers.FOREGROUND, monster);
 		this.context.addToLayer(Layers.FOREGROUND, trap);
+		this.context.addToLayer(Layers.FOREGROUND, trap2);
 		String level = "resources/level.lvl.txt";
 		try {
 			lvl = LevelLoader.loadLevel(level);
@@ -161,6 +167,8 @@ public class WindowGame extends BasicGame {
 			}
 			trap.updateState();
 			trap.collide(hero);
+			trap2.updateState();
+			trap2.collide(hero);
 
 
 			if ( hero.isDying() ) {

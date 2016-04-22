@@ -1,4 +1,0 @@
-resources/trap.png
-550 64 32 2
-4
-4
