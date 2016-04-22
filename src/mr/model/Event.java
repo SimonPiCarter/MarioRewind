@@ -28,4 +28,8 @@ public class Event {
 	public void setTriggered(boolean triggered) {
 		this.triggered = triggered;
 	}
+
+	public void notifyTriggered(Trigger trigger) {
+		triggered = true;
+	}
 }

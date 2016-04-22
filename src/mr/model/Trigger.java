@@ -22,4 +22,9 @@ public class Trigger extends Item {
 		this.events = events;
 	}
 
+	public void trigger() {
+		for ( Event event : events ) {
+			event.notifyTriggered(this);
+		}
+	}
 }
