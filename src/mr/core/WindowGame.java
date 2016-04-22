@@ -64,14 +64,16 @@ public class WindowGame extends BasicGame {
 	private int timeStep = 5;
 	private int elapsedTime = 0;
 
+	private boolean win;
+
 	private int deadThreshold = 1000;
 	private int elapsedDyingTime = 0;
 
 	private int recoverThreshold = 1500;
 	private int elapsedHeroDyingTime = 0;
 
-	private Font font;
 	private TrueTypeFont ttf;
+	private TrueTypeFont ttfWin;
 
 	public WindowGame() {
 		super("Core :: WindowGame");
@@ -139,8 +141,8 @@ public class WindowGame extends BasicGame {
 		list.add(new Shoot(null, null, null, new Coordinate(0, -1),750));
 		this.monster.setActions(list);
 
-		font = new Font("Verdana", Font.BOLD, 20);
-		ttf = new TrueTypeFont(font, true);
+		ttf = new TrueTypeFont(new Font("Verdana", Font.BOLD, 20), true);
+		ttfWin = new TrueTypeFont(new Font("Verdana", Font.BOLD, 40), true);
 
 		this.context.addToLayer(Layers.FOREGROUND, hero);
 		this.context.addToLayer(Layers.FOREGROUND, monster);
@@ -163,12 +165,15 @@ public class WindowGame extends BasicGame {
 	public void render(GameContainer container, Graphics g) throws SlickException {
 		this.renderer.render(g);
 		ttf.drawString(GameConstant.WIDTH*GameConstant.TILE_SIZE-100, 15, "Life : "+hero.getLife(), Color.white);
+		if ( win ) {
+			ttfWin.drawString(GameConstant.WIDTH*GameConstant.TILE_SIZE/2-100, 200, "You won!", Color.red);
+		}
 	}
 
 	@Override
 	public void update(GameContainer container, int delta) throws SlickException {
 		elapsedTime += delta;
-		while ( elapsedTime > timeStep ) {
+		while ( elapsedTime > timeStep && !win) {
 			elapsedTime -= timeStep;
 
 			hero.getForce().x = forceX;
@@ -231,6 +236,9 @@ public class WindowGame extends BasicGame {
 			if ( hero.isOnGround() ) {
 				rewindAllowed = true;
 			}
+		}
+		if ( hero.isTouchedRightScreen() ) {
+			win = true;
 		}
 	}
 
