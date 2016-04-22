@@ -178,7 +178,7 @@ public class WindowGame extends BasicGame {
 			if ( !monster.isDead() && !monster.isDying() ) {
 				monster.update(timeStep);
 				monster.updateState();
-				monster.collide(hero, hero.getSpeed(), monster.getSpeed());
+				monster.collide(hero);
 			}
 			if ( monster.isDying() ) {
 				elapsedDyingTime += timeStep;
@@ -196,13 +196,13 @@ public class WindowGame extends BasicGame {
 			if ( door.isOpen() ) {
 				this.context.removeFromLayer(Layers.FOREGROUND, door);
 			} else {
-				door.collide(hero, hero.getSpeed(), door.getSpeed());
+				door.collide(hero);
 			}
 			trap.updateState();
 			trap.collide(hero);
 			trap2.updateState();
 			trap2.collide(hero);
-			key.collide(hero, hero.getSpeed(), key.getSpeed());
+			key.collide(hero);
 
 
 			if ( hero.isDying() ) {

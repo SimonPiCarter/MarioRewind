@@ -16,8 +16,8 @@ public class Enemy extends Movable implements ICollider {
 	}
 
 	@Override
-	public void collide(Hero hero, Coordinate heroSpeed, Coordinate ownSpeed) {
-		Collision col = ColliderToolbox.detectKillCollision(hero, this, heroSpeed, ownSpeed);
+	public void collide(Hero hero) {
+		Collision col = ColliderToolbox.detectKillCollision(hero, this, hero.getSpeed(), getSpeed());
 		if ( col == Collision.SECOND_ITEM_KILLED ) {
 			hero.setOnGround(true);
 			updateState(StateEvent.Die);

@@ -17,7 +17,7 @@ public class Door extends Movable implements ICollider  {
 	}
 
 	@Override
-	public void collide(Hero hero, Coordinate heroSpeed, Coordinate ownSpeed) {
+	public void collide(Hero hero) {
 		Coordinate pos = Coordinate.add(getPosition(), getHitBox().offset);
 		ColliderToolbox.adjustPositionToTile(hero, pos.x, pos.x+getHitBox().size.x, pos.y, pos.x+getHitBox().size.y);
 	}

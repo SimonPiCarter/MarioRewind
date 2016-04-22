@@ -23,10 +23,10 @@ public class Key extends Movable implements ICollider  {
 	}
 
 	@Override
-	public void collide(Hero hero, Coordinate heroSpeed, Coordinate ownSpeed) {
+	public void collide(Hero hero) {
 		if ( ColliderToolbox.collide(
 				Coordinate.add(hero.getPosition(),hero.getSpeed()), hero.getHitBox(),
-				Coordinate.add(getPosition(),ownSpeed), getHitBox()) ) {
+				Coordinate.add(getPosition(),getSpeed()), getHitBox()) ) {
 			used = true;
 			trigger.trigger();
 		}
