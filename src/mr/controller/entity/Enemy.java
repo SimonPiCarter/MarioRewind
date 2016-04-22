@@ -1,8 +1,8 @@
 package mr.controller.entity;
 
 import mr.controller.colliders.ColliderToolbox;
-import mr.controller.colliders.ICollider;
 import mr.controller.colliders.ColliderToolbox.Collision;
+import mr.controller.colliders.ICollider;
 import mr.controller.movable.Movable;
 import mr.model.misc.Coordinate;
 import mr.model.model.Model;
@@ -24,7 +24,7 @@ public class Enemy extends Movable implements ICollider {
 			setDying(true);
 		} else if ( col == Collision.FIRST_ITEM_KILLED ){
 			hero.updateState(StateEvent.Die);
-			hero.setDying(true);
+			hero.damage(1);
 		}
 	}
 

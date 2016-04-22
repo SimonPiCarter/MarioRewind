@@ -155,9 +155,6 @@ public class WindowGame extends BasicGame {
 
 
 			if ( hero.isDying() ) {
-				if ( elapsedHeroDyingTime == 0 ) {
-					--life;
-				}
 				elapsedHeroDyingTime += timeStep;
 				if ( elapsedHeroDyingTime > recoverThreshold ) {
 					elapsedHeroDyingTime = 0;

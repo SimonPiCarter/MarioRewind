@@ -28,4 +28,9 @@ public class Hero extends Movable {
 	public void setBacktrack(double backtrack) {
 		this.backtrack = backtrack;
 	}
+
+	public void damage(int dmg) {
+		life = Math.max(0, life-dmg);
+		setDying(true);
+	}
 }
