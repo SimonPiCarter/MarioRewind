@@ -22,6 +22,7 @@ import mr.controller.ai.action.IAction;
 import mr.controller.ai.action.Shoot;
 import mr.controller.ai.action.Waypoint;
 import mr.controller.entity.Hero;
+import mr.controller.entity.Trap;
 import mr.core.exception.FormatModelException;
 import mr.core.exception.InputFileNotFoundException;
 import mr.model.GameConstant;
@@ -29,6 +30,7 @@ import mr.model.GameConstant.Layers;
 import mr.model.Level;
 import mr.model.misc.Coordinate;
 import mr.model.state.Idle;
+import mr.model.state.trap.TrapUp;
 import mr.view.Renderer;
 import mr.view.RenderingContext;
 import mr.view.ResourceHandler;
@@ -43,6 +45,7 @@ public class WindowGame extends BasicGame {
 
 	private Hero hero;
 	private AI monster;
+	private Trap trap;
 	private Level lvl;
 
 	private float baseForce = 15;
@@ -96,6 +99,10 @@ public class WindowGame extends BasicGame {
 				"id",
 				new Idle(true),
 				ModelHandler.get().getAIModel("monster"));
+		this.trap = new Trap(new Coordinate(300, 416),
+				ModelHandler.get().getModel("trap"),
+				"id",
+				new TrapUp());
 
 		List<IAction> list = new ArrayList<IAction>();
 		list.add(new Waypoint(null, null, null, new Coordinate(100, 0)));
@@ -109,6 +116,7 @@ public class WindowGame extends BasicGame {
 
 		this.context.addToLayer(Layers.FOREGROUND, hero);
 		this.context.addToLayer(Layers.FOREGROUND, monster);
+		this.context.addToLayer(Layers.FOREGROUND, trap);
 		String level = "resources/level.lvl.txt";
 		try {
 			lvl = LevelLoader.loadLevel(level);
@@ -151,6 +159,7 @@ public class WindowGame extends BasicGame {
 			if ( monster.isDead() ) {
 				this.context.removeFromLayer(Layers.FOREGROUND, monster);
 			}
+			trap.collide(hero);
 
 
 			if ( hero.isDying() ) {

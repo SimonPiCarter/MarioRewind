@@ -1,5 +1,6 @@
-1 1 1 1
+2 1 1 1
 default resources/spriteFull.spt.txt 32 32 0 0 32 32
+trap resources/spriteTrap.spt.txt 64 32 0 22 64 10
 projmodel1 resources/projmodel1.spt.txt 32 32 10 10 5 5 1,0 1
 monster resources/spriteFull.spt.txt 32 32 0 0 32 32 0,5 1 projmodel1
 hero resources/spriteFull.spt.txt 32 32 0 0 32 32 0,5 3 100 projmodel1
