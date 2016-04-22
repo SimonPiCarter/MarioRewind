@@ -5,13 +5,13 @@ import java.util.ListIterator;
 
 import mr.controller.ProjectileHandler;
 import mr.controller.ai.action.IAction;
-import mr.controller.colliders.EnemyCollider;
+import mr.controller.entity.Enemy;
 import mr.model.misc.Coordinate;
 import mr.model.model.AIModel;
 import mr.model.model.Model;
 import mr.model.state.IState;
 
-public class AI extends EnemyCollider {
+public class AI extends Enemy {
 
 	private final AIModel model;
 

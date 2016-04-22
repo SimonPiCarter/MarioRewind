@@ -1,16 +1,17 @@
-package mr.controller.colliders;
+package mr.controller.entity;
 
+import mr.controller.colliders.ColliderToolbox;
+import mr.controller.colliders.ICollider;
 import mr.controller.colliders.ColliderToolbox.Collision;
-import mr.controller.entity.Hero;
 import mr.controller.movable.Movable;
 import mr.model.misc.Coordinate;
 import mr.model.model.Model;
 import mr.model.state.IState;
 import mr.model.state.IState.StateEvent;
 
-public class EnemyCollider extends Movable implements ICollider {
+public class Enemy extends Movable implements ICollider {
 
-	public EnemyCollider(Coordinate position, Model model, String id, IState state) {
+	public Enemy(Coordinate position, Model model, String id, IState state) {
 		super(position, model, id, state);
 	}
 
