@@ -1,12 +1,13 @@
 package mr.controller.entity;
 
+import mr.controller.colliders.ICollider;
 import mr.controller.movable.Movable;
 import mr.model.misc.Coordinate;
 import mr.model.model.Model;
 import mr.model.state.AbstractState.StateEvent;
 import mr.model.state.trap.TrapState;
 
-public class Trap extends Movable {
+public class Trap extends Movable implements ICollider {
 
 	private TrapState state;
 
@@ -21,6 +22,7 @@ public class Trap extends Movable {
 		state = state.handleEvent(event);
 	}
 
+	@Override
 	public void collide(Hero hero) {
 		state.collide(hero, this, getSpeed());
 	}
