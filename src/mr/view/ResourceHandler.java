@@ -6,7 +6,6 @@ import java.util.Map;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-import mr.controller.RenderingImageLoader;
 import mr.model.GameConstant;
 import mr.model.Sprite;
 

@@ -1,4 +1,4 @@
-package mr.controller;
+package mr.view;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -8,7 +8,6 @@ import java.util.Scanner;
 import mr.core.exception.InputFileNotFoundException;
 import mr.model.GameConstant;
 import mr.model.misc.Coordinate;
-import mr.view.RenderingImage;
 
 public class RenderingImageLoader {
 
