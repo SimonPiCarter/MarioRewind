@@ -181,6 +181,7 @@ public class DemoLevel implements ICore {
 				monster.collide(hero);
 			}
 			if ( monster.isDying() ) {
+				monster.stop();
 				elapsedDyingTime += timeStep;
 				if ( elapsedDyingTime > deadThreshold ) {
 					monster.setDead(true);
