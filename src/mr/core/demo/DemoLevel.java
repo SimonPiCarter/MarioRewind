@@ -11,6 +11,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;
 
+import mr.controller.EntityHandler;
 import mr.controller.LevelLoader;
 import mr.controller.ModelHandler;
 import mr.controller.ProjectileHandler;
@@ -65,11 +66,7 @@ public class DemoLevel implements ICore {
 
 	private boolean win;
 
-	private int deadThreshold = 1000;
-	private int elapsedDyingTime = 0;
-
-	private int recoverThreshold = 1500;
-	private int elapsedHeroDyingTime = 0;
+	private EntityHandler handler;
 
 	private TrueTypeFont ttf;
 	private TrueTypeFont ttfWin;
@@ -153,6 +150,13 @@ public class DemoLevel implements ICore {
 			System.err.println("Cannot load level : "+level);
 			e.printStackTrace();
 		}
+
+		handler = new EntityHandler(hero);
+		handler.addCollider(door);
+		handler.addCollider(key);
+		handler.addCollider(trap);
+		handler.addCollider(trap2);
+		handler.addEnemy(monster);
 	}
 
 	@Override
@@ -172,52 +176,7 @@ public class DemoLevel implements ICore {
 
 			hero.getForce().x = forceX;
 
-			hero.updateSpeed();
-
-			if ( !monster.isDead() && !monster.isDying() ) {
-				monster.update(timeStep);
-				monster.updateState();
-				monster.collide(hero);
-			}
-			if ( monster.isDying() ) {
-				monster.stop();
-				elapsedDyingTime += timeStep;
-				if ( elapsedDyingTime > deadThreshold ) {
-					monster.setDead(true);
-					monster.setDying(false);
-				}
-			}
-			if ( monster.isDead() ) {
-				this.context.removeFromLayer(Layers.FOREGROUND, monster);
-			}
-			if ( key.isUsed() ) {
-				this.context.removeFromLayer(Layers.FOREGROUND, key);
-			}
-			if ( door.isOpen() ) {
-				this.context.removeFromLayer(Layers.FOREGROUND, door);
-			} else {
-				door.collide(hero);
-			}
-			trap.updateState();
-			trap.collide(hero);
-			trap2.updateState();
-			trap2.collide(hero);
-			key.updateState();
-			key.collide(hero);
-
-
-			if ( hero.isDying() ) {
-				elapsedHeroDyingTime += timeStep;
-				if ( elapsedHeroDyingTime > recoverThreshold ) {
-					elapsedHeroDyingTime = 0;
-					hero.setDying(false);
-
-				}
-			}
-
-
-			hero.move(lvl.getStartingScreen());
-			monster.move(lvl.getStartingScreen());
+			handler.update(timeStep, lvl.getStartingScreen(), context);
 
 			ProjectileHandler.get().update(hero);
 
