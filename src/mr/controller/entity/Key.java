@@ -32,4 +32,9 @@ public class Key extends Movable implements ICollider  {
 		}
 
 	}
+
+	@Override
+	public boolean isActive() {
+		return !isUsed();
+	}
 }

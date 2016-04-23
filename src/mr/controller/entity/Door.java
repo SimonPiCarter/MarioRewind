@@ -25,4 +25,9 @@ public class Door extends Movable implements ICollider  {
 	public boolean isOpen() {
 		return event.isTriggered();
 	}
+
+	@Override
+	public boolean isActive() {
+		return !isOpen();
+	}
 }

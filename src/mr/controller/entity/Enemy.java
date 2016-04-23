@@ -34,4 +34,9 @@ public class Enemy extends AI implements ICollider {
 	public EnemyModel getModel() {
 		return model;
 	}
+
+	@Override
+	public boolean isActive() {
+		return !isDead();
+	}
 }

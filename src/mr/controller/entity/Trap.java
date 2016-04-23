@@ -26,4 +26,9 @@ public class Trap extends Movable implements ICollider {
 	public void collide(Hero hero) {
 		state.collide(hero, this, getSpeed());
 	}
+
+	@Override
+	public boolean isActive() {
+		return true;
+	}
 }
