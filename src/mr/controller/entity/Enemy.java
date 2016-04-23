@@ -1,17 +1,17 @@
 package mr.controller.entity;
 
+import mr.controller.ai.AI;
 import mr.controller.colliders.ColliderToolbox;
 import mr.controller.colliders.ColliderToolbox.Collision;
 import mr.controller.colliders.ICollider;
-import mr.controller.movable.Movable;
 import mr.model.misc.Coordinate;
-import mr.model.model.Model;
+import mr.model.model.AIModel;
 import mr.model.state.AbstractState;
 import mr.model.state.AbstractState.StateEvent;
 
-public class Enemy extends Movable implements ICollider {
+public class Enemy extends AI implements ICollider {
 
-	public Enemy(Coordinate position, Model model, String id, AbstractState state) {
+	public Enemy(Coordinate position, AIModel model, String id, AbstractState state) {
 		super(position, model, id, state);
 	}
 

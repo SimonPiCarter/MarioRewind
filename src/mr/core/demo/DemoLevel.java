@@ -15,11 +15,11 @@ import mr.controller.LevelLoader;
 import mr.controller.ModelHandler;
 import mr.controller.ProjectileHandler;
 import mr.controller.Rewinder;
-import mr.controller.ai.AI;
 import mr.controller.ai.action.IAction;
 import mr.controller.ai.action.Shoot;
 import mr.controller.ai.action.Waypoint;
 import mr.controller.entity.Door;
+import mr.controller.entity.Enemy;
 import mr.controller.entity.Hero;
 import mr.controller.entity.Key;
 import mr.controller.entity.Trap;
@@ -47,7 +47,7 @@ public class DemoLevel implements ICore {
 	private Renderer renderer;
 
 	private Hero hero;
-	private AI monster;
+	private Enemy monster;
 	private Trap trap;
 	private Trap trap2;
 	private Key key;
@@ -99,11 +99,10 @@ public class DemoLevel implements ICore {
 				new Idle(true),
 				0,
 				0);
-		this.monster = new AI(new Coordinate(200, 416),
-				ModelHandler.get().getModel("default"),
+		this.monster = new Enemy(new Coordinate(200, 416),
+				ModelHandler.get().getAIModel("monster"),
 				"id",
-				new Idle(true),
-				ModelHandler.get().getAIModel("monster"));
+				new Idle(true));
 		this.trap = new Trap(new Coordinate(300, 416),
 				ModelHandler.get().getModel("trap32"),
 				"id",
