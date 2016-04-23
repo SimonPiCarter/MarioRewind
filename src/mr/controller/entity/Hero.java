@@ -8,12 +8,14 @@ import mr.model.state.AbstractState;
 public class Hero extends Movable {
 	private int life;
 	private float backtrack;
+	private final HeroModel model;
 
 	public Hero(Coordinate position, HeroModel model, String id, AbstractState state, int life,
 			double backtrack) {
 		super(position, model, id, state);
 		this.life = model.getLife();
 		this.backtrack = model.getBacktrack();
+		this.model = model;
 	}
 
 	public int getLife() {
@@ -32,5 +34,9 @@ public class Hero extends Movable {
 	public void damage(int dmg) {
 		life = Math.max(0, life-dmg);
 		setDying(true);
+	}
+
+	public HeroModel getModel() {
+		return model;
 	}
 }

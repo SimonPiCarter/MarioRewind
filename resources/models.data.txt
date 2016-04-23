@@ -6,4 +6,4 @@ redDoor resources/redDoor.spt.txt 32 64 0 0 32 64
 redKey resources/redKey.spt.txt 32 32 5 5 20 20
 projmodel1 resources/projmodel1.spt.txt 32 32 10 10 5 5 1,0 1
 monster resources/spriteFull.spt.txt 32 32 0 0 32 32 0,5 projmodel1 1 1000
-hero resources/spriteFull.spt.txt 32 32 0 0 32 32 0,5 3 100 projmodel1
+hero resources/spriteFull.spt.txt 32 32 0 0 32 32 0,5 3 100 projmodel1 1500

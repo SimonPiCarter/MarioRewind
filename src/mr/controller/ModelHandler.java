@@ -148,6 +148,7 @@ public class ModelHandler {
 		model.setLife(scanner.nextInt());
 		model.setBacktrack(scanner.nextFloat());
 		model.setProjectileModel(scanner.next());
+		model.setRecoverThreshold(scanner.nextInt());
 	}
 
 	private static ModelHandler instance;

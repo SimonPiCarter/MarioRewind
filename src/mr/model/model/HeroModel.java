@@ -5,6 +5,7 @@ public class HeroModel extends Model {
 	private int life;
 	private float backtrack;
 	private String projectileModel;
+	private int recoverThreshold;
 
 	public float getSpeed() {
 		return speed;
@@ -29,5 +30,11 @@ public class HeroModel extends Model {
 	}
 	public void setProjectileModel(String projectileModel) {
 		this.projectileModel = projectileModel;
+	}
+	public int getRecoverThreshold() {
+		return recoverThreshold;
+	}
+	public void setRecoverThreshold(int recoverThreshold) {
+		this.recoverThreshold = recoverThreshold;
 	}
 }
