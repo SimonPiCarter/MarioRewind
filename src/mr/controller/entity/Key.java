@@ -1,14 +1,13 @@
 package mr.controller.entity;
 
+import mr.controller.colliders.AbstractMovableCollider;
 import mr.controller.colliders.ColliderToolbox;
-import mr.controller.colliders.ICollider;
-import mr.controller.movable.Movable;
 import mr.model.Trigger;
 import mr.model.misc.Coordinate;
 import mr.model.model.Model;
 import mr.model.state.AbstractState;
 
-public class Key extends Movable implements ICollider  {
+public class Key extends AbstractMovableCollider {
 	private boolean used;
 	private final Trigger trigger;
 

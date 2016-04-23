@@ -1,14 +1,13 @@
 package mr.controller.entity;
 
+import mr.controller.colliders.AbstractMovableCollider;
 import mr.controller.colliders.ColliderToolbox;
-import mr.controller.colliders.ICollider;
-import mr.controller.movable.Movable;
 import mr.model.Event;
 import mr.model.misc.Coordinate;
 import mr.model.model.Model;
 import mr.model.state.AbstractState;
 
-public class Door extends Movable implements ICollider  {
+public class Door extends AbstractMovableCollider {
 	private final Event event;
 
 	public Door(Coordinate position, Model model, String id, AbstractState state, Event event) {

@@ -202,6 +202,7 @@ public class DemoLevel implements ICore {
 			trap.collide(hero);
 			trap2.updateState();
 			trap2.collide(hero);
+			key.updateState();
 			key.collide(hero);
 
 

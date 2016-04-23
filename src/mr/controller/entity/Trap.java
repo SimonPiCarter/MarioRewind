@@ -1,13 +1,12 @@
 package mr.controller.entity;
 
-import mr.controller.colliders.ICollider;
-import mr.controller.movable.Movable;
+import mr.controller.colliders.AbstractMovableCollider;
 import mr.model.misc.Coordinate;
 import mr.model.model.Model;
 import mr.model.state.AbstractState.StateEvent;
 import mr.model.state.trap.TrapState;
 
-public class Trap extends Movable implements ICollider {
+public class Trap extends AbstractMovableCollider {
 
 	private TrapState state;
 
