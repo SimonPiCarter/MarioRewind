@@ -93,9 +93,7 @@ public class DemoLevel implements ICore {
 				new Coordinate(0, 0),
 				ModelHandler.get().getHeroModel("hero"),
 				"id",
-				new Idle(true),
-				0,
-				0);
+				new Idle(true));
 		this.monster = new Enemy(new Coordinate(200, 416),
 				ModelHandler.get().getEnemyModel("monster"),
 				"id",

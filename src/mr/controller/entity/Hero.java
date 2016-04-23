@@ -10,8 +10,7 @@ public class Hero extends Movable {
 	private float backtrack;
 	private final HeroModel model;
 
-	public Hero(Coordinate position, HeroModel model, String id, AbstractState state, int life,
-			double backtrack) {
+	public Hero(Coordinate position, HeroModel model, String id, AbstractState state) {
 		super(position, model, id, state);
 		this.life = model.getLife();
 		this.backtrack = model.getBacktrack();
