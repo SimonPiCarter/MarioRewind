@@ -1,4 +1,0 @@
-resources/trap32.png
-550 32 32 2
-4
-4

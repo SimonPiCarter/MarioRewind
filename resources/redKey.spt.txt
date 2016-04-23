@@ -1,3 +1,0 @@
-resources/redKey.png
-250 32 32 1
-8

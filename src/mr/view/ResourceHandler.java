@@ -6,6 +6,7 @@ import java.util.Map;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+import mr.core.exception.FormatModelException;
 import mr.model.GameConstant;
 import mr.model.Sprite;
 
@@ -34,15 +35,17 @@ public class ResourceHandler {
 		return resourcesImages.get(path);
 	}
 
+	public static void loadImage(String type, String[] string) throws FormatModelException {
+		RenderingImage image = RenderingImageLoader.LoadRenderingImage(string);
+		if ( image != null ) {
+			resourcesRenderingImages.put(type, image);
+		}
+	}
+
 	public static RenderingImage getRenderingImage(Sprite sprite) {
 		// Load the file if necessary
 		if ( !resourcesRenderingImages.containsKey(sprite.getType()) ) {
-			try {
-				resourcesRenderingImages.put(sprite.getType(), RenderingImageLoader.LoadRenderingImage(sprite.getType()));
-			} catch (Exception e) {
-				System.err.println("Cannot load file "+sprite.getType()+" use default image instead");
-				resourcesRenderingImages.put(sprite.getType(), new RenderingImage(sprite.getPosition(),sprite.getSize(),GameConstant.defaultPathToImage));
-			}
+			resourcesRenderingImages.put(sprite.getType(), new RenderingImage(sprite.getPosition(),sprite.getSize(),GameConstant.defaultPathToImage));
 		}
 
 		return new RenderingImage(resourcesRenderingImages.get(sprite.getType()));

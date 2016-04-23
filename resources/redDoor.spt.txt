@@ -1,3 +1,0 @@
-resources/redDoor.png
-1500 32 64 1
-1

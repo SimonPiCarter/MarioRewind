@@ -3,6 +3,7 @@ package mr.controller;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -16,6 +17,7 @@ import mr.model.model.EnemyModel;
 import mr.model.model.HeroModel;
 import mr.model.model.Model;
 import mr.model.model.ProjectileModel;
+import mr.view.ResourceHandler;
 
 public class ModelHandler {
 
@@ -75,22 +77,25 @@ public class ModelHandler {
 			for ( int i = 0 ; i < numbersOfModel.length ; ++ i ) {
 				for ( int j = 0 ; j < Integer.parseInt(numbersOfModel[i]) ; ++ j ) {
 					if ( i == 0 ) {
+						String[] string = scanner.nextLine().split(" ");
+						ResourceHandler.loadImage(string[0], Arrays.copyOfRange(string,1,string.length));
+					} else if ( i == 1 ) {
 						Model model = new Model();
 						parseModel(model,scanner);
 						models.put(model.getId(),model);
-					} else if ( i == 1 ) {
+					} else if ( i == 2 ) {
 						ProjectileModel model = new ProjectileModel();
 						parseProjectileModel(model,scanner);
 						projectileModels.put(model.getId(),model);
-					} else if ( i == 2 ) {
+					} else if ( i == 3 ) {
 						AIModel model = new AIModel();
 						parseAIModel(model,scanner);
 						aiModels.put(model.getId(),model);
-					} else if ( i == 3 ) {
+					} else if ( i == 4 ) {
 						EnemyModel model = new EnemyModel();
 						parseEnemyModel(model,scanner);
 						enemyModels.put(model.getId(),model);
-					} else if ( i == 4 ) {
+					} else if ( i == 5 ) {
 						HeroModel model = new HeroModel();
 						parseHeroModel(model,scanner);
 						heroModels.put(model.getId(),model);

@@ -1,9 +1,15 @@
-5 1 0 1 1
-default resources/spriteFull.spt.txt 32 32 0 0 32 32
-trap32 resources/spriteTrap32.spt.txt 32 32 0 22 32 10
-trap64 resources/spriteTrap64.spt.txt 64 32 0 22 64 10
-redDoor resources/redDoor.spt.txt 32 64 0 0 32 64
-redKey resources/redKey.spt.txt 32 32 5 5 20 20
-projmodel1 resources/projmodel1.spt.txt 32 32 10 10 5 5 1,0 1
-monster resources/spriteFull.spt.txt 32 32 0 0 32 32 0,5 projmodel1 1 1000
-hero resources/spriteFull.spt.txt 32 32 0 0 32 32 0,5 3 100 projmodel1 1500
+6 5 1 0 1 1
+spriteFull resources/spriteFull.png 250 32 32 4 4 4 4 4 4 4 4 4 4 4
+spriteTrap32 resources/trap32.png 550 32 32 4 4
+spriteTrap64 resources/trap64.png 550 64 32 4 4
+redKey redKey.png 250 32 32 8
+redDoor redDoor.png 1500 32 64 1
+projmodel1 projmodel1.png 750 32 32 2
+default spriteFull 32 32 0 0 32 32
+trap32 spriteTrap32 32 32 0 22 32 10
+trap64 spriteTrap64 64 32 0 22 64 10
+redDoor redDoor 32 64 0 0 32 64
+redKey redKey 32 32 5 5 20 20
+projmodel1 projmodel1 32 32 10 10 5 5 1,0 1
+monster spriteFull 32 32 0 0 32 32 0,5 projmodel1 1 1000
+hero spriteFull 32 32 0 0 32 32 0,5 3 100 projmodel1 1500
