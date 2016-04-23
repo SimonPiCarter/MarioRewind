@@ -19,19 +19,17 @@ import mr.controller.Rewinder;
 import mr.controller.ai.action.IAction;
 import mr.controller.ai.action.Shoot;
 import mr.controller.ai.action.Waypoint;
-import mr.controller.entity.Door;
+import mr.controller.colliders.AbstractMovableCollider;
 import mr.controller.entity.Enemy;
 import mr.controller.entity.Hero;
-import mr.controller.entity.Key;
 import mr.controller.entity.Trap;
+import mr.controller.factory.DoorKeyFactory;
 import mr.core.ICore;
 import mr.core.exception.FormatModelException;
 import mr.core.exception.InputFileNotFoundException;
-import mr.model.Event;
 import mr.model.GameConstant;
 import mr.model.GameConstant.Layers;
 import mr.model.Level;
-import mr.model.Trigger;
 import mr.model.misc.Coordinate;
 import mr.model.state.Idle;
 import mr.model.state.trap.TrapUp;
@@ -48,11 +46,6 @@ public class DemoLevel implements ICore {
 	private Renderer renderer;
 
 	private Hero hero;
-	private Enemy monster;
-	private Trap trap;
-	private Trap trap2;
-	private Key key;
-	private Door door;
 
 	private Level lvl;
 
@@ -65,6 +58,7 @@ public class DemoLevel implements ICore {
 	private int elapsedTime = 0;
 
 	private boolean win;
+	private boolean lost;
 
 	private EntityHandler handler;
 
@@ -94,41 +88,32 @@ public class DemoLevel implements ICore {
 				ModelHandler.get().getHeroModel("hero"),
 				"id",
 				new Idle(true));
-		this.monster = new Enemy(new Coordinate(200, 416),
+		Enemy monster = new Enemy(new Coordinate(200, 416),
 				ModelHandler.get().getEnemyModel("monster"),
 				"id",
 				new Idle(true));
-		this.trap = new Trap(new Coordinate(300, 416),
+		Trap trap = new Trap(new Coordinate(300, 416),
 				ModelHandler.get().getModel("trap32"),
 				"id",
 				new TrapUp());
-		this.trap2 = new Trap(new Coordinate(500, 416),
+		Trap trap2 = new Trap(new Coordinate(500, 416),
 				ModelHandler.get().getModel("trap64"),
 				"id",
 				new TrapUp());
 
 		// Door & Key
-		Trigger keyTrigger = new Trigger(new ArrayList<Event>());
-		Event doorEvent = new Event("id");
-		this.key = new Key(new Coordinate(450,100),
-				ModelHandler.get().getModel("redKey"),
-				"id",
-				new Idle(true),
-				keyTrigger);
-		keyTrigger.getEvents().add(doorEvent);
-		this.door = new Door(
+		AbstractMovableCollider[] doorKeys = DoorKeyFactory.getNewDoorKey(
+				DoorKeyFactory.Color.red,
 				new Coordinate(19*GameConstant.TILE_SIZE,12*GameConstant.TILE_SIZE),
-				ModelHandler.get().getModel("redDoor"),
-				"id",
-				new Idle(true),
-				doorEvent);
+				new Coordinate(450,100)
+				).toArray(new AbstractMovableCollider[0]);
 
 		List<IAction> list = new ArrayList<IAction>();
 		list.add(new Waypoint(null, null, null, new Coordinate(100, 0)));
 		list.add(new Shoot(null, null, null, new Coordinate(0, -1),750));
 		list.add(new Waypoint(null, null, null, new Coordinate(450, 0)));
 		list.add(new Shoot(null, null, null, new Coordinate(0, -1),750));
-		this.monster.setActions(list);
+		monster.setActions(list);
 
 		ttf = new TrueTypeFont(new Font("Verdana", Font.BOLD, 20), true);
 		ttfWin = new TrueTypeFont(new Font("Verdana", Font.BOLD, 40), true);
@@ -137,8 +122,7 @@ public class DemoLevel implements ICore {
 		this.context.addToLayer(Layers.FOREGROUND, monster);
 		this.context.addToLayer(Layers.FOREGROUND, trap);
 		this.context.addToLayer(Layers.FOREGROUND, trap2);
-		this.context.addToLayer(Layers.FOREGROUND, key);
-		this.context.addToLayer(Layers.FOREGROUND, door);
+		this.context.addToLayer(Layers.FOREGROUND, doorKeys);
 		String level = "resources/level.lvl.txt";
 		try {
 			lvl = LevelLoader.loadLevel(level);
@@ -150,10 +134,9 @@ public class DemoLevel implements ICore {
 		}
 
 		handler = new EntityHandler(hero);
-		handler.addCollider(door);
-		handler.addCollider(key);
 		handler.addCollider(trap);
 		handler.addCollider(trap2);
+		handler.addCollider(doorKeys);
 		handler.addEnemy(monster);
 	}
 
@@ -163,13 +146,18 @@ public class DemoLevel implements ICore {
 		ttf.drawString(GameConstant.WIDTH*GameConstant.TILE_SIZE-100, 15, "Life : "+hero.getLife(), Color.white);
 		if ( win ) {
 			ttfWin.drawString(GameConstant.WIDTH*GameConstant.TILE_SIZE/2-100, 200, "You won!", Color.red);
+		} else if ( lost ) {
+			ttfWin.drawString(GameConstant.WIDTH*GameConstant.TILE_SIZE/2-100, 200, "You lost!", Color.red);
 		}
 	}
 
 	@Override
 	public ICore update(GameContainer container, int delta) throws SlickException {
 		elapsedTime += delta;
-		while ( elapsedTime > timeStep && !win) {
+		if ( hero.getLife() == 0 ) {
+			lost = true;
+		}
+		while ( elapsedTime > timeStep && !win && !lost) {
 			elapsedTime -= timeStep;
 
 			hero.getForce().x = forceX;

@@ -29,8 +29,10 @@ public class EntityHandler {
 		enemiesWithDeathTimer.put(enemy, Integer.valueOf(0));
 	}
 
-	public void addCollider(AbstractMovableCollider collider) {
-		colliders.add(collider);
+	public void addCollider(AbstractMovableCollider... collider) {
+		for ( AbstractMovableCollider col : collider ) {
+			colliders.add(col);
+		}
 	}
 
 	public void update(int timeStep, Screen screen, RenderingContext context) {
