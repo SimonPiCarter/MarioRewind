@@ -19,6 +19,7 @@ public abstract class AbstractState {
 	public AbstractState(int state) {
 		sequence = new Sequence();
 		sequence.getStates().add(Integer.valueOf(state));
+		sequence.setLoop(true);
 	}
 
 	public AbstractState(int state, boolean loop) {
