@@ -121,7 +121,7 @@ public class WindowGame extends BasicGame {
 		// Door & Key
 		Trigger keyTrigger = new Trigger(new ArrayList<Event>());
 		Event doorEvent = new Event("id");
-		this.key = new Key(new Coordinate(450,200),
+		this.key = new Key(new Coordinate(450,100),
 				ModelHandler.get().getModel("redKey"),
 				"id",
 				new Idle(true),

@@ -11,7 +11,7 @@ public class GameConstant {
 	public static final String defaultPathToImage = "resources/default.png";
 
 	public final static float TILE_SIZE = 32;
-	public static final float HORIZONTAL_LIMIT = 1.5f;
+	public static final float HORIZONTAL_LIMIT = 1.f;
 	public static final float VERTICAL_LIMIT = 5.5f;
 
 	public static final float epsilon = 1e-1f;
