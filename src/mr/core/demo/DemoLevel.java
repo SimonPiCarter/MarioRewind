@@ -100,7 +100,7 @@ public class DemoLevel implements ICore {
 				0,
 				0);
 		this.monster = new Enemy(new Coordinate(200, 416),
-				ModelHandler.get().getAIModel("monster"),
+				ModelHandler.get().getEnemyModel("monster"),
 				"id",
 				new Idle(true));
 		this.trap = new Trap(new Coordinate(300, 416),

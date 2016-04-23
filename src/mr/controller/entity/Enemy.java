@@ -5,14 +5,16 @@ import mr.controller.colliders.ColliderToolbox;
 import mr.controller.colliders.ColliderToolbox.Collision;
 import mr.controller.colliders.ICollider;
 import mr.model.misc.Coordinate;
-import mr.model.model.AIModel;
+import mr.model.model.EnemyModel;
 import mr.model.state.AbstractState;
 import mr.model.state.AbstractState.StateEvent;
 
 public class Enemy extends AI implements ICollider {
+	private final EnemyModel model;
 
-	public Enemy(Coordinate position, AIModel model, String id, AbstractState state) {
+	public Enemy(Coordinate position, EnemyModel model, String id, AbstractState state) {
 		super(position, model, id, state);
+		this.model = model;
 	}
 
 	@Override
@@ -29,4 +31,7 @@ public class Enemy extends AI implements ICollider {
 		}
 	}
 
+	public EnemyModel getModel() {
+		return model;
+	}
 }
