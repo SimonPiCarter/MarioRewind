@@ -71,6 +71,7 @@ public class ProjectileHandler {
 	}
 
 	public void setContext(RenderingContext context) {
+		projectiles.clear();
 		this.context = context;
 	}
 

@@ -11,7 +11,6 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;
 
-import mr.controller.EntityHandler;
 import mr.controller.LevelLoader;
 import mr.controller.ModelHandler;
 import mr.controller.ProjectileHandler;
@@ -37,10 +36,7 @@ public class DemoLevel implements ICore {
 
 	private RenderingContext context;
 	private Rewinder rewinder;
-
 	private Renderer renderer;
-
-	private Hero hero;
 
 	private Level lvl;
 
@@ -54,8 +50,6 @@ public class DemoLevel implements ICore {
 
 	private boolean win;
 	private boolean lost;
-
-	private EntityHandler handler;
 
 	private TrueTypeFont ttf;
 	private TrueTypeFont ttfWin;
@@ -90,26 +84,24 @@ public class DemoLevel implements ICore {
 			System.err.println("Cannot load level : "+level);
 			e.printStackTrace();
 		}
-		this.handler = lvl.getStartingScreen().getHandler();
-		this.hero = lvl.getHero();
 
 		List<IAction> list = new ArrayList<IAction>();
 		list.add(new Waypoint(null, null, null, new Coordinate(100, 0)));
 		list.add(new Shoot(null, null, null, new Coordinate(0, -1),750));
 		list.add(new Waypoint(null, null, null, new Coordinate(450, 0)));
 		list.add(new Shoot(null, null, null, new Coordinate(0, -1),750));
-		this.handler.getEnemies().iterator().next().setActions(list);
+		this.lvl.getStartingScreen().getHandler().getEnemies().iterator().next().setActions(list);
 
 
 		this.context.addToLayer(Layers.FOREGROUND, this.lvl.getHero());
-		this.context.addToLayer(Layers.FOREGROUND, this.handler.getEnemies().toArray(new Item[0]));
-		this.context.addToLayer(Layers.FOREGROUND, this.handler.getColliders().toArray(new Item[0]));
+		this.context.addToLayer(Layers.FOREGROUND, this.lvl.getStartingScreen().getHandler().getEnemies().toArray(new Item[0]));
+		this.context.addToLayer(Layers.FOREGROUND, this.lvl.getStartingScreen().getHandler().getColliders().toArray(new Item[0]));
 	}
 
 	@Override
 	public void render(GameContainer container, Graphics g) throws SlickException {
 		this.renderer.render(g);
-		ttf.drawString(GameConstant.WIDTH*GameConstant.TILE_SIZE-100, 15, "Life : "+hero.getLife(), Color.white);
+		ttf.drawString(GameConstant.WIDTH*GameConstant.TILE_SIZE-100, 15, "Life : "+lvl.getHero().getLife(), Color.white);
 		if ( win ) {
 			ttfWin.drawString(GameConstant.WIDTH*GameConstant.TILE_SIZE/2-100, 200, "You won!", Color.red);
 		} else if ( lost ) {
@@ -119,6 +111,7 @@ public class DemoLevel implements ICore {
 
 	@Override
 	public ICore update(GameContainer container, int delta) throws SlickException {
+		Hero hero = lvl.getHero();
 		elapsedTime += delta;
 		if ( hero.getLife() == 0 ) {
 			lost = true;
@@ -128,7 +121,7 @@ public class DemoLevel implements ICore {
 
 			hero.getForce().x = forceX;
 
-			handler.update(timeStep, lvl.getStartingScreen(), context);
+			lvl.getStartingScreen().getHandler().update(timeStep, lvl.getStartingScreen(), context);
 
 			ProjectileHandler.get().update(hero);
 
@@ -153,8 +146,8 @@ public class DemoLevel implements ICore {
 
 	@Override
 	public void keyPressed(int key, char c) {
-		if ( ( c == 'z' || key == Input.KEY_UP ) && hero.isOnGround() ) {
-			hero.getForce().setY(-250);
+		if ( ( c == 'z' || key == Input.KEY_UP ) && lvl.getHero().isOnGround() ) {
+			lvl.getHero().getForce().setY(-250);
 		}
 		if ( c == 'q' || key == Input.KEY_LEFT ) {
 			forceX = -baseForce;
@@ -183,7 +176,7 @@ public class DemoLevel implements ICore {
 			rewind = false;
 		}
 		if ( c == 'x' ) {
-			hero.setDying(false);
+			lvl.getHero().setDying(false);
 		}
 	}
 
