@@ -14,7 +14,7 @@ public class WindowGame extends BasicGame {
 
 	public WindowGame() {
 		super("Core :: WindowGame");
-		core = new DemoLevel();
+		core = new DemoLevel("resources/level.lvl.txt");
 	}
 
 	@Override

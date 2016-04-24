@@ -49,6 +49,12 @@ public class DemoLevel implements ICore {
 	private TrueTypeFont ttf;
 	private TrueTypeFont ttfWin;
 
+	private final String levelPath;
+
+	public DemoLevel(String levelPath) {
+		this.levelPath = levelPath;
+	}
+
 	@Override
 	public void init(GameContainer container) throws SlickException {
 		// Load default image
@@ -70,13 +76,12 @@ public class DemoLevel implements ICore {
 		ttf = new TrueTypeFont(new Font("Verdana", Font.BOLD, 20), true);
 		ttfWin = new TrueTypeFont(new Font("Verdana", Font.BOLD, 40), true);
 
-		String level = "resources/level.lvl.txt";
 		try {
-			this.lvl = LevelLoader.loadLevel(level);
+			this.lvl = LevelLoader.loadLevel(levelPath);
 
 			this.screenHanlder.init(lvl, lvl.getStartingScreen());
 		} catch (InputFileNotFoundException e) {
-			System.err.println("Cannot load level : "+level);
+			System.err.println("Cannot load level : "+levelPath);
 			e.printStackTrace();
 		}
 
