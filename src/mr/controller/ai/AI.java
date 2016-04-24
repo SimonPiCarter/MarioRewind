@@ -25,17 +25,19 @@ public class AI extends Movable {
 	}
 
 	public void update(int delta) {
-		if ( current == null && it.hasNext() ) {
-			current = it.next();
-			current.start();
-		}
-		current.update(this, delta);
-
-		if ( current.isOver() ) {
-			if ( !it.hasNext() ) {
-				it = actions.listIterator();
+		if ( it != null ) {
+			if ( current == null && it.hasNext() ) {
+				current = it.next();
+				current.start();
 			}
-			current = null;
+			current.update(this, delta);
+
+			if ( current.isOver() ) {
+				if ( !it.hasNext() ) {
+					it = actions.listIterator();
+				}
+				current = null;
+			}
 		}
 	}
 

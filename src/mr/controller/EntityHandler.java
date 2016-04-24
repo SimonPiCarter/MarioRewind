@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import mr.controller.colliders.AbstractMovableCollider;
 import mr.controller.entity.Enemy;
@@ -33,6 +34,14 @@ public class EntityHandler {
 		for ( AbstractMovableCollider col : collider ) {
 			colliders.add(col);
 		}
+	}
+
+	public Set<Enemy> getEnemies() {
+		return enemiesWithDeathTimer.keySet();
+	}
+
+	public List<AbstractMovableCollider> getColliders() {
+		return colliders;
 	}
 
 	public void update(int timeStep, Screen screen, RenderingContext context) {

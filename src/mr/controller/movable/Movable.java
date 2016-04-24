@@ -38,7 +38,7 @@ public class Movable extends Item {
 
 		for ( int i = 0 ; i < GameConstant.WIDTH ; ++ i ) {
 			for ( int j = 0 ; j < GameConstant.HEIGHT ; ++ j ) {
-				if ( screen.getTiles()[i+j*GameConstant.WIDTH] > 0 ) {
+				if ( screen.getTiles()[i+j*GameConstant.WIDTH] > 0 && screen.getTiles()[i+j*GameConstant.WIDTH] < screen.getNbTiles()+1 ) {
 					adjustPositionToTile(i,j,speed);
 				}
 			}

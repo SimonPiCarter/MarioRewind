@@ -7,11 +7,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import mr.controller.entity.Enemy;
+import mr.controller.entity.Hero;
+import mr.controller.entity.Trap;
+import mr.controller.factory.DoorKeyFactory;
 import mr.core.exception.FormatLevelException;
 import mr.core.exception.InputFileNotFoundException;
 import mr.model.GameConstant;
 import mr.model.Level;
 import mr.model.Screen;
+import mr.model.misc.Coordinate;
+import mr.model.state.Idle;
+import mr.model.state.trap.TrapUp;
 
 public class LevelLoader {
 
@@ -35,16 +42,24 @@ public class LevelLoader {
 
 		Path pathFile = Paths.get(path);
 		Scanner scanner = null;
-		Level level = null;
+		Level level = new Level();
 		try {
 			scanner = new Scanner(pathFile, GameConstant.ENCODING.name());
 
 			if ( scanner != null && scanner.hasNext() ) {
-				ArrayList<String> tiles = loadTiles(scanner);
-				Screen startingScreen = loadScreens(scanner);
+
+				// Load hero into the level
+				level.setHero(new Hero(
+						new Coordinate(),
+						ModelHandler.get().getHeroModel("hero"),
+						"hero",
+						new Idle(true)));
+
+				loadTilesAndModels(scanner,level);
+				Screen startingScreen = loadScreens(scanner, level);
 
 
-				level = new Level(tiles,startingScreen);
+				level.setStartingScreen(startingScreen);
 				scanner.close();
 			}
 		} catch (IOException e) {
@@ -60,32 +75,49 @@ public class LevelLoader {
 		return level;
 	}
 
-	private static ArrayList<String> loadTiles(Scanner scanner) {
+	private static void loadTilesAndModels(Scanner scanner, Level level) {
 		int nbTiles = scanner.nextInt();
-		ArrayList<String> tiles = new ArrayList<String>();
+		int nbEnemies = scanner.nextInt();
+		int nbTrap = scanner.nextInt();
+		int nbDoorKey = scanner.nextInt();
 		scanner.nextLine();
 		// Scan all tiles names in right order
 		for ( int i = 0 ; i < nbTiles && scanner.hasNextLine() ; ++ i ) {
-			tiles.add(scanner.nextLine());
+			level.getTiles().add(scanner.nextLine());
 		}
-		return tiles;
+		// Scan all enemy models in right order
+		for ( int i = 0 ; i < nbEnemies && scanner.hasNextLine() ; ++ i ) {
+			level.getEnemyModels().add(ModelHandler.get().getEnemyModel(scanner.nextLine()));
+		}
+		// Scan all trap model in right order
+		for ( int i = 0 ; i < nbTrap && scanner.hasNextLine() ; ++ i ) {
+			level.getTrapModels().add(ModelHandler.get().getModel(scanner.nextLine()));
+		}
+		// Scan all trap model in right order
+		for ( int i = 0 ; i < nbDoorKey && scanner.hasNextLine() ; ++ i ) {
+			level.getDoorModels().add(DoorKeyFactory.Color.valueOf(scanner.nextLine()));
+		}
+		// Scan all trap model in right order
+		for ( int i = 0 ; i < nbDoorKey && scanner.hasNextLine() ; ++ i ) {
+			level.getKeyModels().add(DoorKeyFactory.Color.valueOf(scanner.nextLine()));
+		}
 	}
 
-	private static Screen loadScreens(Scanner scanner) throws FormatLevelException {
+	private static Screen loadScreens(Scanner scanner, Level level) throws FormatLevelException {
 		List<String[]> screensData = new ArrayList<String[]>();
 		Screen startingScreen = null;
 		// Read screens information
 		while ( scanner.hasNextLine() ) {
 			screensData.add(scanner.nextLine().split(" "));
 		}
-		startingScreen = buildScreens(screensData);
+		startingScreen = buildScreens(screensData, level);
 
 		return startingScreen;
 	}
 
 
 
-	private static Screen buildScreens(List<String[]> screensData) throws FormatLevelException {
+	private static Screen buildScreens(List<String[]> screensData, Level level) throws FormatLevelException {
 		if ( screensData.size()%GameConstant.HEIGHT != 0 ) {
 			throw new FormatLevelException("Level format is unrecognized, wrong pattern for screens tiles");
 		}
@@ -105,11 +137,11 @@ public class LevelLoader {
 
 		int nbScreensX = max;
 		int nbScreensY = screensData.size()/GameConstant.HEIGHT;
-		Screen[][] screens = allocateScreens(nbScreensX,nbScreensY);
+		Screen[][] screens = allocateScreens(nbScreensX,nbScreensY, level);
 
 		for ( int i = 0 ; i < nbScreensX ; ++ i ) {
 			for ( int j = 0 ; j < nbScreensY ; ++ j ) {
-				if ( loadScreen(screensData,screens,i,j) ) {
+				if ( loadScreen(screensData,screens,i,j, level) ) {
 					startingScreen = screens[i][j];
 				}
 			}
@@ -123,12 +155,13 @@ public class LevelLoader {
 		return startingScreen;
 	}
 
-	private static boolean loadScreen(List<String[]> screensData, Screen[][] screens, int i, int j) {
+	private static boolean loadScreen(List<String[]> screensData, Screen[][] screens, int i, int j, Level level) throws FormatLevelException {
 		int[] tiles = null;
 		int offsetX = i*GameConstant.WIDTH;
 		int offsetY = j*GameConstant.HEIGHT;
 
 		boolean startingScreen = false;
+		EntityHandler handler = new EntityHandler(level.getHero());
 
 		if ( screensData.get(offsetY) != null && screensData.get(offsetY).length > offsetX ) {
 			tiles =  new int[GameConstant.WIDTH*GameConstant.HEIGHT];
@@ -138,9 +171,16 @@ public class LevelLoader {
 				tiles[k] = Integer.parseInt(screensData.get(offsetY+y)[offsetX+x]);
 				if ( tiles[k] == -1 ) {
 					startingScreen = true;
+					level.getHero().setPosition(new Coordinate(x*GameConstant.TILE_SIZE,y*GameConstant.TILE_SIZE));
 				}
+				if ( tiles[k] >= level.getTiles().size() ) {
+					loadEntity(handler, tiles[k], x, y, level);
+				}
+
 			}
 		}
+
+		screens[i][j].setHandler(handler);
 
 		// If current screen is not empty
 		if ( tiles  != null ) {
@@ -166,11 +206,48 @@ public class LevelLoader {
 		return startingScreen;
 	}
 
-	private static Screen[][] allocateScreens(int nbScreensX, int nbScreensY) {
+	private static void loadEntity(EntityHandler handler, int index, int x, int y, Level level) throws FormatLevelException {
+		int tmpIndex = index-level.getTiles().size()-1;
+		if ( tmpIndex >= 0 ) {
+			if ( tmpIndex < level.getEnemyModels().size() ) {
+				handler.addEnemy(new Enemy(
+						new Coordinate(x*GameConstant.TILE_SIZE,y*GameConstant.TILE_SIZE),
+						level.getEnemyModels().get(tmpIndex),
+						level.getEnemyModels().get(tmpIndex).getId(),
+						new Idle(true)));
+			} else {
+				tmpIndex = tmpIndex-level.getEnemyModels().size();
+				if ( tmpIndex < level.getTrapModels().size() ) {
+					handler.addCollider(new Trap(
+							new Coordinate(x*GameConstant.TILE_SIZE,y*GameConstant.TILE_SIZE),
+							level.getTrapModels().get(tmpIndex),
+							level.getTrapModels().get(tmpIndex).getId(),
+							new TrapUp()));
+				} else {
+					tmpIndex = tmpIndex-level.getTrapModels().size();
+					if ( tmpIndex < level.getDoorModels().size() ) {
+						handler.addCollider(level.getDoorKeyFactory().getNewDoor(
+								level.getDoorModels().get(tmpIndex),
+								new Coordinate(x*GameConstant.TILE_SIZE,y*GameConstant.TILE_SIZE)));
+					} else {
+						tmpIndex = tmpIndex-level.getDoorModels().size();
+						if ( tmpIndex < level.getKeyModels().size() ) {
+							handler.addCollider(level.getDoorKeyFactory().getNewKey(
+									level.getKeyModels().get(tmpIndex),
+									new Coordinate(x*GameConstant.TILE_SIZE,y*GameConstant.TILE_SIZE)));
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private static Screen[][] allocateScreens(int nbScreensX, int nbScreensY, Level level) {
 		Screen[][] screens = new Screen[nbScreensX][nbScreensY];
 		for ( int i = 0 ; i < nbScreensX ; ++ i ) {
 			for ( int j = 0 ; j < nbScreensY ; ++ j ) {
 				screens[i][j] = new Screen(null,null,null,null,null);
+				screens[i][j].setNbTiles(level.getTiles().size());
 			}
 		}
 		return screens;
