@@ -1,15 +1,23 @@
-6 5 1 0 1 1
+10 9 1 0 1 1
 spriteFull resources/spriteFull.png 250 32 32 4 4 4 4 4 4 4 4 4 4 4
 spriteTrap32 resources/trap32.png 550 32 32 4 4
 spriteTrap64 resources/trap64.png 550 64 32 4 4
 redKey resources/redKey.png 250 32 32 8
 redDoor resources/redDoor.png 1500 32 64 1
+greenKey resources/greenKey.png 250 32 32 8
+greenDoor resources/greenDoor.png 1500 32 64 1
+blueKey resources/blueKey.png 250 32 32 8
+blueDoor resources/blueDoor.png 1500 32 64 1
 projmodel1 resources/projmodel1.png 750 32 32 2
 default spriteFull 32 32 0 0 32 32
-trap32 spriteTrap32 32 32 0 22 32 10
-trap64 spriteTrap64 64 32 0 22 64 10
+trap32 spriteTrap32 32 32 2 22 28 10
+trap64 spriteTrap64 64 32 2 22 60 10
 redDoor redDoor 32 64 0 0 32 64
 redKey redKey 32 32 5 5 20 20
+greenDoor greenDoor 32 64 0 0 32 64
+greenKey greenKey 32 32 5 5 20 20
+blueDoor blueDoor 32 64 0 0 32 64
+blueKey blueKey 32 32 5 5 20 20
 projmodel1 projmodel1 32 32 10 10 5 5 1,0 1
 monster spriteFull 32 32 0 0 32 32 0,5 projmodel1 1 1000
-hero spriteFull 32 32 0 0 32 32 0,5 3 100 projmodel1 1500
+hero spriteFull 32 32 1 1 30 30 0,5 3 100 projmodel1 1500

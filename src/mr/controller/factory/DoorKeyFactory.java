@@ -17,7 +17,9 @@ import mr.model.state.Idle;
 
 public class DoorKeyFactory {
 	public enum Color {
-		red;
+		red,
+		green,
+		blue;
 
 		public String getDoorModel() {
 			return this.toString()+"Door";

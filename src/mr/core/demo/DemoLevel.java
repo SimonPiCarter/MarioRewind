@@ -13,7 +13,6 @@ import org.newdawn.slick.TrueTypeFont;
 
 import mr.controller.LevelLoader;
 import mr.controller.ModelHandler;
-import mr.controller.ProjectileHandler;
 import mr.controller.ScreenHandler;
 import mr.controller.ai.action.IAction;
 import mr.controller.ai.action.Shoot;
@@ -43,7 +42,7 @@ public class DemoLevel implements ICore {
 	private int timeStep = 5;
 	private int elapsedTime = 0;
 
-	private boolean win;
+	private boolean won;
 	private boolean lost;
 
 	private TrueTypeFont ttf;
@@ -61,7 +60,6 @@ public class DemoLevel implements ICore {
 		ResourceHandler.init();
 
 		this.renderer = new Renderer();
-		this.screenHanlder = new ScreenHandler(renderer);
 		try {
 			ModelHandler.get().load("resources/models.data.txt");
 		} catch (InputFileNotFoundException | FormatModelException e1) {
@@ -69,17 +67,19 @@ public class DemoLevel implements ICore {
 		}
 
 
-		this.renderer.updateContext(screenHanlder.getContext());
-		this.renderer.setRewinder(screenHanlder.getRewinder());
-		ProjectileHandler.get().setContext(screenHanlder.getContext());
-
 		ttf = new TrueTypeFont(new Font("Verdana", Font.BOLD, 20), true);
 		ttfWin = new TrueTypeFont(new Font("Verdana", Font.BOLD, 40), true);
 
+		loadLevel(renderer);
+	}
+
+	private void loadLevel(Renderer renderer) {
 		try {
 			this.lvl = LevelLoader.loadLevel(levelPath);
 
-			this.screenHanlder.init(lvl, lvl.getStartingScreen());
+			this.screenHanlder = new ScreenHandler(renderer, lvl.getStartingScreen(), lvl);
+
+			this.screenHanlder.init();
 		} catch (InputFileNotFoundException e) {
 			System.err.println("Cannot load level : "+levelPath);
 			e.printStackTrace();
@@ -95,12 +95,14 @@ public class DemoLevel implements ICore {
 
 	@Override
 	public void render(GameContainer container, Graphics g) throws SlickException {
-		this.renderer.render(g);
+		screenHanlder.render(g);
 		ttf.drawString(GameConstant.WIDTH*GameConstant.TILE_SIZE-100, 15, "Life : "+lvl.getHero().getLife(), Color.white);
-		if ( win ) {
+		if ( won ) {
 			ttfWin.drawString(GameConstant.WIDTH*GameConstant.TILE_SIZE/2-100, 200, "You won!", Color.red);
+			ttf.drawString(GameConstant.WIDTH*GameConstant.TILE_SIZE/2-50, 250, "Y : replay", Color.white);
 		} else if ( lost ) {
 			ttfWin.drawString(GameConstant.WIDTH*GameConstant.TILE_SIZE/2-100, 200, "You lost!", Color.red);
+			ttf.drawString(GameConstant.WIDTH*GameConstant.TILE_SIZE/2-50, 250, "Y : retry", Color.white);
 		}
 	}
 
@@ -111,7 +113,7 @@ public class DemoLevel implements ICore {
 		if ( hero.getLife() == 0 ) {
 			lost = true;
 		}
-		while ( elapsedTime > timeStep && !win && !lost) {
+		while ( elapsedTime > timeStep && !won && !lost) {
 			elapsedTime -= timeStep;
 
 			hero.getForce().x = forceX;
@@ -128,8 +130,21 @@ public class DemoLevel implements ICore {
 				rewindAllowed = true;
 			}
 		}
+		// Update screen if necessary
 		if ( hero.isTouchedRightScreen() ) {
-			win = true;
+			if ( screenHanlder.getScreen().getRight() == null) {
+				won = true;
+			} else {
+				screenHanlder = screenHanlder.getToRightScreen();
+			}
+		}
+		if ( hero.isTouchedLeftScreen() ) {
+			if ( screenHanlder.getScreen().getLeft() != null) {
+				screenHanlder = screenHanlder.getToLeftScreen();
+			}
+		}
+		if ( hero.isTouchedBottomScreen() && screenHanlder.getScreen().getBottom() == null) {
+			lost = true;
 		}
 
 		return this;
@@ -168,6 +183,12 @@ public class DemoLevel implements ICore {
 		}
 		if ( c == 'x' ) {
 			lvl.getHero().setDying(false);
+		}
+		if ( c == 'y' && ( lost || won ) ) {
+			loadLevel(renderer);
+			lost = false;
+			won = false;
+			elapsedTime = 0;
 		}
 	}
 

@@ -16,24 +16,25 @@ import mr.view.RenderingImage;
 public class ScreenHandler {
 
 	private final Renderer renderer;
+	private final Screen screen;
+	private final Level lvl;
 
 	private RenderingContext context;
 	private Rewinder rewinder;
 
-	private Level lvl;
-
-	public ScreenHandler(Renderer renderer) {
+	public ScreenHandler(Renderer renderer, Screen screen, Level lvl) {
 		this.renderer = renderer;
+		this.screen = screen;
+		this.lvl = lvl;
 		this.context = new RenderingContext();
 		this.rewinder = new Rewinder();
 	}
 
-	public void init(Level lvl, Screen screen) {
+	public void init() {
 		this.renderer.updateContext(context);
 		this.renderer.setRewinder(rewinder);
 		ProjectileHandler.get().setContext(context);
 
-		this.lvl = lvl;
 		addScreenToContext(context, screen, lvl);
 
 		this.context.addToLayer(Layers.FOREGROUND, lvl.getHero());
@@ -42,7 +43,7 @@ public class ScreenHandler {
 	}
 
 	public void update(int timeStep) {
-		lvl.getStartingScreen().getHandler().update(timeStep, lvl.getStartingScreen(), context);
+		screen.getHandler().update(timeStep, screen, context);
 
 		ProjectileHandler.get().update(lvl.getHero());
 
@@ -53,6 +54,10 @@ public class ScreenHandler {
 		this.renderer.render(g);
 	}
 
+	public Screen getScreen() {
+		return screen;
+	}
+
 	public Rewinder getRewinder() {
 		return rewinder;
 	}
@@ -61,13 +66,35 @@ public class ScreenHandler {
 		return context;
 	}
 
+	public ScreenHandler getToRightScreen() {
+		if ( screen.getRight() != null ) {
+			ScreenHandler newHandler = new ScreenHandler(renderer, screen.getRight(), lvl);
+			lvl.getHero().getPosition().x = 0;
+			lvl.getHero().setTouchedRightScreen(false);
+			newHandler.init();
+			return newHandler;
+		}
+		return this;
+	}
+
+	public ScreenHandler getToLeftScreen() {
+		if ( screen.getLeft() != null ) {
+			ScreenHandler newHandler = new ScreenHandler(renderer, screen.getLeft(), lvl);
+			lvl.getHero().getPosition().x = GameConstant.WIDTH*GameConstant.TILE_SIZE-lvl.getHero().getSize().x;
+			lvl.getHero().setTouchedLeftScreen(false);
+			newHandler.init();
+			return newHandler;
+		}
+		return this;
+	}
+
 	/**
 	 * Add tiles of {@link Screen} to {@link RenderingContext}.
 	 * @param context
 	 * @param screen
 	 * @param level
 	 */
-	public static void addScreenToContext(RenderingContext context, Screen screen, Level level) {
+	private void addScreenToContext(RenderingContext context, Screen screen, Level level) {
 		Coordinate size = new Coordinate(GameConstant.TILE_SIZE, GameConstant.TILE_SIZE);
 		int[] tiles = screen.getTiles();
 		RenderingImage[] images = new RenderingImage[tiles.length];
