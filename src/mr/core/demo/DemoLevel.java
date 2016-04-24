@@ -14,7 +14,7 @@ import org.newdawn.slick.TrueTypeFont;
 import mr.controller.LevelLoader;
 import mr.controller.ModelHandler;
 import mr.controller.ProjectileHandler;
-import mr.controller.Rewinder;
+import mr.controller.ScreenHandler;
 import mr.controller.ai.action.IAction;
 import mr.controller.ai.action.Shoot;
 import mr.controller.ai.action.Waypoint;
@@ -23,20 +23,15 @@ import mr.core.ICore;
 import mr.core.exception.FormatModelException;
 import mr.core.exception.InputFileNotFoundException;
 import mr.model.GameConstant;
-import mr.model.GameConstant.Layers;
-import mr.model.Item;
 import mr.model.Level;
 import mr.model.misc.Coordinate;
 import mr.view.Renderer;
-import mr.view.RenderingContext;
 import mr.view.ResourceHandler;
-import mr.view.screen.ScreenRenderer;
 
 public class DemoLevel implements ICore {
 
-	private RenderingContext context;
-	private Rewinder rewinder;
 	private Renderer renderer;
+	private ScreenHandler screenHanlder;
 
 	private Level lvl;
 
@@ -60,26 +55,26 @@ public class DemoLevel implements ICore {
 		ResourceHandler.init();
 
 		this.renderer = new Renderer();
+		this.screenHanlder = new ScreenHandler(renderer);
 		try {
 			ModelHandler.get().load("resources/models.data.txt");
 		} catch (InputFileNotFoundException | FormatModelException e1) {
 			e1.printStackTrace();
 		}
 
-		this.context = new RenderingContext();
-		this.rewinder = new Rewinder();
-		this.renderer.updateContext(context);
-		this.renderer.setRewinder(rewinder);
-		ProjectileHandler.get().setContext(context);
+
+		this.renderer.updateContext(screenHanlder.getContext());
+		this.renderer.setRewinder(screenHanlder.getRewinder());
+		ProjectileHandler.get().setContext(screenHanlder.getContext());
 
 		ttf = new TrueTypeFont(new Font("Verdana", Font.BOLD, 20), true);
 		ttfWin = new TrueTypeFont(new Font("Verdana", Font.BOLD, 40), true);
 
 		String level = "resources/level.lvl.txt";
 		try {
-			lvl = LevelLoader.loadLevel(level);
+			this.lvl = LevelLoader.loadLevel(level);
 
-			ScreenRenderer.addScreenToContext(context, lvl.getStartingScreen(), lvl);
+			this.screenHanlder.init(lvl, lvl.getStartingScreen());
 		} catch (InputFileNotFoundException e) {
 			System.err.println("Cannot load level : "+level);
 			e.printStackTrace();
@@ -91,11 +86,6 @@ public class DemoLevel implements ICore {
 		list.add(new Waypoint(null, null, null, new Coordinate(450, 0)));
 		list.add(new Shoot(null, null, null, new Coordinate(0, -1),750));
 		this.lvl.getStartingScreen().getHandler().getEnemies().iterator().next().setActions(list);
-
-
-		this.context.addToLayer(Layers.FOREGROUND, this.lvl.getHero());
-		this.context.addToLayer(Layers.FOREGROUND, this.lvl.getStartingScreen().getHandler().getEnemies().toArray(new Item[0]));
-		this.context.addToLayer(Layers.FOREGROUND, this.lvl.getStartingScreen().getHandler().getColliders().toArray(new Item[0]));
 	}
 
 	@Override
@@ -121,17 +111,13 @@ public class DemoLevel implements ICore {
 
 			hero.getForce().x = forceX;
 
-			lvl.getStartingScreen().getHandler().update(timeStep, lvl.getStartingScreen(), context);
-
-			ProjectileHandler.get().update(hero);
-
-			context.update(timeStep);
+			screenHanlder.update(timeStep);
 
 			if ( rewind ) {
-				rewinder.rewind(timeStep, hero);
+				screenHanlder.getRewinder().rewind(timeStep, hero);
 				rewindAllowed = false;
 			} else {
-				rewinder.record(timeStep, hero);
+				screenHanlder.getRewinder().record(timeStep, hero);
 			}
 			if ( hero.isOnGround() ) {
 				rewindAllowed = true;
