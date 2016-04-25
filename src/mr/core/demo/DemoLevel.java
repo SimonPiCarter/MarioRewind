@@ -7,10 +7,10 @@ import java.util.List;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;
 
+import mr.controller.KeyHandler;
 import mr.controller.LevelLoader;
 import mr.controller.ModelHandler;
 import mr.controller.ScreenHandler;
@@ -152,39 +152,36 @@ public class DemoLevel implements ICore {
 
 	@Override
 	public void keyPressed(int key, char c) {
-		if ( ( c == 'z' || key == Input.KEY_UP ) && lvl.getHero().isOnGround() ) {
+		if ( ( KeyHandler.isCommand("Up", key) ) && lvl.getHero().isOnGround() ) {
 			lvl.getHero().getForce().setY(-250);
 		}
-		if ( c == 'q' || key == Input.KEY_LEFT ) {
+		if ( KeyHandler.isCommand("Left", key) ) {
 			forceX = -baseForce;
 		}
-		if ( c == 'd' || key == Input.KEY_RIGHT ) {
+		if ( KeyHandler.isCommand("Right", key) ) {
 			forceX = baseForce;
 		}
-		if ( c == 'r' || key == Input.KEY_SPACE ) {
+		if ( KeyHandler.isCommand("Rewind", key) ) {
 			rewind = rewindAllowed;
 		}
 	}
 
 	@Override
 	public void keyReleased(int key, char c) {
-		if ( c == 'q' || key == Input.KEY_LEFT ) {
+		if ( KeyHandler.isCommand("Left", key) ) {
 			if ( forceX < 0 ) {
 				forceX = 0;
 			}
 		}
-		if ( c == 'd' || key == Input.KEY_RIGHT ) {
+		if ( KeyHandler.isCommand("Right", key) ) {
 			if ( forceX > 0 ) {
 				forceX = 0;
 			}
 		}
-		if ( c == 'r' || key == Input.KEY_SPACE ) {
+		if ( KeyHandler.isCommand("Rewind", key) ) {
 			rewind = false;
 		}
-		if ( c == 'x' ) {
-			lvl.getHero().setDying(false);
-		}
-		if ( c == 'y' && ( lost || won ) ) {
+		if (KeyHandler.isCommand("Retry", key) && ( lost || won ) ) {
 			loadLevel(renderer);
 			lost = false;
 			won = false;
