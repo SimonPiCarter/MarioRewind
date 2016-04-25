@@ -6,7 +6,11 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
+import mr.controller.ModelHandler;
+import mr.core.exception.FormatModelException;
+import mr.core.exception.InputFileNotFoundException;
 import mr.core.menu.MainMenu;
+import mr.view.ResourceHandler;
 
 public class WindowGame extends BasicGame {
 
@@ -20,6 +24,13 @@ public class WindowGame extends BasicGame {
 
 	@Override
 	public void init(GameContainer container) throws SlickException {
+		// Load default image
+		ResourceHandler.init();
+		try {
+			ModelHandler.get().load("resources/models.data.txt");
+		} catch (InputFileNotFoundException | FormatModelException e1) {
+			e1.printStackTrace();
+		}
 		core.init(container);
 	}
 

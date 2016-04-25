@@ -12,20 +12,17 @@ import org.newdawn.slick.TrueTypeFont;
 
 import mr.controller.KeyHandler;
 import mr.controller.LevelLoader;
-import mr.controller.ModelHandler;
 import mr.controller.ScreenHandler;
 import mr.controller.ai.action.IAction;
 import mr.controller.ai.action.Shoot;
 import mr.controller.ai.action.Waypoint;
 import mr.controller.entity.Hero;
 import mr.core.ICore;
-import mr.core.exception.FormatModelException;
 import mr.core.exception.InputFileNotFoundException;
 import mr.model.GameConstant;
 import mr.model.Level;
 import mr.model.misc.Coordinate;
 import mr.view.Renderer;
-import mr.view.ResourceHandler;
 
 public class DemoLevel implements ICore {
 
@@ -56,15 +53,8 @@ public class DemoLevel implements ICore {
 
 	@Override
 	public void init(GameContainer container) throws SlickException {
-		// Load default image
-		ResourceHandler.init();
 
 		this.renderer = new Renderer();
-		try {
-			ModelHandler.get().load("resources/models.data.txt");
-		} catch (InputFileNotFoundException | FormatModelException e1) {
-			e1.printStackTrace();
-		}
 
 
 		ttf = new TrueTypeFont(new Font("Verdana", Font.BOLD, 20), true);
