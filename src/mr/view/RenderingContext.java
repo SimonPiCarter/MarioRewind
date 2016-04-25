@@ -31,7 +31,7 @@ public class RenderingContext {
 		}
 		for ( Map<Sprite,RenderingImage> layer : layersSprites ) {
 			for ( Entry<Sprite, RenderingImage> entry : layer.entrySet() ) {
-				update(entry.getValue(), 0, delta);
+				update(entry.getValue(), entry.getKey().getState(), delta);
 			}
 		}
 	}
