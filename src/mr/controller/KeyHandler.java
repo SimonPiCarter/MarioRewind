@@ -26,8 +26,8 @@ public class KeyHandler {
 		if ( command.equals("Escape") ) {
 			return key == Input.KEY_ESCAPE;
 		}
-		if ( command.equals("Enter") ) {
-			return key == Input.KEY_ENTER;
+		if ( command.equals("Ok") ) {
+			return key == Input.KEY_ENTER || key == Input.KEY_SPACE;
 		}
 
 		return false;
