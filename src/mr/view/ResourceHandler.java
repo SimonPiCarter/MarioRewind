@@ -51,5 +51,9 @@ public class ResourceHandler {
 		return new RenderingImage(resourcesRenderingImages.get(sprite.getType()));
 	}
 
+	public static Map<String, RenderingImage> getRenderingImages() {
+		return resourcesRenderingImages;
+	}
+
 
 }

@@ -62,7 +62,7 @@ public class ModelHandler {
 		return heroModels.get(name);
 	}
 
-	// Model ProjectileModel AIModel EnemyModel HeroModel
+	// Sprite Model ProjectileModel AIModel EnemyModel HeroModel
 	public void load(String path) throws InputFileNotFoundException, FormatModelException {
 		Path pathFile = Paths.get(path);
 		Scanner scanner = null;
