@@ -13,7 +13,7 @@ import mr.model.misc.Coordinate;
 
 public class ListEntry implements GUI {
 
-	private static final int firstThreshold = 1000;
+	private static final int firstThreshold = 500;
 	private static final int thresholds = 100;
 
 	private final TrueTypeFont ttf;
@@ -155,6 +155,10 @@ public class ListEntry implements GUI {
 
 	public int getCurrent() {
 		return current;
+	}
+
+	public String getCurrentSring() {
+		return entries.get(current);
 	}
 
 	private boolean isInside(int x, int y) {

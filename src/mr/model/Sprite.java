@@ -6,6 +6,7 @@ public class Sprite {
 	private Coordinate position;
 	private Coordinate size;
 	private String type;
+	private int state;
 
 	public Sprite(Coordinate position, Coordinate size, String type) {
 		this.position = position;
@@ -31,6 +32,12 @@ public class Sprite {
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public int getState() {
+		return state;
+	}
+	public void setState(int state) {
+		this.state = state;
 	}
 
 }

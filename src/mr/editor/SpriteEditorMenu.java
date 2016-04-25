@@ -7,16 +7,24 @@ import java.util.List;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;
 
 import mr.controller.KeyHandler;
 import mr.core.ICore;
 import mr.editor.gui.ListEntry;
+import mr.model.GameConstant.Layers;
+import mr.model.Sprite;
 import mr.model.misc.Coordinate;
+import mr.view.Renderer;
+import mr.view.RenderingContext;
 import mr.view.ResourceHandler;
 
-public class SpriteMenu implements ICore {
+public class SpriteEditorMenu implements ICore {
+
+	private Renderer renderer;
+	private RenderingContext context;
 
 	private ListEntry entries;
 
@@ -25,42 +33,75 @@ public class SpriteMenu implements ICore {
 	private final ICore previous;
 
 	private TrueTypeFont ttf;
+	private String string;
+	private Image image;
+	private Sprite sprite;
 
-	public SpriteMenu(ICore previous) {
+	private Coordinate fullImageSize;
+	private Coordinate spriteSize;
+
+	public SpriteEditorMenu(ICore previous, String sprite) {
 		this.previous = previous;
+		this.string = sprite;
+		this.fullImageSize = new Coordinate(300,400);
+		this.spriteSize = new Coordinate(300,100);
 	}
 
 	@Override
 	public void init(GameContainer container) throws SlickException {
-		ttf = new TrueTypeFont(new Font("Verdana", Font.BOLD, 40), true);
+		renderer = new Renderer();
+		context = new RenderingContext();
+		renderer.updateContext(context);
+
+		sprite = new Sprite(new Coordinate(300,100+fullImageSize.y), new Coordinate(0,0), string);
+		context.addToLayer(Layers.FOREGROUND, sprite);
+
+		ttf = new TrueTypeFont(new Font("Verdana", Font.BOLD, 20), true);
 		List<String> list = new ArrayList<String>();
-		list.addAll(ResourceHandler.getRenderingImages().keySet());
+		for ( int i = 0 ; i < ResourceHandler.getRenderingImage(sprite).getNbStates() ; ++ i ) {
+			list.add(Integer.toString(i));
+		}
+
+		image = new Image(ResourceHandler.getRenderingImage(sprite).getImage());
+
+		float factorX = spriteSize.x/ResourceHandler.getRenderingImage(sprite).getSize().x;
+		float factorY = spriteSize.y/ResourceHandler.getRenderingImage(sprite).getSize().y;
+		sprite.getSize().x = ResourceHandler.getRenderingImage(sprite).getSize().x*Math.min(factorX, factorY);
+		sprite.getSize().y = ResourceHandler.getRenderingImage(sprite).getSize().y*Math.min(factorX, factorY);
 
 		entries = new ListEntry(
 				ttf,
 				list,
-				new Coordinate(100,50),
-				new Coordinate(container.getWidth(),container.getHeight()-100),
+				new Coordinate(50,25+fullImageSize.y),
+				new Coordinate(300,150),
 				false);
 	}
 
 	@Override
 	public void render(GameContainer container, Graphics g) throws SlickException {
 		entries.render(container, g);
+
+		renderer.render(g);
+
+		// Draw full image
+		float factorX = fullImageSize.x/image.getWidth();
+		float factorY = fullImageSize.y/image.getHeight();
+		image.draw(300,25,Math.min(factorX, factorY));
+
+
 		ttf.drawString(5, container.getHeight()-ttf.getHeight(), "A : Back",new Color(220, 220, 220));
-		String newString = "N : New";
+		String newString = "E : Edit";
 		ttf.drawString(container.getWidth()-ttf.getWidth(newString)-5, container.getHeight()-ttf.getHeight(), newString,new Color(220, 220, 220));
 	}
 
 	@Override
 	public ICore update(GameContainer container, int delta) throws SlickException {
+		context.update(delta);
 		entries.update(container, delta);
 		if ( validated ) {
 			validated = false;
 			back = false;
-			ICore next = new SpriteEditorMenu(this,entries.getCurrentSring());
-			next.init(container);
-			return next;
+			sprite.setState(entries.getCurrent());
 		}
 		if ( back ) {
 			validated = false;
