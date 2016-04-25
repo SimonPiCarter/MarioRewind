@@ -35,4 +35,16 @@ public class LevelCore implements ICore {
 
 	}
 
+	@Override
+	public void mousePressed(int button, int x, int y) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseMoved(int oldx, int oldy, int newx, int newy) {
+		// TODO Auto-generated method stub
+
+	}
+
 }

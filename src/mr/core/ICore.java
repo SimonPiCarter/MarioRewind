@@ -13,5 +13,8 @@ public interface ICore {
 
 	public void keyPressed(int key, char c);
 
-	public void keyReleased(int key, char c);
+	public void keyReleased(int key, char c);
+	void mousePressed(int button, int x, int y);
+
+	void mouseMoved(int oldx, int oldy, int newx, int newy);
 }

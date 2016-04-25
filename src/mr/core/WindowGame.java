@@ -13,7 +13,7 @@ public class WindowGame extends BasicGame {
 	ICore core;
 
 	public WindowGame() {
-		super("Core :: WindowGame");
+		super("Mario Rewind");
 		core = new DemoLevel("resources/level.lvl.txt");
 	}
 
@@ -29,7 +29,7 @@ public class WindowGame extends BasicGame {
 
 	@Override
 	public void update(GameContainer container, int delta) throws SlickException {
-		core.update(container, delta);
+		core = core.update(container, delta);
 	}
 
 	public static void main(String[] args) throws SlickException {
@@ -44,6 +44,16 @@ public class WindowGame extends BasicGame {
 	@Override
 	public void keyReleased(int key, char c) {
 		core.keyReleased(key, c);
+	}
+
+	@Override
+	public void mousePressed(int button, int x, int y) {
+		core.mousePressed(button, x, y);
+	}
+
+	@Override
+	public void mouseMoved(int oldx, int oldy, int newx, int newy) {
+		core.mouseMoved(oldx, oldy, newx, newy);
 	}
 }
 

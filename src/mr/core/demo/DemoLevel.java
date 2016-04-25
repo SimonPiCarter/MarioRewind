@@ -189,4 +189,14 @@ public class DemoLevel implements ICore {
 		}
 	}
 
+	@Override
+	public void mousePressed(int button, int x, int y) {
+
+	}
+
+	@Override
+	public void mouseMoved(int oldx, int oldy, int newx, int newy) {
+
+	}
+
 }
