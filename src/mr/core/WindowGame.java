@@ -6,7 +6,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
-import mr.core.demo.DemoLevel;
+import mr.core.menu.MainMenu;
 
 public class WindowGame extends BasicGame {
 
@@ -14,7 +14,8 @@ public class WindowGame extends BasicGame {
 
 	public WindowGame() {
 		super("Mario Rewind");
-		core = new DemoLevel("resources/level.lvl.txt");
+		//core = new DemoLevel("resources/level.lvl.txt");
+		core = new MainMenu();
 	}
 
 	@Override
