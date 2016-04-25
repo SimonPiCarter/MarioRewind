@@ -21,6 +21,8 @@ public class EditorMenu implements ICore {
 	private boolean validated;
 	private final ICore previous;
 
+	private boolean back;
+
 	public EditorMenu(ICore previous) {
 		this.previous = previous;
 	}
@@ -52,9 +54,19 @@ public class EditorMenu implements ICore {
 		entries.update(container, delta);
 		if ( validated ) {
 			validated = false;
-			if ( entries.getCurrent() == 4 ) {
+			back = false;
+			if ( entries.getCurrent() == 0 ) {
+				ICore next = new SpriteMenu(this);
+				next.init(container);
+				return next;
+			} else if ( entries.getCurrent() == 4 ) {
 				return previous;
 			}
+		}
+		if ( back ) {
+			validated = false;
+			back = false;
+			return previous;
 		}
 		return this;
 	}
@@ -69,6 +81,9 @@ public class EditorMenu implements ICore {
 		entries.keyReleased(key, c);
 		if ( KeyHandler.isCommand("Ok", key) ) {
 			validated = true;
+		}
+		if ( KeyHandler.isCommand("Cancel", key) ) {
+			back = true;
 		}
 	}
 
