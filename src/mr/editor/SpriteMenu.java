@@ -14,19 +14,19 @@ import mr.controller.KeyHandler;
 import mr.core.ICore;
 import mr.editor.gui.ListEntry;
 import mr.model.misc.Coordinate;
+import mr.view.ResourceHandler;
 
-public class EditorMenu implements ICore {
+public class SpriteMenu implements ICore {
 
 	private ListEntry entries;
 
 	private boolean validated;
-	private final ICore previous;
-
 	private boolean back;
+	private final ICore previous;
 
 	private TrueTypeFont ttf;
 
-	public EditorMenu(ICore previous) {
+	public SpriteMenu(ICore previous) {
 		this.previous = previous;
 	}
 
@@ -34,23 +34,22 @@ public class EditorMenu implements ICore {
 	public void init(GameContainer container) throws SlickException {
 		ttf = new TrueTypeFont(new Font("Verdana", Font.BOLD, 40), true);
 		List<String> list = new ArrayList<String>();
-		list.add("Edit Sprites");
-		list.add("Edit Models");
-		list.add("Edit AIs");
-		list.add("Edit Levels");
-		list.add("Back");
+		list.addAll(ResourceHandler.getRenderingImages().keySet());
+
 		entries = new ListEntry(
 				ttf,
 				list,
-				new Coordinate(0,50),
+				new Coordinate(100,50),
 				new Coordinate(container.getWidth(),container.getHeight()-100),
-				true);
+				false);
 	}
 
 	@Override
 	public void render(GameContainer container, Graphics g) throws SlickException {
 		entries.render(container, g);
 		ttf.drawString(5, container.getHeight()-ttf.getHeight(), "A : Back",new Color(220, 220, 220));
+		String newString = "N : New";
+		ttf.drawString(container.getWidth()-ttf.getWidth(newString)-5, container.getHeight()-ttf.getHeight(), newString,new Color(220, 220, 220));
 	}
 
 	@Override
@@ -59,13 +58,6 @@ public class EditorMenu implements ICore {
 		if ( validated ) {
 			validated = false;
 			back = false;
-			if ( entries.getCurrent() == 0 ) {
-				ICore next = new SpriteMenu(this);
-				next.init(container);
-				return next;
-			} else if ( entries.getCurrent() == 4 ) {
-				return previous;
-			}
 		}
 		if ( back ) {
 			validated = false;
